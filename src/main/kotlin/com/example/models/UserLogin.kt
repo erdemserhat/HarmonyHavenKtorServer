@@ -1,3 +1,9 @@
 package com.example.models
 
-data class UserLogin()
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class UserLogin(
+    val email:String,
+    val password:String
+)
