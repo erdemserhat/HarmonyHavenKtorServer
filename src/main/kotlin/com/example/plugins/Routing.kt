@@ -28,7 +28,11 @@ fun Application.configureRouting() {
         }
 
         get("/user"){
-            call.respondText("Serhat", status = HttpStatusCode.OK)
+            val jsonResponse = """[
+    {"email": "serhat@example.com", "password": "123456"},
+    {"email": "ahmet@example.com", "password": "789123"}
+]"""
+            call.respondText(jsonResponse, ContentType.Application.Json, HttpStatusCode.OK)
         }
 
 

@@ -1,3 +1,7 @@
+GET http://localhost:8081
+Accept: application/json
+
+###
 POST http://localhost:8081/user
 Content-Type: application/json
 
@@ -6,3 +10,5 @@ Content-Type: application/json
   "password": "admin"
 }
 ###
+
+
