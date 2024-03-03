@@ -1,6 +1,7 @@
 package com.example.plugins
 
 import com.example.dao.userDao
+import com.example.models.Message
 import com.example.models.UserLogin
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -18,22 +19,18 @@ fun Application.configureRouting() {
             val loginData = call.receive<UserLogin>()
             val user = (userDao.allUsers().find { it.password==loginData.password && it.email==loginData.email })
             if(user!=null){
-                call.respondText("Hoş Geldin ${user.name}", status = HttpStatusCode.OK)
+                call.respond(Message("Welcome ${user.name}"))
             }else{
-                call.respondText("Yanlış Bilgiler", status = HttpStatusCode.NonAuthoritativeInformation)
+                call.respond(Message("There is no user like that"))
             }
 
+        }
 
+        get("/user/update") {
+            userDao.editUser(8,"Ali","Erdem","ali@example.com","ali123")
 
         }
 
-        get("/user"){
-            val jsonResponse = """[
-    {"email": "serhat@example.com", "password": "123456"},
-    {"email": "ahmet@example.com", "password": "789123"}
-]"""
-            call.respondText(jsonResponse, ContentType.Application.Json, HttpStatusCode.OK)
-        }
 
 
     }
