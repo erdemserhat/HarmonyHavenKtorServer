@@ -1,8 +1,10 @@
 package com.example.plugins
 
-import com.example.dao.userDao
 import com.example.models.Message
+import com.example.models.User
 import com.example.models.UserLogin
+import com.example.repository.MySQLUserRepository
+import com.example.routes.user.createUser
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -10,28 +12,37 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Application.configureRouting() {
+    val repo = MySQLUserRepository()
     routing {
         get("/") {
-            call.respondText("Hello World!")
+
+            call.respond(repo.getAllUsers())
+            repo.addUser(User(1,"yavuz","1","1","1","1",""))
         }
 
         post("/user") {
-            val loginData = call.receive<UserLogin>()
-            val user = (userDao.allUsers().find { it.password==loginData.password && it.email==loginData.email })
-            if(user!=null){
-                call.respond(Message("Welcome ${user.name}"))
-            }else{
-                call.respond(Message("There is no user like that"))
-            }
+
+
+
+
 
         }
 
-        get("/user/update") {
-            userDao.editUser(8,"Ali","Erdem","ali@example.com","ali123")
+        get("/user/update/") {
+
+
 
         }
+
+        post("register"){
+
+
+
+        }
+
 
 
 
     }
 }
+
