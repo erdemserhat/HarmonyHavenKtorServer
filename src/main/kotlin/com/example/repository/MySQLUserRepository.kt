@@ -4,7 +4,6 @@ import com.example.database.DBUserEntity
 import com.example.database.DatabaseManager
 import com.example.models.User
 import com.example.models.UserLogin
-import org.ktorm.database.Database
 
 class MySQLUserRepository() : UserRepository {
     private val database = DatabaseManager()
@@ -39,13 +38,25 @@ class MySQLUserRepository() : UserRepository {
         return database.updateUserById(userId,newUser)
     }
 
-    override fun updateUserByLoginInformation(login: UserLogin, newUser: User): Int {
+    override fun updateUserByLoginInformation(login: UserLogin, newUser: User): DBUserEntity? {
         return database.updateUserByLoginInformation(login, newUser)
     }
 
 
     override fun deleteUser(id: Int): Boolean {
         return database.deleteUser(id)
+    }
+
+    override fun controlUserExistenceByEmail(email: String): Boolean {
+       return  database.controlUserExistenceByEmail(email)
+    }
+
+    override fun deleteUserByLoginInformation(login: UserLogin): Boolean {
+        return database.deleteUserByLoginInformation(login)
+    }
+
+    override fun controlUserExistenceByAuth(login: UserLogin): Boolean {
+        return database.controlUserExistenceByAuth(login)
     }
 
     private fun DBUserEntity.toUser(): User {

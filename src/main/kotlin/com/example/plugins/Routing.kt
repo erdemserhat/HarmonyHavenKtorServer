@@ -5,6 +5,8 @@ import com.example.models.User
 import com.example.models.UserLogin
 import com.example.repository.MySQLUserRepository
 import com.example.routes.user.createUser
+import com.example.routes.user.deleteUser
+import com.example.routes.user.readUser
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -17,32 +19,22 @@ fun Application.configureRouting() {
         get("/") {
 
             call.respond(repo.getAllUsers())
-            repo.addUser(User(1,"yavuz","1","1","1","1",""))
+            //repo.addUser(User(1, "yavuz", "1", "1", "1", "1", ""))
         }
 
         post("/user") {
 
 
 
+        }
 
+        post("/example"){
 
         }
 
-        get("/user/update/") {
-
-
-
-        }
-
-        post("register"){
-
-
-
-        }
-
-
-
-
+        createUser()
+        deleteUser()
+        readUser()
     }
 }
 
