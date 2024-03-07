@@ -1,15 +1,39 @@
-GET http://localhost:8081
+GET http://localhost:8082
 Accept: application/json
 
 ###
-POST http://localhost:8081/user
+POST http://localhost:8082/user/register
 Content-Type: application/json
 
 {
-  "email": "me.serhaterdem@gmail.com",
-  "password": "admin"
+  "id": 123,
+  "name": "Serhat",
+  "surname": "Erdem",
+  "email": "john.dose@hhffejjxample.com",
+  "password": "Xfdsfds.3451.",
+  "gender": "male",
+  "profilePhotoPath": "/path/to/profile/photo.jpg"
 }
-
 ###
+
+DELETE http://localhost:8082/user/delete
+Content-Type: application/json
+
+{
+
+  "email": "john.dose@hhffejjxample.com",
+  "password": "Xfdsfds.3451."
+
+}
+###
+GET http://localhost:8082/user/info
+Content-Type: application/json
+
+{
+
+"email": "john.dose@hhejjxample.com",
+"password": "Xply.3451321312."
+
+}
 
 

@@ -10,7 +10,6 @@ import org.junit.Assert.assertThat
 import kotlin.test.Test
 
 class MySQLUserRepositoryTest {
-    private val userRepository = userDao
 
     //getAllUsers() function tests
 
@@ -20,7 +19,7 @@ class MySQLUserRepositoryTest {
      */
     @Test
     fun `test getAllUsers`(): Unit {
-        val users = userRepository.getAllUsers()
+        val users = userDao.getAllUsers()
         println("\u001B[31m----------User List----------\u001B[0m")
         for (user in users) {
             println("\u001B[32m$user.\u001B[0m")
@@ -42,8 +41,8 @@ class MySQLUserRepositoryTest {
      */
     @Test
     fun `test getUserById`() {
-        val user = userRepository.getUserById(1)
-        assertEquals("Samet Berkant", user?.name)
+        val user = userDao.getUserById(1)
+        assertEquals("serhat", user?.name)
         assertEquals("erdem", user?.surname)
         assertEquals("me.serhaterdem@gmail.com", user?.email)
         assertEquals("admin", user?.password)
@@ -54,7 +53,7 @@ class MySQLUserRepositoryTest {
     @Test
     fun `test getUserByLoginInformation`() {
         val loginInformation = UserLogin("me.serhaterdem@gmail.com", "admin")
-        val user = userRepository.getUserByLoginInformation(loginInformation)
+        val user = userDao.getUserByLoginInformation(loginInformation)
         assertEquals("serhat", user?.name)
         assertEquals("erdem", user?.surname)
         assertEquals("me.serhaterdem@gmail.com", user?.email)
@@ -75,27 +74,16 @@ class MySQLUserRepositoryTest {
             gender = "Male",
             profilePhotoPath = "server/pp/samet.jpg"
         )
-        val loginInformation = UserLogin(
-            "sametberkant@example.com",
-            "berkant3434"
-        )
-        userRepository.addUser(newUser)
-        val addedUser =userRepository.getUserByLoginInformation(loginInformation)
-        assertEquals("Samet Berkant", newUser.name)
-        assertEquals("KOCA", newUser.surname)
-        assertEquals("sametberkant@example.com", newUser.email)
-        assertEquals("berkant3434", newUser.password)
-        assertEquals("Male", newUser.gender)
-        assertEquals("server/pp/samet.jpg", newUser.profilePhotoPath)
+       assertEquals(1, userDao.addUser(newUser))
 
     }
 
     @Test
-    fun `test updateUserById`(){
+    fun `test updateUserById`() {
         val userId = 70;
         val updatedUser = User(
-            id=userId,
-            name="A",
+            id = userId,
+            name = "A",
             surname = "B",
             email = "C",
             password = "D",
@@ -103,61 +91,41 @@ class MySQLUserRepositoryTest {
             profilePhotoPath = "F"
         )
 
-        val latestUser = userDao.updateUserById(userId,updatedUser)
-        assertEquals(updatedUser,latestUser?.toUser())
-
+        val latestUser = userDao.updateUserById(userId, updatedUser)
+        assertEquals(updatedUser, latestUser?.toUser())
 
 
     }
 
     @Test
-    fun `test updateUserByLoginInformation`(){
-        val newUser = User(
-            id = 0, //No need
-            name = "Ahmet",
-            surname = "Suat Can",
-            email = "ahmet@example.com",
-            password = "ahmet2323",
-            gender = "Male",
-            profilePhotoPath = "server/pp/ahmet.jpg"
+    fun `test updateUserByLoginInformation`() {
+        val userId = 70;
+        val updatedUser = User(
+            id = userId,
+            name = "A",
+            surname = "B",
+            email = "C",
+            password = "D",
+            gender = "E",
+            profilePhotoPath = "F"
         )
 
-        val loginInformation = UserLogin(
-            "ahmet@example.com",
-            "ahmet2323"
-        )
+        val userLoginInformation = UserLogin("C", "E")
 
-        userRepository.addUser(newUser)
-        val addedUser = userRepository.getUserByLoginInformation(loginInformation)
-        val updatedUser = addedUser?.copy(
-            name="Yavuz Samet",
-            surname = "Kan",
-            email = "yavuz@example.com",
-            password = "yavuz3434",
-            gender = "Male",
-            profilePhotoPath = "server/pp/yavuz.png",
-        )
-        if (addedUser != null) {
-            if (updatedUser != null) {
-                userRepository.updateUserByLoginInformation(loginInformation,updatedUser)
-            }
-        }
-
-        val updatedUserControl = addedUser?.let { userRepository.getUserById(it.id) }
-        assertEquals(updatedUser,updatedUserControl)
+        val latestUser = userDao.updateUserByLoginInformation(userLoginInformation, updatedUser)
+        assertEquals(updatedUser, latestUser)
 
     }
 
-}
-
-fun  DBUserEntity.toUser():User{
-    return User(
-        id = this.id,
-        name = this.name,
-        surname = this.surname,
-        email = this.email,
-        password = this.password,
-        gender = this.gender,
-        profilePhotoPath = this.profilePhotoPath
-    )
+    fun DBUserEntity.toUser(): User {
+        return User(
+            id = this.id,
+            name = this.name,
+            surname = this.surname,
+            email = this.email,
+            password = this.password,
+            gender = this.gender,
+            profilePhotoPath = this.profilePhotoPath
+        )
+    }
 }

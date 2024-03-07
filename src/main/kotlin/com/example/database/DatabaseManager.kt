@@ -7,6 +7,7 @@ import org.ktorm.dsl.*
 import org.ktorm.entity.firstOrNull
 import org.ktorm.entity.sequenceOf
 import org.ktorm.entity.toList
+import kotlin.math.log
 
 /**
  * Database manager class that performs database operations using the KTorm library.
@@ -75,6 +76,7 @@ class DatabaseManager {
             set(it.gender, user.gender)
             set(it.profilePhotoPath, user.profilePhotoPath)
         }
+
     }
 
     /**
@@ -105,28 +107,23 @@ class DatabaseManager {
      * @param login The user login information.
      * @param newUser The new user information.
      */
-    fun updateUserByLoginInformation(login: UserLogin, newUser: User):Int {
-        val user = ktormDatabase.sequenceOf(DBUserTable)
-            .firstOrNull { (it.email eq login.email) and (it.password eq login.password) }
-        if (user != null) {
-            ktormDatabase.update(DBUserTable) {
-                set(it.name, newUser.name)
-                set(it.surname, newUser.surname)
-                set(it.email, newUser.email)
-                set(it.password, newUser.password)
-                set(it.gender, newUser.gender)
-                set(it.profilePhotoPath, newUser.profilePhotoPath)
-                where {
-                    it.id eq user.id
-                }
+    fun updateUserByLoginInformation(loginInformation: UserLogin, newUser: User): DBUserEntity? {
+        ktormDatabase.update(DBUserTable) {
+            set(it.name, newUser.name)
+            set(it.surname, newUser.surname)
+            set(it.email, newUser.email)
+            set(it.password, newUser.password)
+            set(it.gender, newUser.gender)
+            set(it.profilePhotoPath, newUser.profilePhotoPath)
+            where {
+                (it.email eq loginInformation.email) and (it.password eq loginInformation.password)
             }
-            return 1
-        } else {
-            return 0
         }
-
+        return ktormDatabase.sequenceOf(DBUserTable)
+            .firstOrNull { (it.email eq loginInformation.email) and (it.password eq loginInformation.password) }
 
     }
+
 
     /**
      * Deletes a user by ID.
@@ -140,9 +137,40 @@ class DatabaseManager {
         return affectedRows > 0
     }
 
+    fun controlUserExistenceByEmail(email: String): Boolean {
+        val user = ktormDatabase.sequenceOf(DBUserTable)
+            .firstOrNull { it.email eq email }
 
+        if (user != null) {
+            return true
+        } else {
+            return false
+        }
 
-         /////////////     Article Crud Operations   ///////////////////
+    }
 
+    fun deleteUserByLoginInformation(loginInformation: UserLogin): Boolean {
+        val affectedRows = ktormDatabase.delete(DBUserTable) {
+            (it.email eq loginInformation.email) and (it.password eq loginInformation.password)
+        }
+        return affectedRows > 0
 
+    }
+
+    fun controlUserExistenceByAuth(loginInformation: UserLogin): Boolean {
+        val user = ktormDatabase.sequenceOf(DBUserTable)
+            .firstOrNull {
+                (it.email eq loginInformation.email) and (it.password eq password)
+            }
+        if (user != null) {
+            return true
+        } else {
+            return false
+        }
+    }
 }
+
+
+/////////////     Article Crud Operations   ///////////////////
+
+

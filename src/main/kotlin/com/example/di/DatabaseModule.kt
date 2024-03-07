@@ -3,7 +3,9 @@ import com.example.repository.MySQLUserRepository
 import com.example.repository.UserRepository
 
 object DatabaseModule{
-    val userDao:UserRepository = MySQLUserRepository()
+    val userDao:UserRepository by lazy {
+        MySQLUserRepository()
+    }
 
 
 

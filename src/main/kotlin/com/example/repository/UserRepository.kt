@@ -15,9 +15,15 @@ interface UserRepository {
 
     fun updateUserById(userId: Int, newUser:User): DBUserEntity?
 
-    fun updateUserByLoginInformation(login: UserLogin, newUser: User):Int
+    fun updateUserByLoginInformation(login: UserLogin, newUser: User):DBUserEntity?
 
     fun deleteUser(id:Int):Boolean
+
+    fun controlUserExistenceByEmail(email:String):Boolean
+
+    fun deleteUserByLoginInformation(login: UserLogin):Boolean
+
+    fun controlUserExistenceByAuth(login: UserLogin):Boolean
 
 
 
