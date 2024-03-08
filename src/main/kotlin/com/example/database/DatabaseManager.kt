@@ -23,6 +23,7 @@ class DatabaseManager {
      * @param password Database password.
      */
 
+    ///////
     private val hostname = "92.205.5.205"
     private val databaseName = "harmonyhaven"
     private val username = "harmonyhaven"
