@@ -1,6 +1,6 @@
 package com.example.models
 
-data class UserUpdateData(
+data class UserUpdateModel(
     val userLogin: UserLogin,
     val updatedUserData: User
 )
