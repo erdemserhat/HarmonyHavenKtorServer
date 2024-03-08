@@ -36,3 +36,4 @@ out/
 .vscode/
 
 .DatabaseManager.kt
+DatabaseManager.kt
