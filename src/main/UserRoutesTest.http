@@ -7,10 +7,10 @@ Content-Type: application/json
 
 {
   "id": 123,
-  "name": "Serhat",
-  "surname": "Erdem",
-  "email": "john.dose@hhffejjxample.com",
-  "password": "Xfdsfds.3451.",
+  "name": "fdsfdsf",
+  "surname": "sdfdsfsdfdsf",
+  "email": "john.dose@sdfsdfhhffejjxample.com",
+  "password": "fdsfdAffsf.3451.",
   "gender": "male",
   "profilePhotoPath": "/path/to/profile/photo.jpg"
 }
@@ -33,16 +33,20 @@ Content-Type: application/json
 
 {
   "userLogin": {
-    "username": "john_doe",
-    "password": "password123"
+    "email": "me.serhaterdem@gmail.com",
+    "password": "ERdem.3451."
   },
   "updatedUserData": {
     "id": 123,
     "name": "John",
     "surname": "Doe",
-    "email": "john.doe@example.com",
-    "password": "newpassword123",
-    "gender": "male"
+    "email": "me.serhaterdem@gmail.com",
+    "password": "ERdem.3451.",
+    "gender": "male",
+    "profilePhotoPath": "/path/to/photo.jpg"
   }
 }
+
+
+
 
