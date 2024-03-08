@@ -7,6 +7,7 @@ import com.example.repository.MySQLUserRepository
 import com.example.routes.user.createUser
 import com.example.routes.user.deleteUser
 import com.example.routes.user.readUser
+import com.example.routes.user.updateUser
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -35,6 +36,7 @@ fun Application.configureRouting() {
         createUser()
         deleteUser()
         readUser()
+        updateUser()
     }
 }
 

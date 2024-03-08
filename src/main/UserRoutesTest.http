@@ -26,14 +26,23 @@ Content-Type: application/json
 
 }
 ###
-GET http://localhost:8082/user/info
+
+
+PATCH http://localhost:8082/user/update
 Content-Type: application/json
 
 {
-
-"email": "john.dose@hhejjxample.com",
-"password": "Xply.3451321312."
-
+  "userLogin": {
+    "username": "john_doe",
+    "password": "password123"
+  },
+  "updatedUserData": {
+    "id": 123,
+    "name": "John",
+    "surname": "Doe",
+    "email": "john.doe@example.com",
+    "password": "newpassword123",
+    "gender": "male"
+  }
 }
-
 
