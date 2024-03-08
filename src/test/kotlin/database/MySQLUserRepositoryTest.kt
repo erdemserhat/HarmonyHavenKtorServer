@@ -1,12 +1,10 @@
 package database
 
-import com.example.database.DBUserEntity
-import com.example.di.DatabaseModule.userDao
-import com.example.models.User
-import com.example.models.UserLogin
+import com.erdemserhat.database.userDao.DBUserEntity
+import com.erdemserhat.di.DatabaseModule.userRepository
+import com.erdemserhat.models.User
+import com.erdemserhat.models.UserLogin
 import junit.framework.TestCase.assertEquals
-import org.hamcrest.MatcherAssert
-import org.junit.Assert.assertThat
 import kotlin.test.Test
 
 class MySQLUserRepositoryTest {
@@ -19,7 +17,7 @@ class MySQLUserRepositoryTest {
      */
     @Test
     fun `test getAllUsers`(): Unit {
-        val users = userDao.getAllUsers()
+        val users = userRepository.getAllUsers()
         println("\u001B[31m----------User List----------\u001B[0m")
         for (user in users) {
             println("\u001B[32m$user.\u001B[0m")
@@ -41,7 +39,7 @@ class MySQLUserRepositoryTest {
      */
     @Test
     fun `test getUserById`() {
-        val user = userDao.getUserById(1)
+        val user = userRepository.getUserById(1)
         assertEquals("serhat", user?.name)
         assertEquals("erdem", user?.surname)
         assertEquals("me.serhaterdem@gmail.com", user?.email)
@@ -53,7 +51,7 @@ class MySQLUserRepositoryTest {
     @Test
     fun `test getUserByLoginInformation`() {
         val loginInformation = UserLogin("me.serhaterdem@gmail.com", "admin")
-        val user = userDao.getUserByLoginInformation(loginInformation)
+        val user = userRepository.getUserByLoginInformation(loginInformation)
         assertEquals("serhat", user?.name)
         assertEquals("erdem", user?.surname)
         assertEquals("me.serhaterdem@gmail.com", user?.email)
@@ -74,7 +72,7 @@ class MySQLUserRepositoryTest {
             gender = "Male",
             profilePhotoPath = "server/pp/samet.jpg"
         )
-       assertEquals(1, userDao.addUser(newUser))
+       assertEquals(1, userRepository.addUser(newUser))
 
     }
 
@@ -91,7 +89,7 @@ class MySQLUserRepositoryTest {
             profilePhotoPath = "F"
         )
 
-        val latestUser = userDao.updateUserById(userId, updatedUser)
+        val latestUser = userRepository.updateUserById(userId, updatedUser)
         assertEquals(updatedUser, latestUser?.toUser())
 
 
@@ -112,7 +110,7 @@ class MySQLUserRepositoryTest {
 
         val userLoginInformation = UserLogin("C", "E")
 
-        val latestUser = userDao.updateUserByLoginInformation(userLoginInformation, updatedUser)
+        val latestUser = userRepository.updateUserByLoginInformation(userLoginInformation, updatedUser)
         assertEquals(updatedUser, latestUser)
 
     }

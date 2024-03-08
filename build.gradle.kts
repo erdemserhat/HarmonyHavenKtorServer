@@ -55,5 +55,6 @@ dependencies {
     implementation("mysql:mysql-connector-java:8.0.27")
     implementation ("org.ktorm:ktorm-core:3.2.0")
     implementation ("org.ktorm:ktorm-support-mysql:3.2.0")
+    implementation("com.sun.mail:javax.mail:1.6.2")
 
 }
