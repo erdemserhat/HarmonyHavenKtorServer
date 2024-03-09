@@ -1,9 +1,9 @@
 package com.erdemserhat.routes.user
 
 import com.erdemserhat.di.DatabaseModule.userRepository
-import com.erdemserhat.domain.validateIfEmailChanged
-import com.erdemserhat.domain.validateUserInformation
-import com.erdemserhat.domain.validateUserLoginInformation
+import com.erdemserhat.domain.validation.validateIfEmailChanged
+import com.erdemserhat.domain.validation.validateUserInformation
+import com.erdemserhat.domain.validation.validateUserLoginInformation
 import com.erdemserhat.models.UserUpdateModel
 import io.ktor.http.*
 import io.ktor.server.application.*

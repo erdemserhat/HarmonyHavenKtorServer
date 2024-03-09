@@ -1,7 +1,8 @@
 package com.erdemserhat.routes.user
 
 import com.erdemserhat.di.DatabaseModule.userRepository
-import com.erdemserhat.domain.validateUserInformation
+import com.erdemserhat.domain.email.sendWelcomeMail
+import com.erdemserhat.domain.validation.validateUserInformation
 import com.erdemserhat.models.User
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -18,7 +19,7 @@ post("user/register"){
     } catch (e: Exception) {
         call.respond(HttpStatusCode.BadRequest,e.message.toString())
     }
-
+    sendWelcomeMail(newUser.email,newUser.name)
     call.respond(HttpStatusCode.OK,"You have successfully registered!")
 }
 }

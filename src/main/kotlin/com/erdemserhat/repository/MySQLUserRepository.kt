@@ -60,6 +60,10 @@ class MySQLUserRepository() : UserRepository {
         return database.controlUserExistenceByAuth(login)
     }
 
+    override fun updateUserPasswordByEmail(email: String, newPassword: String): User? {
+        return database.updateUserPasswordByEmail(email,newPassword)?.toUser()
+    }
+
     private fun DBUserEntity.toUser(): User {
         return User(id, name, surname, email, password, gender, profilePhotoPath)
     }

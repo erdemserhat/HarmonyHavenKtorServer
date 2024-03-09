@@ -1,7 +1,7 @@
 package com.erdemserhat.routes.user
 
 import com.erdemserhat.di.DatabaseModule.userRepository
-import com.erdemserhat.domain.validateUserLoginInformation
+import com.erdemserhat.domain.validation.validateUserLoginInformation
 import com.erdemserhat.models.UserLogin
 import io.ktor.http.*
 import io.ktor.server.application.*
