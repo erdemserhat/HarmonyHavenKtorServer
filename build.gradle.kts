@@ -42,6 +42,7 @@ dependencies {
     //kotlinx.serialiable (json to kotlin class)
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
+    implementation("io.ktor:ktor-server-freemarker-jvm")
 
     implementation("io.ktor:ktor-server-core-jvm")
     implementation("io.ktor:ktor-server-host-common-jvm")
@@ -57,4 +58,5 @@ dependencies {
     implementation ("org.ktorm:ktorm-support-mysql:3.2.0")
     implementation("com.sun.mail:javax.mail:1.6.2")
 
+    implementation("io.ktor:ktor-freemarker:1.6.8")
 }

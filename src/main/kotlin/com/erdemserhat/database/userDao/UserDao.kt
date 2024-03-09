@@ -16,4 +16,6 @@ interface UserDao {
     fun deleteUserByLoginInformation(loginInformation: UserLogin): Boolean
 
     fun controlUserExistenceByAuth(loginInformation: UserLogin): Boolean
+
+    fun updateUserPasswordByEmail(email:String, newPassword:String):DBUserEntity?
 }

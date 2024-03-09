@@ -25,6 +25,8 @@ interface UserRepository {
 
     fun controlUserExistenceByAuth(login: UserLogin):Boolean
 
+    fun updateUserPasswordByEmail(email:String,newPassword:String):User?
+
 
 
 }

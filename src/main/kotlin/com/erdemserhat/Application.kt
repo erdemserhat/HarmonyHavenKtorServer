@@ -16,8 +16,12 @@ fun main(args: Array<String>) {
 
 fun Application.module() {
     configureSerialization()
+    configureRouting()
+    configureTemplating()
     configureSMTP()
     configureRemoteDatabase()
+
+
 
 
 
@@ -39,9 +43,11 @@ fun Application.module() {
         }
     }
 
-    configureRouting()
+
 
 
 
 
 }
+
+

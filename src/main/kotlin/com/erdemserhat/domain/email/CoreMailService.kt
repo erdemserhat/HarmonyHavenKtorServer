@@ -2,7 +2,10 @@ package com.erdemserhat.domain.email
 
 import com.erdemserhat.domain.email.EmailConfig.SESSION
 import com.erdemserhat.domain.email.EmailConfig.SMTP_USERNAME
-import javax.mail.*
+import javax.mail.Message
+import javax.mail.MessagingException
+import javax.mail.Multipart
+import javax.mail.Transport
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeBodyPart
 import javax.mail.internet.MimeMessage

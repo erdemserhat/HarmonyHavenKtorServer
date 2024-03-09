@@ -1,4 +1,4 @@
-package com.erdemserhat.domain
+package com.erdemserhat.domain.validation
 
 import com.erdemserhat.models.User
 import com.erdemserhat.models.UserLogin

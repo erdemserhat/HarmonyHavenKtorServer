@@ -1,22 +1,44 @@
-GET http://localhost:8082
+PATCH http://127.0.0.1:8083/user/resetpassword/confirm
+Content-Type: application/json
+
+{
+  "code": "633512",
+  "newPassword":"123A.sadasd3fsdA"
+
+}
+
+###
+
+
+###
+POST http://127.0.0.1:8083/user/reset-password/auth
+Content-Type: application/json
+
+
+{
+  "email": "me.serhaterdem@gmail.com"
+}
+
+###
+GET http://localhost:8083
 Accept: application/json
 
 ###
-POST http://localhost:8082/user/register
+POST http://localhost:8083/user/register
 Content-Type: application/json
 
 {
   "id": 123,
-  "name": "fdsfdsf",
-  "surname": "sdfdsfsdfdsf",
-  "email": "john.dose@sdfsdfhhffejjxample.com",
+  "name": "Ali",
+  "surname": "Erdem",
+  "email": "editkurama@gmail.com",
   "password": "fdsfdAffsf.3451.",
   "gender": "male",
   "profilePhotoPath": "/path/to/profile/photo.jpg"
 }
 ###
 
-DELETE http://localhost:8082/user/delete
+DELETE http://localhost:8083/user/delete
 Content-Type: application/json
 
 {
@@ -28,7 +50,7 @@ Content-Type: application/json
 ###
 
 
-PATCH http://localhost:8082/user/update
+PATCH http://localhost:8083/user/update
 Content-Type: application/json
 
 {
@@ -46,6 +68,10 @@ Content-Type: application/json
     "profilePhotoPath": "/path/to/photo.jpg"
   }
 }
+
+###
+
+
 
 
 
