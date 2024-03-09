@@ -1,8 +1,19 @@
+POST http://127.0.0.1:8083/user/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "me.serhaterdem@gmail.com",
+  "password": "123A.sadasd3fsdA"
+
+}
+
+###
 PATCH http://127.0.0.1:8083/user/resetpassword/confirm
 Content-Type: application/json
 
 {
-  "code": "633512",
+  "code": "029793",
   "newPassword":"123A.sadasd3fsdA"
 
 }
@@ -31,7 +42,7 @@ Content-Type: application/json
   "id": 123,
   "name": "Ali",
   "surname": "Erdem",
-  "email": "editkurama@gmail.com",
+  "email": "editkuragma@gmail.com",
   "password": "fdsfdAffsf.3451.",
   "gender": "male",
   "profilePhotoPath": "/path/to/profile/photo.jpg"
@@ -70,6 +81,8 @@ Content-Type: application/json
 }
 
 ###
+
+
 
 
 

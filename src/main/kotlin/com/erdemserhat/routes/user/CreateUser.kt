@@ -1,10 +1,9 @@
 package com.erdemserhat.routes.user
 
 import com.erdemserhat.di.DatabaseModule.userRepository
-import com.erdemserhat.domain.email.sendWelcomeMail
 import com.erdemserhat.domain.validation.validateUserInformation
+import com.erdemserhat.models.Message
 import com.erdemserhat.models.User
-import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -16,10 +15,11 @@ post("user/register"){
     try {
         validateUserInformation(newUser)
         userRepository.addUser(newUser)
+        call.respond(Message("You have successfully registered"))
+
     } catch (e: Exception) {
-        call.respond(HttpStatusCode.BadRequest,e.message.toString())
+        call.respond(Message(e.message.toString()))
     }
-    sendWelcomeMail(newUser.email,newUser.name)
-    call.respond(HttpStatusCode.OK,"You have successfully registered!")
+    //sendWelcomeMail(newUser.email,newUser.name)
 }
 }
