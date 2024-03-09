@@ -9,7 +9,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.readUser(){
-    get("user/info"){
+    post("user/login"){
         val userLoginInformation = call.receive<UserLogin>()
         try{
             validateUserLoginInformation(userLoginInformation)
