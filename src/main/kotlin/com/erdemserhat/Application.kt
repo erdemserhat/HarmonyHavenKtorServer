@@ -37,7 +37,7 @@ fun Application.module() {
         val ip = call.request.origin.remoteHost
         val count = requestCounter.getOrPut(ip) { AtomicInteger(0) }.incrementAndGet()
 
-        if (count > 10) { // Limit requests from each IP address to 10
+        if (count > 1000) { // Limit requests from each IP address to 10
             call.respond(HttpStatusCode.TooManyRequests, "Too many requests from this IP address")
             finish()
         }
