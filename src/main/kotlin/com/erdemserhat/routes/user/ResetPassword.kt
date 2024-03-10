@@ -4,6 +4,7 @@ import com.erdemserhat.di.DatabaseModule
 import com.erdemserhat.domain.password.PasswordResetService
 import com.erdemserhat.domain.validation.validateEmailFormat
 import com.erdemserhat.domain.validation.validatePasswordFormat
+import com.erdemserhat.models.Message
 import com.erdemserhat.models.PasswordResetModel
 import com.erdemserhat.models.ResetPasswordRequest
 import io.ktor.http.*
@@ -31,14 +32,14 @@ fun Route.resetPassword() {
 
                 if (DatabaseModule.userRepository.controlUserExistenceByEmail(resetPasswordRequest.email)) {
                     passwordResetService = PasswordResetService(resetPasswordRequest.email)
-                    call.respond(HttpStatusCode.OK, "OK")
+                    call.respond(HttpStatusCode.OK, Message("OK"))
 
                 } else {
-                    call.respond(HttpStatusCode.NotFound, "User not found")
+                    call.respond(HttpStatusCode.NotFound, Message("User not found"))
                 }
 
             } catch (e: Exception) {
-                call.respond(HttpStatusCode.BadRequest, e.message.toString())
+                call.respond(HttpStatusCode.BadRequest, Message(e.message.toString()))
             }
 
         }
@@ -54,14 +55,14 @@ fun Route.resetPassword() {
                     validatePasswordFormat(passwordResetData.newPassword)
                     passwordResetService!!.resetPassword(passwordResetData.code, passwordResetData.newPassword)
                     passwordResetService=null
-                    call.respond(HttpStatusCode.OK,"Password changed.")
+                    call.respond(HttpStatusCode.OK,Message("Password changed."))
 
 
                 } else {
-                    call.respond(HttpStatusCode.Unauthorized, "You must start password reset service firstly")
+                    call.respond(HttpStatusCode.Unauthorized, Message("You must start password reset service firstly"))
                 }
             } catch (e: Exception) {
-                call.respond(HttpStatusCode.BadRequest, e.message.toString())
+                call.respond(HttpStatusCode.BadRequest, Message(e.message.toString()))
             }
 
         }
