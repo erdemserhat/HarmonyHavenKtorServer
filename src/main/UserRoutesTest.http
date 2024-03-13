@@ -1,20 +1,33 @@
-POST http://127.0.0.1:8083/user/login
+PATCH http://127.0.0.1:8083/user/forgot-password/reset-password
 Accept: application/json
 Content-Type: application/json
 
 {
-  "email": "me.serhaterdem@gmail.com",
-  "password": "123A.sadasd3fsdA"
+  "uuid": "",
+  "password": ""
 
 }
 
 ###
-PATCH http://127.0.0.1:8083/user/resetpassword/confirm
+
+
+
+PATCH http://127.0.0.1:8083/user/forgot-password/auth
+Accept: application/json
 Content-Type: application/json
 
 {
-  "code": "029793",
-  "newPassword":"123A.sadasd3fsdA"
+  "code": "123123",
+  "email": "me.serhaterdem@gmail.com"
+
+}
+
+###
+POST http://127.0.0.1:8083/user/forgot-password/mailer
+Content-Type: application/json
+
+{
+  "email": "me.serhaterdem@gmail.com"
 
 }
 
@@ -29,6 +42,8 @@ Content-Type: application/json
 {
   "email": "me.serhaterdem@gmail.com"
 }
+
+
 
 ###
 GET http://localhost:8083
