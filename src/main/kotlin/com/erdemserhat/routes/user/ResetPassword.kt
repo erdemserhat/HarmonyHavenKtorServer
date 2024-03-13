@@ -1,17 +1,19 @@
 package com.erdemserhat.routes.user
 
 import com.erdemserhat.di.DatabaseModule
-import com.erdemserhat.domain.password.PasswordResetService
+import com.erdemserhat.di.DatabaseModule.userRepository
+import com.erdemserhat.domain.password.PasswordResetRequests
+import com.erdemserhat.domain.password.PasswordResetRequests.getUUIDOfResetRequest
+import com.erdemserhat.domain.password.PasswordResetRequests.provideEmailOfRequesterIfExist
+import com.erdemserhat.domain.validation.isUUIDFormat
 import com.erdemserhat.domain.validation.validateEmailFormat
 import com.erdemserhat.domain.validation.validatePasswordFormat
-import com.erdemserhat.models.Message
-import com.erdemserhat.models.PasswordResetModel
-import com.erdemserhat.models.ResetPasswordRequest
-import io.ktor.http.*
+import com.erdemserhat.models.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import com.erdemserhat.di.DatabaseModule.passwordResetService as RESET_SERVICE
 
 /**
  * This function handles the user's reset password request.
@@ -22,24 +24,22 @@ import io.ktor.server.routing.*
  */
 
 fun Route.resetPassword() {
-    var passwordResetService: PasswordResetService? = null
-    route("/user/reset-password/auth") {
+    route("/user/forgot-password/mailer") {
         post {
             try {
-
-                val resetPasswordRequest = call.receive<ResetPasswordRequest>()
+                val resetPasswordRequest = call.receive<ForgotPasswordMailerModel>()
                 validateEmailFormat(resetPasswordRequest.email)
 
                 if (DatabaseModule.userRepository.controlUserExistenceByEmail(resetPasswordRequest.email)) {
-                    passwordResetService = PasswordResetService(resetPasswordRequest.email)
-                    call.respond(HttpStatusCode.OK, Message("OK"))
+                    RESET_SERVICE.createRequest(resetPasswordRequest.email)
+                    call.respond(RequestResult(true, "Mail sent"))
 
                 } else {
-                    call.respond(HttpStatusCode.NotFound, Message("User not found"))
+                    call.respond(RequestResult(false, "User not found"))
                 }
 
             } catch (e: Exception) {
-                call.respond(HttpStatusCode.BadRequest, Message(e.message.toString()))
+                call.respond(RequestResult(false, e.message.toString()))
             }
 
         }
@@ -47,26 +47,47 @@ fun Route.resetPassword() {
 
     }
 
-    route("/user/resetpassword/confirm") {
+    route("/user/forgot-password/auth") {
         patch {
+            val response = call.receive<ForgotPasswordAuthModel>()
             try {
-                if (passwordResetService != null) {
-                    val passwordResetData = call.receive<PasswordResetModel>()
-                    validatePasswordFormat(passwordResetData.newPassword)
-                    passwordResetService!!.resetPassword(passwordResetData.code, passwordResetData.newPassword)
-                    passwordResetService=null
-                    call.respond(HttpStatusCode.OK,Message("Password changed."))
+                if (RESET_SERVICE.authenticateResponse(response.email, response.code)) {
+                    val requestUUID = getUUIDOfResetRequest(response.email, response.code)
+
+                    call.respond(RequestResultUUID(true, "Successfully", requestUUID))
 
 
                 } else {
-                    call.respond(HttpStatusCode.Unauthorized, Message("You must start password reset service firstly"))
+                    call.respond(RequestResultUUID(false, "Create a new Request", "N/A"))
                 }
             } catch (e: Exception) {
-                call.respond(HttpStatusCode.BadRequest, Message(e.message.toString()))
+                call.respond(RequestResultUUID(false, e.message.toString(), "N/A"))
             }
 
         }
 
+    }
+
+
+    route("/user/forgot-password/reset-password") {
+        patch {
+            val response = call.receive<ForgotPasswordResetModel>()
+            try {
+               if(!isUUIDFormat(response.uuid)){
+                   throw Exception("Invalid UUID Format")
+               }
+                validatePasswordFormat(response.password)
+                val email = provideEmailOfRequesterIfExist(response.uuid)
+                userRepository.updateUserPasswordByEmail(email,response.password)
+                call.respond(RequestResult(true, "Password Changed"))
+                PasswordResetRequests.removeCandidateResetRequest(email)
+
+
+            } catch (e: Exception) {
+
+                call.respond(RequestResult(false, e.message.toString()))
+            }
+        }
     }
 
 

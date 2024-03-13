@@ -59,4 +59,5 @@ dependencies {
     implementation("com.sun.mail:javax.mail:1.6.2")
 
     implementation("io.ktor:ktor-freemarker:1.6.8")
+
 }

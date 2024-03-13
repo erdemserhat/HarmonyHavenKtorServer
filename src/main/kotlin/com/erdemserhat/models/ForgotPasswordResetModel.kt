@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class ResetPasswordRequest(
-    val email:String
+data class ForgotPasswordResetModel(
+    val uuid:String,
+    val password:String
 )

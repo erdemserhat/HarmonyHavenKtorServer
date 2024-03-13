@@ -1,50 +1,63 @@
 package com.erdemserhat.domain.password
 
-import com.erdemserhat.di.DatabaseModule.userRepository
 import com.erdemserhat.domain.email.sendPasswordResetMail
+import com.erdemserhat.domain.password.PasswordResetRequests.getRequestIfExist
+import com.erdemserhat.domain.password.PasswordResetRequests.isAlreadyRequested
+import com.erdemserhat.domain.password.PasswordResetRequests.removeExpiredRequests
+import com.erdemserhat.models.CandidatePasswordResetRequest
 import com.erdemserhat.util.RandomNumberGenerator.Companion.generateRandomAuthCode
-import kotlinx.coroutines.*
+import kotlinx.coroutines.DelicateCoroutinesApi
 
 @OptIn(DelicateCoroutinesApi::class)
-class PasswordResetService(
-    val email: String
-) {
-    private var code: String = generateRandomAuthCode(6)
-    private var timer = 1200
-    private var attempts = 3
+class PasswordResetService() {
+    private var code: String = ""
 
+    fun createRequest(email: String) {
+        code=generateRandomAuthCode(6)
+        removeExpiredRequests()
+        if (isAlreadyRequested(email)) {
+            throw Exception(
+                "A active request with this email already in progress," +
+                        "please wait a few minutes and try again"
+            )
 
-    init {
-        sendPasswordResetMail(email, code)
-        GlobalScope.launch(Dispatchers.Default) {
-            repeat(1200) {
-                delay(1000)
-                timer--
-
-            }
+        } else {
+            sendPasswordResetMail(email, code)
+            PasswordResetRequests.addCandidateResetRequest(CandidatePasswordResetRequest(code, email))
 
         }
+
+
     }
 
-    fun resetPassword(code: String, newPassword: String) {
-        attempts--
-        if (timer > 0) {
-            if (attempts > 0) {
-                if (this.code == code) {
-                    userRepository.updateUserPasswordByEmail(email, newPassword)
+    fun authenticateResponse(email: String, code: String): Boolean {
+        removeExpiredRequests()
+        val request = getRequestIfExist(email)
+        if (request != null) {
+            PasswordResetRequests.incrementAttempt(email)
+            if (!request.isExpired) {
+                if (request.attempts <= 3) {
+                    if (request.code == code) {
+                        return true
+                    } else {
+                        throw Exception("Invalid Code")
+
+                    }
 
                 } else {
-                    throw Exception("You have entered an incorrect code. You have $attempts attempts remaining. Please enter the correct code to proceed.")
-
+                    throw Exception("You entered 3 times wrong code please please create a new request for security reasons")
                 }
 
             } else {
-                throw Exception("You have entered 3 times incorrect code, please request a new code for your safety.")
+
+                throw Exception("Your request is expired, please enter the code within specified time")
             }
 
+
         } else {
-            throw Exception("For security reasons, you need to enter the code within a specified time frame. If you fail to do so, please request a new code for your safety.")
+            throw Exception("There is no pending request with this email, create one...")
         }
+
 
     }
 
