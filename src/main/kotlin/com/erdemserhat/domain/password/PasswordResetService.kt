@@ -13,7 +13,7 @@ class PasswordResetService() {
     private var code: String = ""
 
     fun createRequest(email: String) {
-        code=generateRandomAuthCode(6)
+        code = generateRandomAuthCode(6)
         removeExpiredRequests()
         if (isAlreadyRequested(email)) {
             throw Exception(
@@ -41,7 +41,6 @@ class PasswordResetService() {
                         return true
                     } else {
                         throw Exception("Invalid Code")
-
                     }
 
                 } else {

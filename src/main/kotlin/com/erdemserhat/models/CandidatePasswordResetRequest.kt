@@ -16,7 +16,7 @@ data class CandidatePasswordResetRequest(
 ){
     init {
         GlobalScope.launch{
-            delay(120_000)
+            delay(180_000)
                 isExpired=true
 
 
