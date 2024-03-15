@@ -38,7 +38,14 @@ class PasswordResetService() {
             if (!request.isExpired) {
                 if (request.attempts <= 3) {
                     if (request.code == code) {
-                        return true
+                        if (!request.isPermissionUsed) {
+                            PasswordResetRequests.usePermission(email)
+                            return true
+                        } else {
+                            throw Exception("Permission was used")
+
+                        }
+
                     } else {
                         throw Exception("Invalid Code")
                     }

@@ -69,8 +69,14 @@ object PasswordResetRequests {
             return requestSession.email
         }
 
+    }
 
-
+    fun usePermission(email:String){
+        for (request in requestRepository){
+            if(request.email==email){
+                request.usePermission()
+            }
+        }
     }
 
 

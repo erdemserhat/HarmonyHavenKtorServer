@@ -12,7 +12,8 @@ data class CandidatePasswordResetRequest(
     val email:String,
     var isExpired:Boolean = false,
     var attempts:Int =0,
-    val uniqueId: String = UUID.randomUUID().toString()
+    val uniqueId: String = UUID.randomUUID().toString(),
+    var isPermissionUsed:Boolean = false
 ){
     init {
         GlobalScope.launch{
@@ -26,6 +27,10 @@ data class CandidatePasswordResetRequest(
 
     fun incrementAttempt(){
         attempts++
+    }
+
+    fun usePermission(){
+        isPermissionUsed = true
     }
 
 
