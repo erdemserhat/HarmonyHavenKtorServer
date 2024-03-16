@@ -1,12 +1,12 @@
-package com.erdemserhat.repository
+package com.erdemserhat.repository.user
 
 import com.erdemserhat.database.userDao.DBUserEntity
 import com.erdemserhat.database.userDao.UserDao
 import com.erdemserhat.database.userDao.UserDaoImpl
 import com.erdemserhat.models.User
-import com.erdemserhat.models.UserLogin
+import com.erdemserhat.models.rest.client.UserLogin
 
-class MySQLUserRepository() : UserRepository {
+class UserRepository() : UserRepositoryContract {
     private val database :UserDao = UserDaoImpl()
     override fun getAllUsers(): List<User> {
         return database.getAllUsers()

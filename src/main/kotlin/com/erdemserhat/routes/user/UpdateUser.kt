@@ -4,8 +4,8 @@ import com.erdemserhat.di.DatabaseModule.userRepository
 import com.erdemserhat.domain.validation.validateIfEmailChanged
 import com.erdemserhat.domain.validation.validateUserInformation
 import com.erdemserhat.domain.validation.validateUserLoginInformation
-import com.erdemserhat.models.RequestResult
-import com.erdemserhat.models.UserUpdateModel
+import com.erdemserhat.models.rest.server.RequestResult
+import com.erdemserhat.models.rest.client.UserUpdateModel
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*

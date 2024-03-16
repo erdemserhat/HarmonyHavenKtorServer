@@ -1,7 +1,7 @@
 package com.erdemserhat.domain.validation
 
 import com.erdemserhat.models.User
-import com.erdemserhat.models.UserLogin
+import com.erdemserhat.models.rest.client.UserLogin
 
 fun validateIfEmailChanged(login: UserLogin, updatedUser: User) {
     if (login.email != updatedUser.email) {

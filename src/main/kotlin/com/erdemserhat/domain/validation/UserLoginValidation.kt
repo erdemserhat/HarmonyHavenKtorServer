@@ -1,6 +1,6 @@
 package com.erdemserhat.domain.validation
 
-import com.erdemserhat.models.UserLogin
+import com.erdemserhat.models.rest.client.UserLogin
 
 fun validateUserLoginInformation(login: UserLogin){
     validateEmailFormat(login.email)

@@ -1,4 +1,4 @@
-package com.erdemserhat.models
+package com.erdemserhat.models.rest.server
 
 import kotlinx.serialization.Serializable
 
