@@ -60,4 +60,6 @@ dependencies {
 
     implementation("io.ktor:ktor-freemarker:1.6.8")
 
+    implementation ("commons-net:commons-net:3.9.0")
+
 }
