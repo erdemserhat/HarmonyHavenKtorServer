@@ -1,4 +1,4 @@
-package com.erdemserhat.models
+package com.erdemserhat.models.appconfig
 
 data class SMTPModel(
     val host:String,

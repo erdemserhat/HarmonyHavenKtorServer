@@ -3,11 +3,11 @@ package database
 import com.erdemserhat.database.userDao.DBUserEntity
 import com.erdemserhat.di.DatabaseModule.userRepository
 import com.erdemserhat.models.User
-import com.erdemserhat.models.UserLogin
+import com.erdemserhat.models.rest.client.UserLogin
 import junit.framework.TestCase.assertEquals
 import kotlin.test.Test
 
-class MySQLUserRepositoryTest {
+class UserRepositoryTestContract {
 
     //getAllUsers() function tests
 
