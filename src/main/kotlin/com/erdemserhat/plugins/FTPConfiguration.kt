@@ -1,13 +1,8 @@
 package com.erdemserhat.plugins
 
 import com.erdemserhat.database.FTPConfig
-import com.erdemserhat.models.FTPModel
-import io.ktor.http.*
+import com.erdemserhat.models.appconfig.FTPModel
 import io.ktor.server.application.*
-import org.apache.commons.net.ftp.FTP
-import org.apache.commons.net.ftp.FTPClient
-import java.io.File
-import java.io.FileInputStream
 
 fun Application.configureFTP(){
 

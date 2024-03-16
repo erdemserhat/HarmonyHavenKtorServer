@@ -1,7 +1,7 @@
 package com.erdemserhat.plugins
 
 import com.erdemserhat.database.DatabaseConfig
-import com.erdemserhat.models.DatabaseModel
+import com.erdemserhat.models.appconfig.DatabaseModel
 import io.ktor.server.application.*
 
 fun Application.configureRemoteDatabase(){

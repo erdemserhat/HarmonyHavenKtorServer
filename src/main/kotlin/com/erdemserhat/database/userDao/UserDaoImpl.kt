@@ -2,7 +2,7 @@ package com.erdemserhat.database.userDao
 
 import com.erdemserhat.database.DatabaseConfig.ktormDatabase
 import com.erdemserhat.models.User
-import com.erdemserhat.models.UserLogin
+import com.erdemserhat.models.rest.client.UserLogin
 import org.ktorm.dsl.*
 import org.ktorm.entity.firstOrNull
 import org.ktorm.entity.sequenceOf

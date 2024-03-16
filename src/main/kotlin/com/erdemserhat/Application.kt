@@ -1,6 +1,8 @@
 package com.erdemserhat
 
 import com.erdemserhat.database.FTPConfig.uploadFileToFtp
+import com.erdemserhat.di.DatabaseModule.categoryRepository
+import com.erdemserhat.models.Category
 import com.erdemserhat.plugins.*
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -30,10 +32,14 @@ fun Application.module() {
     configureFTP()
     configureRemoteDatabase()
 
-    val file = createSampleFile()
+    //val file = createSampleFile()
 
 
-    uploadFileToFtp(file)
+    //uploadFileToFtp(file)
+
+    //println(categoryRepository.getAllCategory().toString())
+
+
 
 
 
