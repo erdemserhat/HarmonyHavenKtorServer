@@ -1,6 +1,6 @@
 package com.erdemserhat.domain.email
 
-import com.erdemserhat.models.SMTPModel
+import com.erdemserhat.models.appconfig.SMTPModel
 import java.util.*
 import javax.mail.Authenticator
 import javax.mail.PasswordAuthentication

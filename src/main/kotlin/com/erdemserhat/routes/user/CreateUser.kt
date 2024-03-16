@@ -2,7 +2,7 @@ package com.erdemserhat.routes.user
 
 import com.erdemserhat.di.DatabaseModule.userRepository
 import com.erdemserhat.domain.validation.validateUserInformation
-import com.erdemserhat.models.RequestResult
+import com.erdemserhat.models.rest.server.RequestResult
 import com.erdemserhat.models.User
 import io.ktor.server.application.*
 import io.ktor.server.request.*

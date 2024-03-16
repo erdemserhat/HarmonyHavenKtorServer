@@ -8,7 +8,11 @@ import com.erdemserhat.domain.password.PasswordResetRequests.provideEmailOfReque
 import com.erdemserhat.domain.validation.isUUIDFormat
 import com.erdemserhat.domain.validation.validateEmailFormat
 import com.erdemserhat.domain.validation.validatePasswordFormat
-import com.erdemserhat.models.*
+import com.erdemserhat.models.rest.client.ForgotPasswordAuthModel
+import com.erdemserhat.models.rest.client.ForgotPasswordMailerModel
+import com.erdemserhat.models.rest.client.ForgotPasswordResetModel
+import com.erdemserhat.models.rest.server.RequestResult
+import com.erdemserhat.models.rest.server.RequestResultUUID
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*

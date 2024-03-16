@@ -1,7 +1,7 @@
 package com.erdemserhat.database.userDao
 
 import com.erdemserhat.models.User
-import com.erdemserhat.models.UserLogin
+import com.erdemserhat.models.rest.client.UserLogin
 
 interface UserDao {
     fun getUserById(userId: Int): DBUserEntity?

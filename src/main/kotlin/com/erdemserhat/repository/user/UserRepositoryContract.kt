@@ -1,10 +1,10 @@
-package com.erdemserhat.repository
+package com.erdemserhat.repository.user
 
 import com.erdemserhat.database.userDao.DBUserEntity
 import com.erdemserhat.models.User
-import com.erdemserhat.models.UserLogin
+import com.erdemserhat.models.rest.client.UserLogin
 
-interface UserRepository {
+interface UserRepositoryContract {
     fun getAllUsers():List<User>
 
     fun getUserById(userId:Int):User?

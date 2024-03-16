@@ -1,6 +1,6 @@
 package com.erdemserhat.database
 
-import com.erdemserhat.models.DatabaseModel
+import com.erdemserhat.models.appconfig.DatabaseModel
 import org.ktorm.database.Database
 
 object DatabaseConfig {

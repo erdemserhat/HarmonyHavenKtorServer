@@ -1,6 +1,6 @@
 package com.erdemserhat.database
 
-import com.erdemserhat.models.FTPModel
+import com.erdemserhat.models.appconfig.FTPModel
 import org.apache.commons.net.ftp.FTP
 import org.apache.commons.net.ftp.FTPClient
 import java.io.File
