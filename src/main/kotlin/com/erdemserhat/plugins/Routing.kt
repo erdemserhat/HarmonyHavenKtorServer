@@ -10,9 +10,9 @@ import io.ktor.server.routing.*
 fun Application.configureRouting() {
     val repo = UserRepository()
     routing {
-        get("/") {
+        get("/haha") {
 
-            call.respond(repo.getAllUsers())
+           call.respond("Harmony Haven AWS Cloud Server")
 
         }
 

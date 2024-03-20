@@ -18,6 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 
 fun main(args: Array<String>) {
+    Class.forName("com.mysql.jdbc.Driver")
     io.ktor.server.netty.EngineMain.main(args)
 
 
@@ -31,37 +32,6 @@ fun Application.module() {
     configureSMTP()
     configureFTP()
     configureRemoteDatabase()
-
-    //val file = createSampleFile()
-
-
-    //uploadFileToFtp(file)
-
-    //println(categoryRepository.getAllCategory().toString())
-
-
-
-
-
-
-
-
-
-
-
-    val requestCounter = mutableMapOf<String, AtomicInteger>()
-
-    // Middleware to limit requests from a single IP address
-    intercept(Plugins) {
-        val ip = call.request.origin.remoteHost
-        val count = requestCounter.getOrPut(ip) { AtomicInteger(0) }.incrementAndGet()
-
-        if (count > 1000) { // Limit requests from each IP address to 10
-            call.respond(HttpStatusCode.TooManyRequests, "Too many requests from this IP address")
-            finish()
-        }
-    }
-
 }
 
 
