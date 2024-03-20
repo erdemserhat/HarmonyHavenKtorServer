@@ -1,4 +1,4 @@
-PATCH http://127.0.0.1:8083/user/forgot-password/reset-password
+PATCH https://harmonyhaventest.eu-north-1.elasticbeanstalk.com/user/forgot-password/reset-password
 Accept: application/json
 Content-Type: application/json
 

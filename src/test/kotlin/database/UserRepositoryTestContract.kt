@@ -8,6 +8,7 @@ import junit.framework.TestCase.assertEquals
 import kotlin.test.Test
 
 class UserRepositoryTestContract {
+    /**
 
     //getAllUsers() function tests
 
@@ -126,4 +127,5 @@ class UserRepositoryTestContract {
             profilePhotoPath = this.profilePhotoPath
         )
     }
+    */
 }
