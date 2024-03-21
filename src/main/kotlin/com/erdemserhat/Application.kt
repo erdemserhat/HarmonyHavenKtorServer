@@ -1,7 +1,10 @@
 package com.erdemserhat
 
 import com.erdemserhat.database.FTPConfig.uploadFileToFtp
+import com.erdemserhat.di.DatabaseModule
+import com.erdemserhat.di.DatabaseModule.articleRepository
 import com.erdemserhat.di.DatabaseModule.categoryRepository
+import com.erdemserhat.models.Article
 import com.erdemserhat.models.Category
 import com.erdemserhat.plugins.*
 import io.ktor.http.*
@@ -18,8 +21,9 @@ import java.util.concurrent.atomic.AtomicInteger
 
 
 fun main(args: Array<String>) {
-    Class.forName("com.mysql.jdbc.Driver")
+    //Class.forName("com.mysql.jdbc.Driver")
     io.ktor.server.netty.EngineMain.main(args)
+
 
 
 
@@ -28,10 +32,19 @@ fun main(args: Array<String>) {
 fun Application.module() {
     configureSerialization()
     configureRouting()
-    configureTemplating()
-    configureSMTP()
-    configureFTP()
-    configureRemoteDatabase()
+    //configureTemplating()  --> Because of production disabled
+    //configureSMTP() --> Because of production disabled...
+    //configureFTP() --> Because of production disabled...
+
+    // use this area for testing.............
+
+   configureRemoteDatabase()
+    val exArticleModel = Article(1, "title", "content", "2024-03-20", 1, "//12")
+
+    val result = articleRepository.getAllArticles()
+    println(result)
+
+
 }
 
 
@@ -45,5 +58,6 @@ fun createSampleFile(): File {
     }
     return file
 }
+
 
 
