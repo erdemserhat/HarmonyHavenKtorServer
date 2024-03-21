@@ -10,6 +10,8 @@ import org.ktorm.entity.firstOrNull
 import org.ktorm.entity.sequenceOf
 import org.ktorm.entity.toList
 
+
+
 class CategoryDaoImpl: CategoryDao {
     override fun addCategory(category: Category): Int {
 
