@@ -29,7 +29,6 @@ class CategoryRepository(): CategoryRepositoryContract {
     }
 
 
-
 }
 fun DBCategoryEntity.toCategory():Category{
     return Category(
