@@ -28,11 +28,11 @@ class CategoryRepository(): CategoryRepositoryContract {
         return categoryDao.getAllCategory().map { it.toCategory() }.toList()
     }
 
-    private fun DBCategoryEntity.toCategory():Category{
-        return Category(
-            id, name, imagePath
 
-        )
-    }
+}
+fun DBCategoryEntity.toCategory():Category{
+    return Category(
+        id, name, imagePath
 
+    )
 }
