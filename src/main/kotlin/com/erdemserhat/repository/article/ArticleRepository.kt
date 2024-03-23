@@ -49,6 +49,10 @@ class ArticleRepository : ArticleRepositoryContract {
         return articleDao.getAllArticles().map { it.toArticleResponseType() }
     }
 
+    override fun getArticlesByCategory(categoryId: Int): List<ArticleResponseType> {
+        return articleDao.getArticlesByCategory(categoryId).map { it.toArticleResponseType() }.toList()
+    }
+
 }
 
  fun DBArticleEntity.toArticleResponseType():ArticleResponseType{

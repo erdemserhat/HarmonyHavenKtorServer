@@ -9,9 +9,7 @@ import org.ktorm.dsl.delete
 import org.ktorm.dsl.eq
 import org.ktorm.dsl.insert
 import org.ktorm.dsl.update
-import org.ktorm.entity.firstOrNull
-import org.ktorm.entity.sequenceOf
-import org.ktorm.entity.toList
+import org.ktorm.entity.*
 
 //id	title	content	publish_date	category_id	image_path
 
@@ -62,5 +60,10 @@ class ArticleDaoImpl() : ArticleDao {
 
     override fun getAllArticles(): List<DBArticleEntity> {
         return ktormDatabase.sequenceOf(DBArticleTable).toList()
+    }
+
+    override fun getArticlesByCategory(categoryId: Int): List<DBArticleEntity> {
+        return ktormDatabase.sequenceOf(DBArticleTable)
+            .filter { it.categoryId eq categoryId }.toList()
     }
 }

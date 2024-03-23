@@ -10,4 +10,6 @@ interface ArticleDao {
     fun deleteArticle(articleId:Int):Boolean
     suspend fun getArticle(articleId:Int): DBArticleEntity?
     fun getAllArticles():List<DBArticleEntity>
+
+    fun getArticlesByCategory(categoryId:Int):List<DBArticleEntity>
 }

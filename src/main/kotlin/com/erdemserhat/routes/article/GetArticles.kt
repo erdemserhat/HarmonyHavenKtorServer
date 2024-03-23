@@ -5,6 +5,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import javax.xml.crypto.Data
 
 fun Route.getAllArticles(){
     get("/articles"){
@@ -30,6 +31,16 @@ fun Route.getAllArticles(){
             call.respond(HttpStatusCode.BadRequest)
         }
 
+    }
+
+    get("articles/category/{id}"){
+        try{
+            val categoryId = call.parameters["id"]?:return@get call.respond(HttpStatusCode.BadRequest,"Invalid Category ID")
+            val articles = DatabaseModule.articleRepository.getArticlesByCategory(categoryId.toInt())
+            call.respond(articles)
+        }catch (_:Exception){
+            call.respond(HttpStatusCode.BadRequest)
+        }
     }
 
 
