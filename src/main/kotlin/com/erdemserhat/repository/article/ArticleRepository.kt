@@ -45,8 +45,8 @@ class ArticleRepository : ArticleRepositoryContract {
         return articleDao.getArticle(articleId)?.toArticleResponseType()
     }
 
-    override fun getAllArticles(): List<ArticleResponseType> {
-        return articleDao.getAllArticles().map { it.toArticleResponseType() }
+    override fun getAllArticles(): List<Article> {
+        return articleDao.getAllArticles().map { it.toArticle() }
     }
 
     override fun getArticlesByCategory(categoryId: Int): List<ArticleResponseType> {

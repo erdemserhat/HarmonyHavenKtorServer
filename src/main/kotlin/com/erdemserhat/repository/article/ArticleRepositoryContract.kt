@@ -9,6 +9,6 @@ interface ArticleRepositoryContract {
     fun updateArticle(articleId:Int, updatedArticle: Article):Boolean
     fun deleteCategory(articleId:Int):Boolean
     suspend fun getArticle(articleId:Int): ArticleResponseType?
-    fun getAllArticles():List<ArticleResponseType>
+    fun getAllArticles():List<Article>
     fun getArticlesByCategory(categoryId:Int):List<ArticleResponseType>
 }
