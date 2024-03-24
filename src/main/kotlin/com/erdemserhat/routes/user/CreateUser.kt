@@ -1,6 +1,7 @@
 package com.erdemserhat.routes.user
 
 import com.erdemserhat.di.DatabaseModule.userRepository
+import com.erdemserhat.domain.email.sendWelcomeMail
 import com.erdemserhat.domain.validation.validateUserInformation
 import com.erdemserhat.models.rest.server.RequestResult
 import com.erdemserhat.models.User
@@ -20,6 +21,6 @@ post("user/register"){
     } catch (e: Exception) {
         call.respond(RequestResult(false,e.message.toString()))
     }
-    //sendWelcomeMail(newUser.email,newUser.name)
+    sendWelcomeMail(newUser.email,newUser.name)
 }
 }
