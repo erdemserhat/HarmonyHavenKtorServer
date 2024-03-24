@@ -32,9 +32,9 @@ fun main(args: Array<String>) {
 fun Application.module() {
     configureSerialization()
     configureRouting()
-    //configureTemplating()  --> Because of production disabled
-    //configureSMTP() --> Because of production disabled...
-    //configureFTP() --> Because of production disabled...
+    configureTemplating()
+    configureSMTP()
+    configureFTP()
 
     // use this area for testing.............
 

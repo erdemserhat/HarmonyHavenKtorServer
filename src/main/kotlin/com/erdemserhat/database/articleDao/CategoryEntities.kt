@@ -8,7 +8,7 @@ import org.ktorm.schema.Table
 import org.ktorm.schema.int
 import org.ktorm.schema.varchar
 
-object DBArticleTable : Table<DBArticleEntity>("Articles"){
+object DBArticleTable : Table<DBArticleEntity>("articles"){
 //id	title	content	publish_date	category_id	image_path
     val id= int("id").primaryKey().bindTo { it.id }
     val title = varchar("title").bindTo { it.title }
