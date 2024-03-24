@@ -3,6 +3,7 @@ package com.erdemserhat.database.articleDao
 import com.erdemserhat.database.categoryDao.DBCategoryTable.bindTo
 import com.erdemserhat.database.categoryDao.DBCategoryTable.primaryKey
 import com.erdemserhat.database.userDao.DBUserEntity
+import com.erdemserhat.models.Article
 import org.ktorm.entity.Entity
 import org.ktorm.schema.Table
 import org.ktorm.schema.int
@@ -28,4 +29,16 @@ interface DBArticleEntity : Entity<DBArticleEntity> {
     val publishDate:String
     val categoryId:Int
     val imagePath:String
+}
+
+fun DBArticleEntity.toArticle():Article{
+    return Article(
+        id= id,
+        title =title,
+        content = content,
+        publishDate = publishDate,
+        categoryId = categoryId,
+        imagePath = imagePath
+
+    )
 }
