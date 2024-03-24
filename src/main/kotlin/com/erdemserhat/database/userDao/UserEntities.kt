@@ -5,7 +5,7 @@ import org.ktorm.schema.Table
 import org.ktorm.schema.int
 import org.ktorm.schema.varchar
 
-object DBUserTable : Table<DBUserEntity>("User") {
+object DBUserTable : Table<DBUserEntity>("users") {
     val id = int("id").primaryKey().bindTo {it.id}
     val name = varchar("name").bindTo {it.name }
     val surname = varchar("surname").bindTo {it.surname}
