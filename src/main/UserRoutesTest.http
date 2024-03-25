@@ -1,3 +1,18 @@
+POST http://localhost:5000/send
+Content-Type: application/json
+
+{
+  "to": "dszLu7hoSdGANi3NIrzD8a:APA91bGBsqDnNb8FKkrwTabZH0cjbZmiZwORKpQqSqEkl2UJzIoJ-g1PZCBOiXrHQP6E1M5EtjBSdpC3oXxEtBd61k_4s1MkKmq1sZ0Xfp5B4vvMoBaJkGsPSNMxB_hfr4DarybLjrLh",
+  "notification": {
+    "title": "Feci Üzüldüm",
+    "body": "Yeni bir içerik yayınlandı. Hemen inceleyin!",
+    "image": "https://fastly.picsum.photos/id/322/536/354.jpg?hmac=9RiOyGFYv2f02Vzo0dy7YfRaKqxoCt1mqxRt_I00Bzw"
+  }
+}
+###
+
+
+
 PATCH https://harmonyhaventest.eu-north-1.elasticbeanstalk.com/user/forgot-password/reset-password
 Accept: application/json
 Content-Type: application/json

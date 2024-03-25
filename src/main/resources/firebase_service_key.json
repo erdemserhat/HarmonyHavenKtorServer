@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "harmonyhaven-fc618",
+  "private_key_id": "d6d0d7f32c2d9f4ed8f66b21f723d3bb0a0d2b6c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCNvc1gQlG5Jybu\nNmgsqbE9NGZJppRL6ag2LzYJNutE/Z+Vth8bJ3ZKlUsHPAlAz8KLUkd4Qd8GvOFS\n0hJ1gk1WzLzYulXhLYdqqlpt41FP9W3BmO+7NxlXlh5/Msq5LVy8343OBss4tDIZ\n2mwmikE7BuBYtHCLW1ORfBRhFj3yvYSzVpAyyDW7BebqxKvpNapeVSJ6SfeRHWpX\n1A3yjgWq1PwRxoda58AsJcYG1n11pZ0sNfJPuC3EKTW4fZAUpBQlFDfF1Ho8MR2C\n8ckmKqMWYbvtxWTWZZQVSwKlqbDDmbQguhHrvcVeGFlbeYVnb7LjouO4BerTI9fD\no5FFlinHAgMBAAECggEAPWZigJfJ+ghVS2yjHPHXVtmLk80GwYmyteImqMAzE1xA\nlKRjfipOikl4ymX95ib5scuPLS9vsuYAP5XDrEapRPgEuGejixtjZVftO1v03cvF\n407iTnm0TyY3CMfSXHwjh6fZsE1uHB6m818UaW+LiUvVxGdJt3x0y3lyBIqThEJi\nl7t2k0zjS+dHjsEpl2mVAmF4mqCqNihObNS8DTBefOeoBrnKHgN3OkFusKgrFKmk\nc3bNGtXBsLbTCC6ZZHusR/9A0DsMTb7c8I4+ELkHUEV5hlNIU4YLovkP+DzO4LJa\nMI9+CaTjge7UdYE7LohrAuEJmT+KSfJMeLMgqIWjSQKBgQDCVThZ3nM/oyH4h20P\nfIHzJuz8/2IGkRO5FvrMNas/5/PaezTzIYWYqOShyR/L8w3PT4l0x0Mdr3Sm6OOt\nywpvG9HftCKYAg7BWSzgsS8g+vUZsNIa2khz/QRqIUfcm+qNCl6pVt6LzNJ2axAV\nEvw+v2XE2RpfOx5JT2QwrlRA6QKBgQC6uEYOszMwsL1KuwoFpMjGzaoLvAcDKtbA\nk8ID9KefA/PLGmjUqO7BmtjbCW+6iuewPSPNwDH37rgj2vPuY1zC3T/Uck8I0alS\ncXAe5BOB/LjRucH2XRDR1R3jHGr2W6iUe6FK6bn+vnOkT2P/5fki8i/n4B9ndOcP\nb0vN+aznLwKBgQCaslA7ahOAUxJVzyiILWsc7p21AG8+Hvr+WkanjQmXw8Og5ndO\nHB9HWRs3lu1S41bY8s3PQlgxJ1zLCZVE4d6aeCDn3XO0Yd7xF1XcP+/uZxf5rYJz\nkdQfUQjUm02jVhKu19RnJRnfW9smHTAeNpDKOn5+5vxRVrRTU3nELuIvEQKBgEgF\nkkhTSPiMA8fSk5APur4sUF4MXewT1xgbJmgeM5W7kYsTGcKFkuqszt7WKfmbYLjz\nLF9Ntjh7JR33c8XNH9euPdO1b9ToAlbhmKzhrsCh+awz6aQcy8MUYF3c9Uknm8QC\nV/msY+jmD3cehGUNkOaw4lefdJ2UUxf6BxRhLRdTAoGBALf8fFgDKo5GzKHNGO9a\nKgDRyggXr9+saZLf9TChDjW5nsjsiL8aTiPZimrDwPIMRDeanPlUzqGkrYVqLb0q\nUFdet7/yfz//xmK1Rr/0i2oTzrrrdIKPdG0jW5y4HzKOICowU0cQhJDSBmzv1tHE\njSc937UIh4NOmcp4v960xk6Y\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-68ecj@harmonyhaven-fc618.iam.gserviceaccount.com",
+  "client_id": "107942415281545429419",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-68ecj%40harmonyhaven-fc618.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
