@@ -3,6 +3,7 @@ package com.erdemserhat.plugins
 import com.erdemserhat.repository.user.UserRepository
 import com.erdemserhat.routes.article.getAllArticles
 import com.erdemserhat.routes.category.readCategories
+import com.erdemserhat.routes.message.sendNotification
 import com.erdemserhat.routes.user.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
@@ -27,6 +28,9 @@ fun Application.configureRouting() {
         //Article
         readCategories()
         getAllArticles()
+
+        //Firebase Notification Service
+        sendNotification()
 
 
     }
