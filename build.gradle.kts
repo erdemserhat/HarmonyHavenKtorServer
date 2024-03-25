@@ -33,7 +33,7 @@ val exposed_version: String by project
 val h2_version: String by project
 
 dependencies {
-    implementation("mysql:mysql-connector-java:8.0.28")
+    implementation("mysql:mysql-connector-java:8.0.29")
     implementation("io.ktor:ktor-server-core-jvm")
     implementation("io.ktor:ktor-server-netty-jvm")
     implementation("ch.qos.logback:logback-classic:$logback_version")
@@ -68,6 +68,8 @@ dependencies {
     implementation("io.ktor:ktor-freemarker:1.6.8")
 
     implementation ("commons-net:commons-net:3.9.0")
+
+    implementation("com.google.firebase:firebase-admin:9.0.0")
 
 
 
