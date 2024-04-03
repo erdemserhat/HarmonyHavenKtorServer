@@ -1,10 +1,14 @@
 package com.erdemserhat
 
+import com.erdemserhat.di.AuthenticationModule.tokenConfigSecurity
 import com.erdemserhat.di.DatabaseModule.articleRepository
 
 import com.erdemserhat.models.Article
 
 import com.erdemserhat.plugins.*
+import com.erdemserhat.security.hashing.SHA256HashingService
+import com.erdemserhat.security.token.JwtTokenService
+import com.erdemserhat.security.token.TokenConfig
 
 import io.ktor.server.application.*
 import java.io.File
@@ -21,21 +25,27 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
+
+    // use this area for testing.............
+
+
+
+
     configureSerialization()
-    configureRouting()
     configureTemplating()
     configureSMTP()
     configureFTP()
     configureRemoteDatabase()
     configureFirebase()
+    configureTokenConfig()
+    configureSecurity(tokenConfigSecurity)
+    configureRouting()
 
-    // use this area for testing.............
 
 
-    val exArticleModel = Article(1, "title", "content", "2024-03-20", 1, "//12")
 
-    val result = articleRepository.getAllArticles()
-    println(result)
+
+
 
 
 }

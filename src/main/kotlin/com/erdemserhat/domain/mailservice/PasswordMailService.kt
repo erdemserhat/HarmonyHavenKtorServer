@@ -1,6 +1,6 @@
-package com.erdemserhat.domain.email
+package com.erdemserhat.domain.mailservice
 
-import com.erdemserhat.domain.email.MailServiceConstants.resetPasswordMailSubject
+import com.erdemserhat.domain.mailservice.MailServiceConstants.resetPasswordMailSubject
 import io.ktor.server.freemarker.*
 import com.erdemserhat.util.convertToString
 
