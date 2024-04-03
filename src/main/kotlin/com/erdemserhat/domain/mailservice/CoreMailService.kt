@@ -1,7 +1,7 @@
-package com.erdemserhat.domain.email
+package com.erdemserhat.domain.mailservice
 
-import com.erdemserhat.domain.email.EmailConfig.SESSION
-import com.erdemserhat.domain.email.EmailConfig.SMTP_USERNAME
+import com.erdemserhat.domain.mailservice.EmailConfig.SESSION
+import com.erdemserhat.domain.mailservice.EmailConfig.SMTP_USERNAME
 import javax.mail.Message
 import javax.mail.MessagingException
 import javax.mail.Multipart

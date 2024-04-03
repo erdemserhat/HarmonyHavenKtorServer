@@ -2,11 +2,12 @@ package com.erdemserhat.database.userDao
 
 import com.erdemserhat.database.DatabaseConfig.ktormDatabase
 import com.erdemserhat.models.User
-import com.erdemserhat.models.rest.client.UserLogin
+import com.erdemserhat.models.rest.client.UserAuthenticationRequest
 import org.ktorm.dsl.*
 import org.ktorm.entity.firstOrNull
 import org.ktorm.entity.sequenceOf
 import org.ktorm.entity.toList
+import java.util.*
 
 /**
  * Database manager class that performs database operations using the KTorm library.
@@ -28,7 +29,7 @@ class UserDaoImpl() : UserDao {
             .firstOrNull { it.id eq userId }
     }
 
-    override fun getUserByLoginInformation(userLogin: UserLogin): DBUserEntity? {
+    override fun getUserByLoginInformation(userLogin: UserAuthenticationRequest): DBUserEntity? {
         return ktormDatabase.sequenceOf(DBUserTable)
             .firstOrNull { (it.email eq userLogin.email) and (it.password eq userLogin.password) }
     }
@@ -54,6 +55,9 @@ class UserDaoImpl() : UserDao {
             set(it.password, user.password)
             set(it.gender, user.gender)
             set(it.profilePhotoPath, user.profilePhotoPath)
+            set(it.fcmId, user.fcmId)
+            set(it.uuid, user.uuid)
+            set(it.role, user.role)
         }
 
     }
@@ -72,6 +76,9 @@ class UserDaoImpl() : UserDao {
             set(it.password, newUser.password)
             set(it.gender, newUser.gender)
             set(it.profilePhotoPath, newUser.profilePhotoPath)
+            set(it.fcmId, newUser.fcmId)
+            set(it.uuid, newUser.uuid)
+            set(it.role, newUser.role)
             where {
                 it.id eq userId
             }
@@ -86,7 +93,7 @@ class UserDaoImpl() : UserDao {
      * @param login The user login information.
      * @param newUser The new user information.
      */
-    override fun updateUserByLoginInformation(loginInformation: UserLogin, newUser: User): DBUserEntity? {
+    override fun updateUserByLoginInformation(loginInformation: UserAuthenticationRequest, newUser: User): DBUserEntity? {
         ktormDatabase.update(DBUserTable) {
             set(it.name, newUser.name)
             set(it.surname, newUser.surname)
@@ -94,6 +101,10 @@ class UserDaoImpl() : UserDao {
             set(it.password, newUser.password)
             set(it.gender, newUser.gender)
             set(it.profilePhotoPath, newUser.profilePhotoPath)
+            set(it.fcmId, newUser.fcmId)
+            set(it.uuid, newUser.uuid)
+            set(it.role, newUser.role)
+
             where {
                 (it.email eq loginInformation.email) and (it.password eq loginInformation.password)
             }
@@ -128,15 +139,15 @@ class UserDaoImpl() : UserDao {
 
     }
 
-    override fun deleteUserByLoginInformation(loginInformation: UserLogin): Boolean {
+    override fun deleteUserByEmailInformation(email:String): Boolean {
         val affectedRows = ktormDatabase.delete(DBUserTable) {
-            (it.email eq loginInformation.email) and (it.password eq loginInformation.password)
+            (it.email eq email)
         }
         return affectedRows > 0
 
     }
 
-    override fun controlUserExistenceByAuth(loginInformation: UserLogin): Boolean {
+    override fun controlUserExistenceByAuth(loginInformation: UserAuthenticationRequest): Boolean {
         val user = ktormDatabase.sequenceOf(DBUserTable)
             .firstOrNull {
                 (it.email eq loginInformation.email) and (it.password eq loginInformation.password)
@@ -157,6 +168,15 @@ class UserDaoImpl() : UserDao {
         }
         return ktormDatabase.sequenceOf(DBUserTable)
             .firstOrNull { it.email eq email }
+
+    }
+
+    override fun getUserByEmail(email: String): DBUserEntity? {
+        return ktormDatabase.sequenceOf(DBUserTable)
+            .firstOrNull{
+                it.email eq email
+            }
+
 
     }
 
