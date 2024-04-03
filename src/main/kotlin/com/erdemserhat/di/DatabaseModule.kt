@@ -6,11 +6,13 @@ import com.erdemserhat.repository.category.CategoryRepository
 import com.erdemserhat.repository.category.CategoryRepositoryContract
 import com.erdemserhat.repository.user.UserRepository
 import com.erdemserhat.repository.user.UserRepositoryContract
+import com.erdemserhat.security.token.TokenConfig
 
 object DatabaseModule{
     val userRepository: UserRepositoryContract by lazy {
         UserRepository()
     }
+
 
     val categoryRepository :CategoryRepositoryContract by lazy {
         CategoryRepository()
@@ -20,8 +22,9 @@ object DatabaseModule{
         ArticleRepository()
     }
 
-
     val passwordResetService = PasswordResetService()
+
+
 
 
 

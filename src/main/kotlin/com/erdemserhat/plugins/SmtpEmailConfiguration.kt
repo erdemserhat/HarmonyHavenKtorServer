@@ -1,6 +1,6 @@
 package com.erdemserhat.plugins
 
-import com.erdemserhat.domain.email.EmailConfig
+import com.erdemserhat.domain.mailservice.EmailConfig
 import com.erdemserhat.models.appconfig.SMTPModel
 import io.ktor.server.application.*
 

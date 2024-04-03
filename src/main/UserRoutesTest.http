@@ -1,8 +1,8 @@
-POST http://localhost:5000/send
+POST http://localhost:5000/broadcast
 Content-Type: application/json
 
 {
-  "to": "dszLu7hoSdGANi3NIrzD8a:APA91bGBsqDnNb8FKkrwTabZH0cjbZmiZwORKpQqSqEkl2UJzIoJ-g1PZCBOiXrHQP6E1M5EtjBSdpC3oXxEtBd61k_4s1MkKmq1sZ0Xfp5B4vvMoBaJkGsPSNMxB_hfr4DarybLjrLh",
+  "to": null,
   "notification": {
     "title": "Feci Üzüldüm",
     "body": "Yeni bir içerik yayınlandı. Hemen inceleyin!",
@@ -65,15 +65,15 @@ GET http://localhost:8083
 Accept: application/json
 
 ###
-POST http://localhost:8083/user/register
+POST http://localhost:5000/api/v1/user/register
 Content-Type: application/json
 
 {
   "id": 123,
-  "name": "Ali",
-  "surname": "Erdem",
-  "email": "editkuragma@gmail.com",
-  "password": "fdsfdAffsf.3451.",
+  "name": "Example User Name",
+  "surname": "Example User Surname",
+  "email": "me.serhaterdem@gmail.com",
+  "password": "Erdem.3451.",
   "gender": "male",
   "profilePhotoPath": "/path/to/profile/photo.jpg"
 }

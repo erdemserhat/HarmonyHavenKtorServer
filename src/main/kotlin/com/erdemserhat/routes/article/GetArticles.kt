@@ -3,15 +3,27 @@ package com.erdemserhat.routes.article
 import com.erdemserhat.di.DatabaseModule
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import javax.xml.crypto.Data
 
 fun Route.getAllArticles(){
-    get("/articles"){
-        call.respond(DatabaseModule.articleRepository.getAllArticles())
-
+    authenticate {
+        get("/api/v1/articles") {
+            // Kullanıcı doğrulandı mı kontrol edin
+            val principal = call.principal<JWTPrincipal>()
+            if (principal != null) {
+                call.respond("Auth...")
+            } else {
+                // Kullanıcı doğrulanamadı, erişim reddedildi
+                call.respond(HttpStatusCode.Unauthorized, "Unauthorized access")
+            }
+        }
     }
+
+
     get("articles/{id}") {
         val id = call.parameters["id"] ?: return@get call.respond(HttpStatusCode.BadRequest, "Invalid ID")
         val article = DatabaseModule.articleRepository.getArticle(id.toInt())

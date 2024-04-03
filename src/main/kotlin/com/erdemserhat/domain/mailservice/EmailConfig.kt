@@ -1,4 +1,4 @@
-package com.erdemserhat.domain.email
+package com.erdemserhat.domain.mailservice
 
 import com.erdemserhat.models.appconfig.SMTPModel
 import java.util.*
