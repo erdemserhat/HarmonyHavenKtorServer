@@ -1,4 +1,4 @@
-package com.erdemserhat.domain.email
+package com.erdemserhat.domain.mailservice
 
 object MailServiceConstants {
     val welcomeMailSubject = "Welcome to Harmony Haven"

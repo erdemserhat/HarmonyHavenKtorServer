@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserUpdateModel(
-    val userLogin: UserLogin,
+    val userLogin: UserAuthenticationRequest,
     val updatedUserData: User
 )
 

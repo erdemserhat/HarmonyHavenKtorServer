@@ -4,7 +4,7 @@ import com.erdemserhat.database.userDao.DBUserEntity
 import com.erdemserhat.database.userDao.UserDao
 import com.erdemserhat.database.userDao.UserDaoImpl
 import com.erdemserhat.models.User
-import com.erdemserhat.models.rest.client.UserLogin
+import com.erdemserhat.models.rest.client.UserAuthenticationRequest
 
 class UserRepository() : UserRepositoryContract {
     private val database :UserDao = UserDaoImpl()
@@ -18,7 +18,10 @@ class UserRepository() : UserRepositoryContract {
                     it.email,
                     it.password,
                     it.gender,
-                    it.profilePhotoPath
+                    it.profilePhotoPath,
+                    it.fcmId,
+                    it.uuid,
+                    it.role
                 )
             }
     }
@@ -27,8 +30,12 @@ class UserRepository() : UserRepositoryContract {
         return database.getUserById(userId)?.toUser()
     }
 
-    override fun getUserByLoginInformation(login: UserLogin): User? {
+    override fun getUserByLoginInformation(login: UserAuthenticationRequest): User? {
         return  database.getUserByLoginInformation(login)?.toUser()
+    }
+
+    override fun getUserByEmailInformation(email: String): User? {
+        return database.getUserByEmail(email)?.toUser()
     }
 
     override fun addUser(user: User): Int {
@@ -39,7 +46,7 @@ class UserRepository() : UserRepositoryContract {
         return database.updateUserById(userId,newUser)
     }
 
-    override fun updateUserByLoginInformation(login: UserLogin, newUser: User): DBUserEntity? {
+    override fun updateUserByLoginInformation(login: UserAuthenticationRequest, newUser: User): DBUserEntity? {
         return database.updateUserByLoginInformation(login, newUser)
     }
 
@@ -52,11 +59,11 @@ class UserRepository() : UserRepositoryContract {
        return  database.controlUserExistenceByEmail(email)
     }
 
-    override fun deleteUserByLoginInformation(login: UserLogin): Boolean {
-        return database.deleteUserByLoginInformation(login)
+    override fun deleteUserByEmailInformation(email:String): Boolean {
+        return database.deleteUserByEmailInformation(email)
     }
 
-    override fun controlUserExistenceByAuth(login: UserLogin): Boolean {
+    override fun controlUserExistenceByAuth(login: UserAuthenticationRequest): Boolean {
         return database.controlUserExistenceByAuth(login)
     }
 
@@ -65,7 +72,7 @@ class UserRepository() : UserRepositoryContract {
     }
 
     private fun DBUserEntity.toUser(): User {
-        return User(id, name, surname, email, password, gender, profilePhotoPath)
+        return User(id, name, surname, email, password, gender, profilePhotoPath,fcmId,uuid,role)
     }
 
 
