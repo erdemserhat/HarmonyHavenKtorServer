@@ -1,19 +1,20 @@
 package com.erdemserhat.routes.user
-import com.erdemserhat.di.DatabaseModule.userRepository
-import com.erdemserhat.domain.password.PasswordResetRequestsPool
-import com.erdemserhat.domain.validation.*
-import com.erdemserhat.models.rest.client.ForgotPasswordAuthModel
-import com.erdemserhat.models.rest.client.ForgotPasswordMailerModel
-import com.erdemserhat.models.rest.client.ForgotPasswordResetModel
-import com.erdemserhat.models.rest.client.UserAuthenticationRequest
-import com.erdemserhat.models.rest.server.RequestResultUUID
-import com.erdemserhat.security.hashPassword
+import com.erdemserhat.service.di.DatabaseModule.userRepository
+import com.erdemserhat.service.pwrservice.PasswordResetRequestsPool
+import com.erdemserhat.service.validation.*
+import com.erdemserhat.dto.requests.ForgotPasswordAuthModel
+import com.erdemserhat.dto.requests.ForgotPasswordMailerModel
+import com.erdemserhat.dto.requests.ForgotPasswordResetModel
+import com.erdemserhat.dto.requests.UserAuthenticationRequest
+import com.erdemserhat.dto.responses.RequestResultUUID
+import com.erdemserhat.service.security.hashPassword
+import com.erdemserhat.util.isUUIDFormat
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import com.erdemserhat.di.DatabaseModule.passwordResetService as RESET_SERVICE
+import com.erdemserhat.service.di.DatabaseModule.passwordResetService as RESET_SERVICE
 
 /**
  * This function handles the user's reset password request.
@@ -23,7 +24,7 @@ import com.erdemserhat.di.DatabaseModule.passwordResetService as RESET_SERVICE
  * 3 ->User has to define valid password for security
  */
 
-fun Route.resetPassword() {
+fun Route.resetPasswordV1() {
     route("/api/v1/user/forgot-password/mailer") {
         post {
             try {

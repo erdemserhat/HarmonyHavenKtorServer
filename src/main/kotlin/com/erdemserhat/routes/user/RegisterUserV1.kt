@@ -1,12 +1,11 @@
 package com.erdemserhat.routes.user
 
-import com.erdemserhat.di.DatabaseModule.userRepository
-import com.erdemserhat.domain.validation.UserAuthenticationInputValidatorService
-import com.erdemserhat.domain.validation.UserInformationValidatorService
-import com.erdemserhat.domain.validation.ValidationResult
+import com.erdemserhat.service.di.DatabaseModule.userRepository
+import com.erdemserhat.service.validation.UserInformationValidatorService
+import com.erdemserhat.service.validation.ValidationResult
 import com.erdemserhat.models.UserInformationSchema
 import com.erdemserhat.models.toUser
-import com.erdemserhat.security.hashPassword
+import com.erdemserhat.service.security.hashPassword
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -18,7 +17,7 @@ import kotlinx.serialization.Serializable
  * Route handler for user registration.
  */
 fun Route.registerUserV1() {
-    post("/api/v1/user/register") {
+    post("/user/register") {
         try {
             // Receive user registration data from the request body
             val newUser = call.receive<UserInformationSchema>()
