@@ -1,6 +1,6 @@
 package com.erdemserhat.routes.user
 
-import com.erdemserhat.di.DatabaseModule.userRepository
+import com.erdemserhat.service.di.DatabaseModule.userRepository
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -11,9 +11,9 @@ import io.ktor.server.routing.*
 /**
  * Defines the route to handle user deletion.
  */
-fun Route.deleteUser() {
+fun Route.deleteUserV1() {
     authenticate {
-        delete("/api/v1/user/delete") {
+        delete("/user/delete") {
             // Extract the user's email from the JWT token payload
             val principal = call.principal<JWTPrincipal>()
             val email = principal?.payload?.getClaim("email")?.asString()
