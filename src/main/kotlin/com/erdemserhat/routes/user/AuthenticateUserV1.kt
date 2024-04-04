@@ -1,10 +1,11 @@
 package com.erdemserhat.routes.user
 
-import com.erdemserhat.domain.authentication.UserAuthenticationCredentialsValidatorService
-import com.erdemserhat.domain.validation.UserAuthenticationInputValidatorService
-import com.erdemserhat.domain.validation.UserAuthenticationJWTService
-import com.erdemserhat.domain.validation.ValidationResult
-import com.erdemserhat.models.rest.client.UserAuthenticationRequest
+import com.erdemserhat.service.authentication.UserAuthenticationCredentialsValidatorService
+import com.erdemserhat.service.validation.UserAuthenticationInputValidatorService
+import com.erdemserhat.service.security.UserAuthenticationJWTService
+import com.erdemserhat.dto.requests.UserAuthenticationRequest
+import com.erdemserhat.dto.responses.AuthenticationResponse
+import com.erdemserhat.service.validation.ValidationResult
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -16,7 +17,7 @@ import kotlinx.serialization.Serializable
  * Sets up the route for user authentication using the HTTP POST method.
  */
 fun Route.authenticateUserV1() {
-    post("/api/v1/user/authenticate") {
+    post("/user/authenticate") {
         val userAuth = call.receive<UserAuthenticationRequest>()
         try {
             // Initialize services
@@ -82,10 +83,3 @@ fun Route.authenticateUserV1() {
 /**
  * Data class representing the response of user authentication.
  */
-@Serializable
-data class AuthenticationResponse(
-    val formValidationResult: ValidationResult,
-    val credentialsValidationResult: ValidationResult?,
-    val isAuthenticated: Boolean,
-    val jwt: String?,
-)

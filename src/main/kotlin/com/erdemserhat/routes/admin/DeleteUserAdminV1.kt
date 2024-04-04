@@ -1,7 +1,7 @@
 package com.erdemserhat.routes.admin
 
-import com.erdemserhat.di.DatabaseModule.userRepository
-import com.erdemserhat.domain.validation.isValidEmailFormat
+import com.erdemserhat.service.di.DatabaseModule.userRepository
+import com.erdemserhat.service.validation.isValidEmailFormat
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -13,7 +13,7 @@ import io.ktor.server.routing.*
 /**
  * Defines the route for deleting a user by an admin.
  */
-fun Route.deleteUserAdmin() {
+fun Route.deleteUserAdminV1() {
     authenticate {
         delete("/api/v1/admin/delete-user") {
             try {
@@ -21,7 +21,7 @@ fun Route.deleteUserAdmin() {
                 val principal = call.principal<JWTPrincipal>()
                 val role = principal?.payload?.getClaim("role")?.asString()
 
-                // Receive data from the request body
+                // Receive email data from the request body
                 val data = call.receive<Map<String, String>>()
                 val emailToDelete = data["email"]
 
@@ -70,6 +70,7 @@ fun Route.deleteUserAdmin() {
                 }
 
             } catch (e: Exception) {
+                // Handle internal server error
                 call.respond(
                     status = HttpStatusCode.InternalServerError,
                     message = "Internal Server Error; please check your request body and try again"

@@ -1,17 +1,17 @@
 package com.erdemserhat.routes.category
 
-import com.erdemserhat.di.DatabaseModule
-import com.erdemserhat.di.DatabaseModule.categoryRepository
-import com.erdemserhat.di.DatabaseModule.userRepository
+import com.erdemserhat.service.di.DatabaseModule
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.readCategories(){
+/**
+ * Defines routes for reading categories.
+ */
+fun Route.readCategoriesV1(){
+    // Route to retrieve all categories
     get("/categories"){
-        call.respond(categoryRepository.getAllCategory())
-
+        // Respond with all categories from the repository
+        call.respond(DatabaseModule.categoryRepository.getAllCategory())
     }
-
-
 }
