@@ -1,4 +1,0 @@
-GET http://localhost:5000/articles
-Accept: application/json
-
-###
