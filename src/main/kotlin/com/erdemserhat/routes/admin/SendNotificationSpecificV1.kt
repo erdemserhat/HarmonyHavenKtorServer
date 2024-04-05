@@ -12,7 +12,7 @@ import kotlinx.coroutines.*
 import org.jetbrains.exposed.sql.not
 
 @OptIn(DelicateCoroutinesApi::class)
-fun Route.sendNotificationV1() {
+fun Route.sendNotificationSpecificV1() {
     authenticate {
         route("/notification/send-specific") {
             post {
@@ -21,7 +21,6 @@ fun Route.sendNotificationV1() {
                     call.respond(HttpStatusCode.BadRequest)
                     return@post
                 }
-
 
                 // Asenkron olarak işlem yapmak için bir coroutine başlat
                 GlobalScope.launch {
@@ -39,29 +38,11 @@ fun Route.sendNotificationV1() {
 
 
 
-
                 call.respond(HttpStatusCode.OK)
             }
 
 
-
-
-            }
         }
-
-
-
-        route("/notification/send-general") {
-            post {
-                val body = call.receiveNullable<SendNotificationGeneralDto>() ?: run {
-                    call.respond(HttpStatusCode.BadRequest)
-                    return@post
-                }
-                FirebaseMessaging.getInstance().send(body.toMessage())
-                call.respond(HttpStatusCode.OK)
-            }
-        }
-
-
     }
 
+}
