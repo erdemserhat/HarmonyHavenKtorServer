@@ -1,9 +1,10 @@
 package com.erdemserhat.service.configurations
 
 import com.erdemserhat.routes.admin.deleteUserAdminV1
+import com.erdemserhat.routes.admin.openAIRequestV1
+import com.erdemserhat.routes.admin.sendNotificationSpecificV1
 import com.erdemserhat.routes.article.getAllArticlesV1
 import com.erdemserhat.routes.category.readCategoriesV1
-import com.erdemserhat.routes.admin.sendNotificationV1
 import com.erdemserhat.routes.user.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
@@ -32,8 +33,8 @@ fun Route.versionedApiRoutes() {
     route("/api/v1") {
         // User Routes
         registerUserV1()
-        deleteUserV1()
         authenticateUserV1()
+        deleteUserV1()
         updateUserV1()
         resetPasswordV1()
         fcmEnrolment()
@@ -42,11 +43,15 @@ fun Route.versionedApiRoutes() {
         readCategoriesV1()
         getAllArticlesV1()
 
-        // Firebase Notification Service
-        sendNotificationV1()
+        // Firebase Notification Service Routes
+        sendNotificationSpecificV1()
 
         // Admin Routes
         deleteUserAdminV1()
+
+
+        //openai routes
+        openAIRequestV1()
 
     }
 
