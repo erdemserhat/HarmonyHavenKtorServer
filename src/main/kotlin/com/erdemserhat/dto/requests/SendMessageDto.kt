@@ -29,7 +29,7 @@ data class SendNotificationSpecific(
 data class FcmNotification(
     val title: String,
     val body: String,
-    val image: String
+    val image: String=""
 )
 
 fun SendNotificationGeneralDto.toMessage(): Message {
