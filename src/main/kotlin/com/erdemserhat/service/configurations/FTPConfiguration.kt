@@ -23,3 +23,19 @@ fun Application.configureFTP() {
     // Initialize FTP configuration with the FTP model
     FTPConfig.init(ftpModel)
 }
+
+
+
+
+/*
+fun createSampleFile(): File {
+    val fileContent = "Bu örnek dosyanın içeriğidir."
+    val file = File("sample.txt")
+    FileOutputStream(file).use { stream ->
+        stream.write(fileContent.toByteArray())
+    }
+    return file
+}
+ */
+
+

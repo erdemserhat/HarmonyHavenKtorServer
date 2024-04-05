@@ -86,5 +86,9 @@ dependencies {
     implementation("io.ktor:ktor-server-auth-jwt:$ktor_version")
     testImplementation("io.ktor:ktor-server-test-host-jvm:2.3.9")
 
+    //chat gpt
+    implementation ("com.aallam.openai:openai-client:3.7.1")
+    implementation("io.ktor:ktor-client-okhttp:$ktor_version")
+
 
 }
