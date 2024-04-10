@@ -1,11 +1,11 @@
 package com.erdemserhat.routes.user
 
 import com.erdemserhat.service.di.DatabaseModule.userRepository
-import com.erdemserhat.service.validation.UserInformationValidatorService
 import com.erdemserhat.service.validation.ValidationResult
 import com.erdemserhat.models.UserInformationSchema
 import com.erdemserhat.models.toUser
 import com.erdemserhat.service.security.hashPassword
+import com.erdemserhat.service.validation.UserInformationValidatorService
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
