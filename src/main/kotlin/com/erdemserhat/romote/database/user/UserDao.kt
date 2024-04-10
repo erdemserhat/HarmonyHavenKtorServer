@@ -7,6 +7,7 @@ import com.erdemserhat.dto.requests.UserAuthenticationRequest
  * Interface for user data access operations.
  */
 interface UserDao {
+
     // Retrieve a user by ID
     fun getUserById(userId: Int): DBUserEntity?
 

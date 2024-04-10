@@ -1,11 +1,11 @@
 package com.erdemserhat.routes.user
 
 import com.erdemserhat.service.di.DatabaseModule.userRepository
-import com.erdemserhat.service.validation.UserInformationValidatorService
 import com.erdemserhat.service.validation.validateIfEmailChanged
 import com.erdemserhat.models.UserInformationSchema
 import com.erdemserhat.dto.responses.RequestResult
 import com.erdemserhat.models.toUser
+import com.erdemserhat.service.validation.UserInformationValidatorService
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
