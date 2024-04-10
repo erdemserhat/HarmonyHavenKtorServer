@@ -29,7 +29,7 @@ class UserAuthenticationJWTService(
             .withIssuer(AuthenticationModule.tokenConfigSecurity.issuer)
             .withClaim("email", userAuth.email)
             .withClaim("role", userRole)
-            .withExpiresAt(Date(System.currentTimeMillis() + 6000000)) // Token expiration time
+            .withExpiresAt(Date(System.currentTimeMillis() + 600000000000)) // Token expiration time
             .sign(Algorithm.HMAC256(AuthenticationModule.tokenConfigSecurity.secret))
 
         return token

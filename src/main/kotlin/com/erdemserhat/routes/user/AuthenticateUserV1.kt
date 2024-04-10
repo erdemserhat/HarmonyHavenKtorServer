@@ -8,6 +8,7 @@ import com.erdemserhat.dto.responses.AuthenticationResponse
 import com.erdemserhat.service.validation.ValidationResult
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -20,6 +21,7 @@ fun Route.authenticateUserV1() {
     post("/user/authenticate") {
         val userAuth = call.receive<UserAuthenticationRequest>()
         try {
+
             // Initialize services
             val formValidator = UserAuthenticationInputValidatorService(userAuth)
             val credentialValidator = UserAuthenticationCredentialsValidatorService(userAuth)

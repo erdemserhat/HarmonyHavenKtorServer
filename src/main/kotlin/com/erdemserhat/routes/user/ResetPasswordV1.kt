@@ -1,4 +1,5 @@
 package com.erdemserhat.routes.user
+
 import com.erdemserhat.service.di.DatabaseModule.userRepository
 import com.erdemserhat.service.pwrservice.PasswordResetRequestsPool
 import com.erdemserhat.service.validation.*
@@ -6,6 +7,7 @@ import com.erdemserhat.dto.requests.ForgotPasswordAuthModel
 import com.erdemserhat.dto.requests.ForgotPasswordMailerModel
 import com.erdemserhat.dto.requests.ForgotPasswordResetModel
 import com.erdemserhat.dto.requests.UserAuthenticationRequest
+import com.erdemserhat.dto.responses.PasswordResetResponse
 import com.erdemserhat.dto.responses.RequestResultUUID
 import com.erdemserhat.service.security.hashPassword
 import com.erdemserhat.util.isUUIDFormat
@@ -14,6 +16,7 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.serialization.Serializable
 import com.erdemserhat.service.di.DatabaseModule.passwordResetService as RESET_SERVICE
 
 /**
@@ -24,6 +27,25 @@ import com.erdemserhat.service.di.DatabaseModule.passwordResetService as RESET_S
  * 3 ->User has to define valid password for security
  */
 
+@Serializable
+data class PasswordResetMailerResponse(
+    val result: Boolean,
+    val message: String
+)
+
+@Serializable
+data class PasswordResetAuthenticateResponse(
+    val result: Boolean,
+    val message: String,
+    val uuid: String = "-"
+)
+
+data class PasswordResetFinalResponse(
+    val result:Boolean,
+    val message:String
+)
+
+
 fun Route.resetPasswordV1() {
     route("/api/v1/user/forgot-password/mailer") {
         post {
@@ -33,7 +55,7 @@ fun Route.resetPasswordV1() {
                 if (!isValidEmailFormat(resetPasswordRequest.email)) {
                     call.respond(
                         status = HttpStatusCode.UnprocessableEntity,
-                        message = "Invalid email format."
+                        message = PasswordResetMailerResponse(false, "Invalid email format.")
                     )
                     return@post
 
@@ -41,7 +63,7 @@ fun Route.resetPasswordV1() {
                 if (!userRepository.controlUserExistenceByEmail(resetPasswordRequest.email)) {
                     call.respond(
                         status = HttpStatusCode.UnprocessableEntity,
-                        message = "There is no user with this email"
+                        message = PasswordResetMailerResponse(false, "There is no user with this email")
                     )
                     return@post
 
@@ -52,7 +74,7 @@ fun Route.resetPasswordV1() {
                 if (!requestResult.result) {
                     call.respond(
                         status = HttpStatusCode.UnprocessableEntity,
-                        message = requestResult.message
+                        message = PasswordResetMailerResponse(false, requestResult.message)
                     )
                     return@post
                 }
@@ -60,14 +82,14 @@ fun Route.resetPasswordV1() {
 
                 call.respond(
                     status = HttpStatusCode.OK,
-                    message = requestResult.message
+                    message = PasswordResetMailerResponse(true, requestResult.message)
                 )
 
 
             } catch (e: Exception) {
                 call.respond(
                     status = HttpStatusCode.InternalServerError,
-                    message = "Internal Server Error"
+                    message = PasswordResetMailerResponse(false, "Internal Server Error")
                 )
             }
 
@@ -86,7 +108,7 @@ fun Route.resetPasswordV1() {
                 if (!authRequest.result) {
                     call.respond(
                         status = HttpStatusCode.UnprocessableEntity,
-                        message = authRequest.message
+                        message = PasswordResetAuthenticateResponse(false, authRequest.message)
                     )
                     return@patch
 
@@ -96,20 +118,24 @@ fun Route.resetPasswordV1() {
 
                 if (!requestUUIDResult.result) {
                     call.respond(
-                        status = HttpStatusCode.OK,
-                        message = requestUUIDResult.message
+                        status = HttpStatusCode.TooManyRequests,
+                        message = PasswordResetAuthenticateResponse(false, requestUUIDResult.message)
                     )
                     return@patch
 
                 }
 
-                call.respond(RequestResultUUID(true, "Successfully", requestUUIDResult.message))
+                call.respond(
+                    status = HttpStatusCode.Accepted,
+                    message = PasswordResetAuthenticateResponse(true, "Successfully", requestUUIDResult.message)
+
+                )
 
 
             } catch (e: Exception) {
                 call.respond(
                     status = HttpStatusCode.InternalServerError,
-                    message = "Internal Server Error"
+                    message = PasswordResetAuthenticateResponse(false,e.message.toString())
                 )
                 println(e.printStackTrace())
             }
@@ -127,7 +153,7 @@ fun Route.resetPasswordV1() {
                 if (!isUUIDFormat(response.uuid)) {
                     call.respond(
                         status = HttpStatusCode.UnprocessableEntity,
-                        message = "Invalid password request uuid format"
+                        message = PasswordResetFinalResponse(false,"Invalid password request uuid format")
                     )
                     return@patch
                 }
@@ -141,20 +167,21 @@ fun Route.resetPasswordV1() {
 
                 val passwordValidationResult = validator.validatePassword()
 
-                if(!passwordValidationResult.isValid){
+                if (!passwordValidationResult.isValid) {
                     call.respond(
                         status = HttpStatusCode.UnprocessableEntity,
-                        message = passwordValidationResult.errorMessage
+                        message = PasswordResetFinalResponse(false,passwordValidationResult.errorMessage)
                     )
                     return@patch
                 }
 
-                val provideEmailOfRequesterIfExistResult = PasswordResetRequestsPool.provideEmailOfRequesterIfExist(response.uuid)
+                val provideEmailOfRequesterIfExistResult =
+                    PasswordResetRequestsPool.provideEmailOfRequesterIfExist(response.uuid)
 
-                if(!provideEmailOfRequesterIfExistResult.result){
+                if (!provideEmailOfRequesterIfExistResult.result) {
                     call.respond(
                         status = HttpStatusCode.UnprocessableEntity,
-                        message = provideEmailOfRequesterIfExistResult.message
+                        message = PasswordResetFinalResponse(false,provideEmailOfRequesterIfExistResult.message)
                     )
                     return@patch
 
@@ -166,7 +193,7 @@ fun Route.resetPasswordV1() {
                 PasswordResetRequestsPool.usePermission(userEmail)
                 call.respond(
                     status = HttpStatusCode.OK,
-                    message = "Password changed successfully."
+                    message = PasswordResetFinalResponse(true,"Password changed successfully.")
                 )
 
 
@@ -174,11 +201,11 @@ fun Route.resetPasswordV1() {
 
                 call.respond(
                     status = HttpStatusCode.InternalServerError,
-                    message = "Internal Server Error"
+                    message = PasswordResetFinalResponse(false,"Internal Server Error")
                 )
             }
         }
     }
-
-
 }
+
+

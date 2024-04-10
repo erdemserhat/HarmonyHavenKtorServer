@@ -21,14 +21,22 @@ class UserAuthenticationCredentialsValidatorService(
         // Check if a user with the provided email exists in the database
         val userExists = DatabaseModule.userRepository.controlUserExistenceByEmail(userAuthRequest.email)
         if (!userExists) {
-            return ValidationResult(false, "There is no user with this email. Please register.")
+            return ValidationResult(
+                false,
+                "There is no user with this email. Please register.",
+                errorCode = 104
+            )
         }
 
         // Check if the provided password matches the stored password for the user
         val hashedPassword = hashPassword(userAuthRequest.password)
         val isValidPassword = DatabaseModule.userRepository.controlUserExistenceByAuth(userAuthRequest.copy(password = hashedPassword))
         if (!isValidPassword) {
-            return ValidationResult(false, "Incorrect password.")
+            return ValidationResult(
+                false,
+                "Incorrect password.",
+                errorCode = 105
+            )
         }
 
         // Authentication successful
