@@ -20,7 +20,7 @@ fun Route.fcmEnrolment() {
             if (!DatabaseModule.userRepository.enrolFcm(email, fcmData.fcmID))
                 call.respond(
                     status = HttpStatusCode.InternalServerError,
-                    "Please try again, an error occurred"
+                    "Please try again, an error occurred",
                 )
 
             call.respond(

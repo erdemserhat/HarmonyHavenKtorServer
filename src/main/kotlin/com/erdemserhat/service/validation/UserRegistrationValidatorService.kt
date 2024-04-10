@@ -26,27 +26,56 @@ class UserInformationValidatorService(
     ): ValidationResult {
         // Validate name
         if (user.name.length < 2)
-            return ValidationResult(false, "Name is too short. It must be at least 2 characters long.")
+            return ValidationResult(
+                isValid = false,
+                errorMessage = "Name is too short. It must be at least 2 characters long.",
+                errorCode = 201
+            )
 
         if (!user.name.matches(Regex("^[a-zA-Z\\s]+$")))
-            return ValidationResult(false, "Name must contain only letters.")
+            return ValidationResult(
+                isValid = false,
+                errorMessage = "Name must contain only letters.",
+                errorCode = 202
+
+            )
 
         // Validate surname
         if (user.surname.length < 2)
-            return ValidationResult(false, "Surname is too short. It must be at least 2 characters long.")
+            return ValidationResult(
+                isValid = false,
+                errorMessage = "Surname is too short. It must be at least 2 characters long.",
+                errorCode = 203
+            )
 
         if (!user.surname.matches(Regex("^[a-zA-Z\\s]+$")))
-            return ValidationResult(false, "Surname must contain only letters.")
+            return ValidationResult(
+                isValid = false,
+                errorMessage = "Surname must contain only letters.",
+                errorCode = 204
+
+            )
 
         // Validate email format
         if (!isValidEmailFormat(user.email))
-            return ValidationResult(false, "Invalid email format.")
+            return ValidationResult(
+                isValid = false,
+                errorMessage = "Invalid email format.",
+                errorCode = 205
+
+
+            )
 
 
         if (byCheckingExistenceOfUser)
         // Check if the email is already registered
             if (DatabaseModule.userRepository.controlUserExistenceByEmail(user.email))
-                return ValidationResult(false, "There is already a registered user with this email.")
+                return ValidationResult(
+                    isValid = false,
+                    errorMessage = "There is already a registered user with this email.",
+                    errorCode = 206
+
+                )
 
         return validatePassword()
     }
@@ -59,14 +88,20 @@ class UserInformationValidatorService(
     private fun validatePassword(): ValidationResult {
         // Validate password length
         if (user.password.length < 8)
-            return ValidationResult(false, "Password must be at least 8 characters long.")
+            return ValidationResult(
+                isValid = false,
+                errorMessage = "Password must be at least 8 characters long.",
+                errorCode = 207
+
+            )
 
         // Validate password strength
         val passwordRegex = Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}")
         if (!passwordRegex.matches(user.password))
             return ValidationResult(
-                false,
-                "Password must contain at least one uppercase letter, one lowercase letter, and one digit."
+                isValid = false,
+                errorMessage = "Password must contain at least one uppercase letter, one lowercase letter, and one digit.",
+                errorCode = 208
             )
 
         // Check if password contains name, surname, or email
@@ -75,17 +110,31 @@ class UserInformationValidatorService(
         val lowerCaseEmail = user.email.lowercase(Locale.getDefault())
 
         if (user.password.contains(lowerCaseName))
-            return ValidationResult(false, "Password cannot contain the username. Please choose a different password.")
+            return ValidationResult(
+                isValid = false,
+                errorMessage = "Password cannot contain the username. Please choose a different password.",
+                errorCode = 209
+
+            )
 
         if (user.password.contains(lowerCaseSurname))
-            return ValidationResult(false, "Password cannot contain the surname. Please choose a different password.")
+            return ValidationResult(
+                isValid = false,
+                errorMessage = "Password cannot contain the surname. Please choose a different password.",
+                errorCode = 210
+
+
+            )
 
         if (user.password.contains(lowerCaseEmail))
             return ValidationResult(
-                false,
-                "Password cannot contain the email address. Please choose a different password."
+                isValid = false,
+                errorMessage = "Password cannot contain the email address. Please choose a different password.",
+                errorCode = 211
             )
 
         return ValidationResult(true)
     }
 }
+
+
