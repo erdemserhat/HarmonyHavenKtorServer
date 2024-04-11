@@ -40,6 +40,7 @@ data class PasswordResetAuthenticateResponse(
     val uuid: String = "-"
 )
 
+@Serializable
 data class PasswordResetFinalResponse(
     val result:Boolean,
     val message:String
@@ -47,7 +48,7 @@ data class PasswordResetFinalResponse(
 
 
 fun Route.resetPasswordV1() {
-    route("/api/v1/user/forgot-password/mailer") {
+    route("/user/forgot-password/mailer") {
         post {
             try {
                 val resetPasswordRequest = call.receive<ForgotPasswordMailerModel>()
@@ -98,8 +99,8 @@ fun Route.resetPasswordV1() {
 
     }
 
-    route("/api/v1/user/forgot-password/auth") {
-        patch {
+    route("/user/forgot-password/auth") {
+        post {
             val request = call.receive<ForgotPasswordAuthModel>()
             try {
 
@@ -110,7 +111,7 @@ fun Route.resetPasswordV1() {
                         status = HttpStatusCode.UnprocessableEntity,
                         message = PasswordResetAuthenticateResponse(false, authRequest.message)
                     )
-                    return@patch
+                    return@post
 
                 }
 
@@ -121,7 +122,7 @@ fun Route.resetPasswordV1() {
                         status = HttpStatusCode.TooManyRequests,
                         message = PasswordResetAuthenticateResponse(false, requestUUIDResult.message)
                     )
-                    return@patch
+                    return@post
 
                 }
 
@@ -145,7 +146,7 @@ fun Route.resetPasswordV1() {
     }
 
 
-    route("/api/v1/user/forgot-password/reset-password") {
+    route("/user/forgot-password/reset-password") {
         patch {
             val response = call.receive<ForgotPasswordResetModel>()
             try {
