@@ -1,5 +1,6 @@
 package com.erdemserhat.service.configurations
 
+import com.erdemserhat.routes.admin.TestNotificationV1
 import com.erdemserhat.routes.admin.deleteUserAdminV1
 import com.erdemserhat.routes.admin.openAIRequestV1
 import com.erdemserhat.routes.admin.sendNotificationSpecificV1
@@ -52,6 +53,7 @@ fun Route.versionedApiRoutes() {
 
         //openai routes
         openAIRequestV1()
+        TestNotificationV1()
 
     }
 
