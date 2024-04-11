@@ -68,7 +68,7 @@ object PasswordResetRequestsPool {
             )
         } else {
             RequestResult(
-                false,
+                true,
                 requestSession.uniqueId
             )
         }
