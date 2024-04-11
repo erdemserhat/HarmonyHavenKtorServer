@@ -12,15 +12,16 @@ import javax.xml.crypto.Data
 /**
  * Defines the routes related to article retrieval.
  */
-fun Route.getAllArticlesV1(){
+fun Route.getAllArticlesV1() {
     // Authenticate user to access these routes
     authenticate {
         // Route to retrieve all articles
         get("/articles") {
             // Check if user is authenticated
             val principal = call.principal<JWTPrincipal>()
+            val articles = DatabaseModule.articleRepository.getAllArticles()
             if (principal != null) {
-                call.respond("Auth...")
+                call.respond(articles)
             } else {
                 // User not authenticated, deny access
                 call.respond(HttpStatusCode.Unauthorized, "Unauthorized access")
@@ -36,9 +37,14 @@ fun Route.getAllArticlesV1(){
         val article = DatabaseModule.articleRepository.getArticle(id.toInt())
         // Respond with the article if found, otherwise return 404
         if (article != null) {
-            call.respond(article)
+            call.respond(
+                status = HttpStatusCode.OK,
+                message = article
+            )
         } else {
-            call.respond(HttpStatusCode.NotFound, "Article not found")
+            call.respond(
+                HttpStatusCode.NotFound
+            )
         }
     }
 
@@ -46,25 +52,26 @@ fun Route.getAllArticlesV1(){
     get("articles/recent/{size}") {
         try {
             // Retrieve size parameter from path parameters
-            val size= call.parameters["size"] ?: return@get call.respond(HttpStatusCode.BadRequest, "Invalid Size")
+            val size = call.parameters["size"] ?: return@get call.respond(HttpStatusCode.BadRequest, "Invalid Size")
             // Retrieve recent articles from repository
             val article = DatabaseModule.articleRepository.getAllArticles().takeLast(size.toInt())
             call.respond(article)
-        } catch (_:Exception) {
+        } catch (_: Exception) {
             // Error occurred while retrieving articles
             call.respond(HttpStatusCode.BadRequest)
         }
     }
 
     // Route to get articles by category ID
-    get("articles/category/{id}"){
-        try{
+    get("articles/category/{id}") {
+        try {
             // Retrieve category ID from path parameters
-            val categoryId = call.parameters["id"]?:return@get call.respond(HttpStatusCode.BadRequest,"Invalid Category ID")
+            val categoryId =
+                call.parameters["id"] ?: return@get call.respond(HttpStatusCode.BadRequest, "Invalid Category ID")
             // Retrieve articles by category from repository
             val articles = DatabaseModule.articleRepository.getArticlesByCategory(categoryId.toInt())
             call.respond(articles)
-        } catch (_:Exception) {
+        } catch (_: Exception) {
             // Error occurred while retrieving articles by category
             call.respond(HttpStatusCode.BadRequest)
         }
