@@ -5,7 +5,15 @@ import com.erdemserhat.routes.admin.deleteUserAdminV1
 import com.erdemserhat.routes.admin.openAIRequestV1
 import com.erdemserhat.routes.admin.sendNotificationSpecificV1
 import com.erdemserhat.routes.article.getAllArticlesV1
-import com.erdemserhat.routes.category.readCategoriesV1
+import com.erdemserhat.routes.article.getArticleCategoriesV1
+import com.erdemserhat.routes.quote.v1.category.addQuoteCategoryV1
+import com.erdemserhat.routes.quote.v1.category.deleteQuoteCategoryV1
+import com.erdemserhat.routes.quote.v1.category.getQuoteCategoryV1
+import com.erdemserhat.routes.quote.v1.category.updateQuoteCategoryV1
+import com.erdemserhat.routes.quote.v1.quote.addQuoteV1
+import com.erdemserhat.routes.quote.v1.quote.deleteQuoteV1
+import com.erdemserhat.routes.quote.v1.quote.getQuotesByCategoryV1
+import com.erdemserhat.routes.quote.v1.quote.updateQuoteV1
 import com.erdemserhat.routes.user.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
@@ -41,7 +49,7 @@ fun Route.versionedApiRoutes() {
         fcmEnrolment()
 
         // Article Routes
-        readCategoriesV1()
+        getArticleCategoriesV1()
         getAllArticlesV1()
 
         // Firebase Notification Service Routes
@@ -54,6 +62,19 @@ fun Route.versionedApiRoutes() {
         //openai routes
         openAIRequestV1()
         TestNotificationV1()
+
+
+        //Quotes routes
+        addQuoteV1()
+        deleteQuoteV1()
+        getQuotesByCategoryV1()
+        updateQuoteV1()
+
+        //quotes category
+        addQuoteCategoryV1()
+        deleteQuoteCategoryV1()
+        getQuoteCategoryV1()
+        updateQuoteCategoryV1()
 
     }
 

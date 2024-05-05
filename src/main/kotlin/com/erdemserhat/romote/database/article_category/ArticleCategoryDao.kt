@@ -1,17 +1,17 @@
-package com.erdemserhat.romote.database.category
+package com.erdemserhat.romote.database.article_category
 
-import com.erdemserhat.models.Category
+import com.erdemserhat.models.ArticleCategory
 
 /**
  * Interface defining operations for interacting with category data in the database.
  */
-interface CategoryDao {
+interface ArticleCategoryDao {
     /**
      * Adds a new category to the database.
      * @param category The category to add.
      * @return The ID of the added category.
      */
-    fun addCategory(category: Category): Int
+    fun addCategory(category: ArticleCategory): Int
 
     /**
      * Updates an existing category in the database.
@@ -19,7 +19,7 @@ interface CategoryDao {
      * @param updatedCategory The updated category data.
      * @return True if the category was successfully updated, false otherwise.
      */
-    fun updateCategory(categoryId: Int, updatedCategory: Category): Boolean
+    fun updateCategory(categoryId: Int, updatedCategory: ArticleCategory): Boolean
 
     /**
      * Deletes a category from the database.
@@ -33,11 +33,11 @@ interface CategoryDao {
      * @param categoryId The ID of the category to retrieve.
      * @return The category entity if found, null otherwise.
      */
-    fun getCategory(categoryId: Int): DBCategoryEntity?
+    fun getCategory(categoryId: Int): DBArticleCategoryEntity?
 
     /**
      * Retrieves all categories from the database.
      * @return A list of all categories in the database.
      */
-    fun getAllCategory(): List<DBCategoryEntity>
+    fun getAllCategory(): List<DBArticleCategoryEntity>
 }

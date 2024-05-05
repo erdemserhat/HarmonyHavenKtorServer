@@ -1,0 +1,8 @@
+PATCH http://localhost:5000/api/v1/update-quote-category
+Content-Type: application/json
+
+{
+    "id": "4",
+    "name": "SeFDSFDSrhat"
+}
+###

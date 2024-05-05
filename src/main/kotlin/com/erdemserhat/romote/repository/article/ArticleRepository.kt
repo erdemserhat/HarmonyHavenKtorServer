@@ -3,9 +3,9 @@ package com.erdemserhat.romote.repository.article
 import com.erdemserhat.romote.database.article.ArticleDao
 import com.erdemserhat.romote.database.article.ArticleDaoImpl
 import com.erdemserhat.romote.database.article.DBArticleEntity
-import com.erdemserhat.romote.database.category.CategoryDao
-import com.erdemserhat.romote.database.category.CategoryDaoImpl
-import com.erdemserhat.service.di.DatabaseModule.categoryRepository
+import com.erdemserhat.romote.database.article_category.ArticleCategoryDao
+import com.erdemserhat.romote.database.article_category.ArticleCategoryDaoImpl
+import com.erdemserhat.service.di.DatabaseModule.articleCategoryRepository
 import com.erdemserhat.models.Article
 import com.erdemserhat.dto.requests.ArticleResponseType
 
@@ -14,7 +14,7 @@ import com.erdemserhat.dto.requests.ArticleResponseType
  */
 class ArticleRepository : ArticleRepositoryContract {
     private val articleDao: ArticleDao = ArticleDaoImpl()
-    private val categoryDao: CategoryDao = CategoryDaoImpl()
+    private val categoryDao: ArticleCategoryDao = ArticleCategoryDaoImpl()
 
     /**
      * Converts a DBArticleEntity to an Article model.
@@ -81,7 +81,7 @@ class ArticleRepository : ArticleRepositoryContract {
             title = title,
             content = content,
             publishDate = publishDate,
-            category = categoryRepository.getCategory(categoryId)?.name,
+            category = articleCategoryRepository.getCategory(categoryId)?.name,
             imagePath = imagePath
         )
     }
