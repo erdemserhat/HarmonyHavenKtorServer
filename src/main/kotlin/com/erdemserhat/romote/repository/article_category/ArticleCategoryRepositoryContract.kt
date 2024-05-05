@@ -1,11 +1,11 @@
-package com.erdemserhat.romote.repository.category
+package com.erdemserhat.romote.repository.article_category
 
-import com.erdemserhat.models.Category
+import com.erdemserhat.models.ArticleCategory
 
 /**
  * Interface defining operations for managing category data.
  */
-interface CategoryRepositoryContract {
+interface ArticleCategoryRepositoryContract {
 
     /**
      * Adds a new category to the repository.
@@ -13,7 +13,7 @@ interface CategoryRepositoryContract {
      * @param category The category to be added.
      * @return `true` if the operation is successful, `false` otherwise.
      */
-    fun addCategory(category: Category): Boolean
+    fun addCategory(category: ArticleCategory): Boolean
 
     /**
      * Updates an existing category in the repository.
@@ -22,7 +22,7 @@ interface CategoryRepositoryContract {
      * @param updatedCategory The updated category information.
      * @return `true` if the update is successful, `false` otherwise.
      */
-    fun updateCategory(categoryId: Int, updatedCategory: Category): Boolean
+    fun updateCategory(categoryId: Int, updatedCategory: ArticleCategory): Boolean
 
     /**
      * Deletes a category from the repository.
@@ -38,12 +38,12 @@ interface CategoryRepositoryContract {
      * @param categoryId The ID of the category to retrieve.
      * @return The retrieved category object if found, or `null` if not found.
      */
-    fun getCategory(categoryId: Int): Category?
+    fun getCategory(categoryId: Int): ArticleCategory?
 
     /**
      * Retrieves all categories stored in the repository.
      *
      * @return A list containing all categories.
      */
-    fun getAllCategory(): List<Category>
+    fun getAllCategory(): List<ArticleCategory>
 }

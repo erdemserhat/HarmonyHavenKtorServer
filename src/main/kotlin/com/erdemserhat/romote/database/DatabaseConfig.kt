@@ -7,7 +7,7 @@ import org.ktorm.database.Database
  */
 object DatabaseConfig {
 
-    lateinit var ktormDatabase: Database
+     lateinit var ktormDatabase: Database
 
     // Database connection parameters
     private lateinit var HOST: String

@@ -3,8 +3,10 @@ package com.erdemserhat.service.di
 import com.erdemserhat.service.pwrservice.PasswordResetService
 import com.erdemserhat.romote.repository.article.ArticleRepository
 import com.erdemserhat.romote.repository.article.ArticleRepositoryContract
-import com.erdemserhat.romote.repository.category.CategoryRepository
-import com.erdemserhat.romote.repository.category.CategoryRepositoryContract
+import com.erdemserhat.romote.repository.article_category.ArticleCategoryRepository
+import com.erdemserhat.romote.repository.article_category.ArticleCategoryRepositoryContract
+import com.erdemserhat.romote.repository.quote.QuoteRepository
+import com.erdemserhat.romote.repository.quote_category.QuoteCategoryRepository
 import com.erdemserhat.romote.repository.user.UserRepository
 import com.erdemserhat.romote.repository.user.UserRepositoryContract
 
@@ -22,8 +24,8 @@ object DatabaseModule {
     /**
      * Lazily initialized singleton instance of CategoryRepositoryContract, providing access to category-related database operations.
      */
-    val categoryRepository: CategoryRepositoryContract by lazy {
-        CategoryRepository()
+    val articleCategoryRepository: ArticleCategoryRepositoryContract by lazy {
+        ArticleCategoryRepository()
     }
 
     /**
@@ -31,6 +33,14 @@ object DatabaseModule {
      */
     val articleRepository: ArticleRepositoryContract by lazy {
         ArticleRepository()
+    }
+
+    val quoteRepository:QuoteRepository by lazy {
+        QuoteRepository()
+    }
+
+    val quoteCategoryRepository:QuoteCategoryRepository by lazy {
+        QuoteCategoryRepository()
     }
 
     /**

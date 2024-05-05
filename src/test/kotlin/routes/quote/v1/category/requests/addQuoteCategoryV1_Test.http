@@ -1,0 +1,8 @@
+POST http://localhost:5000/api/v1/add-quote-category
+Content-Type: application/json
+
+{
+  "name": "Test Category"
+}
+
+###

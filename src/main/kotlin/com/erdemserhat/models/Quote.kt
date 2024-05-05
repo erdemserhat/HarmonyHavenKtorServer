@@ -1,13 +1,12 @@
 package com.erdemserhat.models
 
-import io.ktor.http.*
 import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class Category(
+data class Quote(
     val id:Int,
-    val name:String,
-    val imagePath:String
-
+    val quote:String,
+    val writer:String,
+    val categoryId:Int
 )
