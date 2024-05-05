@@ -90,5 +90,9 @@ dependencies {
     implementation ("com.aallam.openai:openai-client:3.7.1")
     implementation("io.ktor:ktor-client-okhttp:$ktor_version")
 
+    testImplementation("io.ktor:ktor-server-test-host:$ktor_version")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlin_version")
+
+
 
 }

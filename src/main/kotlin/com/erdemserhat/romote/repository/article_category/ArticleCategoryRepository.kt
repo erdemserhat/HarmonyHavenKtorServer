@@ -1,24 +1,24 @@
-package com.erdemserhat.romote.repository.category
+package com.erdemserhat.romote.repository.article_category
 
-import com.erdemserhat.romote.database.category.CategoryDao
-import com.erdemserhat.romote.database.category.CategoryDaoImpl
-import com.erdemserhat.romote.database.category.DBCategoryEntity
-import com.erdemserhat.models.Category
+import com.erdemserhat.romote.database.article_category.ArticleCategoryDao
+import com.erdemserhat.romote.database.article_category.ArticleCategoryDaoImpl
+import com.erdemserhat.romote.database.article_category.DBArticleCategoryEntity
+import com.erdemserhat.models.ArticleCategory
 
 /**
  * Repository responsible for managing category data operations.
- * Implements [CategoryRepositoryContract] interface.
+ * Implements [ArticleCategoryRepositoryContract] interface.
  */
-class CategoryRepository : CategoryRepositoryContract {
+class ArticleCategoryRepository : ArticleCategoryRepositoryContract {
 
-    private val categoryDao: CategoryDao = CategoryDaoImpl()
+    private val categoryDao: ArticleCategoryDao = ArticleCategoryDaoImpl()
 
     /**
      * Adds a new category to the database.
      * @param category The category to be added.
      * @return `true` if the category is added successfully, `false` otherwise.
      */
-    override fun addCategory(category: Category): Boolean {
+    override fun addCategory(category: ArticleCategory): Boolean {
         return categoryDao.addCategory(category) > 0
     }
 
@@ -28,7 +28,7 @@ class CategoryRepository : CategoryRepositoryContract {
      * @param updatedCategory The updated category information.
      * @return `true` if the category is updated successfully, `false` otherwise.
      */
-    override fun updateCategory(categoryId: Int, updatedCategory: Category): Boolean {
+    override fun updateCategory(categoryId: Int, updatedCategory: ArticleCategory): Boolean {
         return categoryDao.updateCategory(categoryId, updatedCategory)
     }
 
@@ -46,7 +46,7 @@ class CategoryRepository : CategoryRepositoryContract {
      * @param categoryId The ID of the category to be retrieved.
      * @return The retrieved category, or `null` if not found.
      */
-    override fun getCategory(categoryId: Int): Category? {
+    override fun getCategory(categoryId: Int): ArticleCategory? {
         return categoryDao.getCategory(categoryId)?.toCategory()
     }
 
@@ -54,17 +54,17 @@ class CategoryRepository : CategoryRepositoryContract {
      * Retrieves all categories from the database.
      * @return A list of all categories.
      */
-    override fun getAllCategory(): List<Category> {
+    override fun getAllCategory(): List<ArticleCategory> {
         return categoryDao.getAllCategory().map { it.toCategory() }
     }
 }
 
 /**
- * Extension function to convert a [DBCategoryEntity] to a [Category].
+ * Extension function to convert a [DBCategoryEntity] to a [ArticleCategory].
  * @return The converted category object.
  */
-fun DBCategoryEntity.toCategory(): Category {
-    return Category(
+fun DBArticleCategoryEntity.toCategory(): ArticleCategory {
+    return ArticleCategory(
         id, name, imagePath
     )
 }
