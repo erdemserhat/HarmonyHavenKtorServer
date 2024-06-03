@@ -1,0 +1,78 @@
+<html>
+<head>
+<title>application.conf</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #bcbec4;}
+.s1 { color: #cf8e6d;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+application.conf</font>
+</center></td></tr></table>
+<pre><span class="s0">ktor { 
+    deployment { 
+        </span><span class="s1">port </span><span class="s2">= </span><span class="s0">5000 
+        </span><span class="s1">port </span><span class="s2">= </span><span class="s0">${?PORT} 
+    } 
+    application { 
+        </span><span class="s1">modules </span><span class="s2">= </span><span class="s0">[com.erdemserhat.ApplicationKt.module] 
+    } 
+} 
+</span>
+<span class="s0">// SSL redirection 
+security { 
+    </span><span class="s1">sslRedirect </span><span class="s2">= </span><span class="s0">false // Set to true to redirect HTTP traffic to HTTPS 
+} 
+</span>
+<span class="s0">harmonyhaven { 
+</span>
+    <span class="s0">email{ 
+        </span><span class="s1">smtpHost </span><span class="s2">= &quot;</span><span class="s3">smtpout.secureserver.net</span><span class="s2">&quot;</span>
+        <span class="s1">smtpPort </span><span class="s2">= </span><span class="s0">587 
+        </span><span class="s1">username </span><span class="s2">= &quot;</span><span class="s3">info@projemya.com</span><span class="s2">&quot;</span>
+        <span class="s1">password </span><span class="s2">= &quot;</span><span class="s3">u&amp;Z?5/f8-NJ+XDM</span><span class="s2">&quot;</span>
+        <span class="s1">smtpAuthEnabled</span><span class="s2">=&quot;</span><span class="s3">true</span><span class="s2">&quot;</span>
+        <span class="s1">startTLSEnabled</span><span class="s2">=&quot;</span><span class="s3">true</span><span class="s2">&quot;</span>
+    <span class="s0">} 
+</span>
+      <span class="s0">database1{ 
+           </span><span class="s1">host</span><span class="s2">=&quot;</span><span class="s3">localhost</span><span class="s2">&quot;</span>
+           <span class="s1">database</span><span class="s2">=&quot;</span><span class="s3">harmonyhaven</span><span class="s2">&quot;</span>
+           <span class="s1">username</span><span class="s2">=&quot;</span><span class="s3">harmonyhaven</span><span class="s2">&quot;</span>
+           <span class="s1">password</span><span class="s2">=&quot;</span><span class="s3">harmonyhavenadmin</span><span class="s2">&quot;</span>
+           <span class="s1">port</span><span class="s2">=&quot;</span><span class="s3">3306</span><span class="s2">&quot;</span>
+           <span class="s1">useSSL</span><span class="s2">=&quot;</span><span class="s3">true</span><span class="s2">&quot;</span>
+       <span class="s0">} 
+</span>
+    <span class="s0">ftp{ 
+</span>
+    <span class="s1">username </span><span class="s2">= &quot;</span><span class="s3">harmonyhavenftp@projemya.com</span><span class="s2">&quot;</span>
+    <span class="s1">host </span><span class="s2">=&quot;</span><span class="s3">92.205.5.205</span><span class="s2">&quot;</span>
+    <span class="s1">password </span><span class="s2">=&quot;</span><span class="s3">WnhxCbOIIAEcZdk</span><span class="s2">&quot;</span><span class="s0">, 
+    </span><span class="s1">port </span><span class="s2">= &quot;</span><span class="s3">21</span><span class="s2">&quot;</span>
+    <span class="s0">} 
+</span>
+<span class="s0">} 
+</span>
+<span class="s0">jwt { 
+    </span><span class="s1">issuer </span><span class="s2">= &quot;</span><span class="s3">http://0.0.0.0:8080</span><span class="s2">&quot;</span>
+    <span class="s1">domain </span><span class="s2">= &quot;</span><span class="s3">http://0.0.0.0:8080</span><span class="s2">&quot;</span>
+    <span class="s1">audience </span><span class="s2">= &quot;</span><span class="s3">users</span><span class="s2">&quot;</span>
+    <span class="s1">realm </span><span class="s2">= &quot;</span><span class="s3">harmony-haven</span><span class="s2">&quot;</span>
+    <span class="s1">secret </span><span class="s2">=&quot;</span><span class="s3">secret124</span><span class="s2">&quot;</span>
+<span class="s0">} 
+</span>
+<span class="s0">openai { 
+    </span><span class="s1">key </span><span class="s2">= &quot;</span><span class="s3">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</span><span class="s2">&quot;</span>
+
+<span class="s0">} 
+</span>
+</pre>
+</body>
+</html>

@@ -17,6 +17,7 @@ object DBArticleTable : Table<DBArticleEntity>("articles") {
     val publishDate = varchar("publish_date").bindTo { it.publishDate }
     val categoryId = int("category_id").bindTo { it.categoryId }
     val imagePath = varchar("image_path").bindTo { it.imagePath }
+    val contentPreview= varchar("content_preview").bindTo { it.contentPreview }
 }
 
 /**
@@ -28,6 +29,7 @@ interface DBArticleEntity : Entity<DBArticleEntity> {
     val id: Int
     val title: String
     val content: String
+    val contentPreview:String
     val publishDate: String
     val categoryId: Int
     val imagePath: String
@@ -41,6 +43,7 @@ fun DBArticleEntity.toArticle(): Article {
         id = id,
         title = title,
         content = content,
+        contentPreview=contentPreview,
         publishDate = publishDate,
         categoryId = categoryId,
         imagePath = imagePath
