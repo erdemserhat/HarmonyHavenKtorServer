@@ -24,6 +24,7 @@ class ArticleRepository : ArticleRepositoryContract {
             id = id,
             title = title,
             content = content,
+            contentPreview = contentPreview,
             publishDate = publishDate,
             categoryId = categoryId,
             imagePath = imagePath
