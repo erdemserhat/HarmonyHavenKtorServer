@@ -5,7 +5,11 @@ import com.erdemserhat.romote.repository.article.ArticleRepository
 import com.erdemserhat.romote.repository.article.ArticleRepositoryContract
 import com.erdemserhat.romote.repository.article_category.ArticleCategoryRepository
 import com.erdemserhat.romote.repository.article_category.ArticleCategoryRepositoryContract
+import com.erdemserhat.romote.repository.notification.NotificationRepository
+import com.erdemserhat.romote.repository.notification.NotificationRepositoryContract
 import com.erdemserhat.romote.repository.quote.QuoteRepository
+import com.erdemserhat.romote.repository.quote.QuoteRepositoryContract
+import com.erdemserhat.romote.repository.quote_category.QuoteCategoryContract
 import com.erdemserhat.romote.repository.quote_category.QuoteCategoryRepository
 import com.erdemserhat.romote.repository.user.UserRepository
 import com.erdemserhat.romote.repository.user.UserRepositoryContract
@@ -35,12 +39,16 @@ object DatabaseModule {
         ArticleRepository()
     }
 
-    val quoteRepository:QuoteRepository by lazy {
+    val quoteRepository: QuoteRepositoryContract by lazy {
         QuoteRepository()
     }
 
-    val quoteCategoryRepository:QuoteCategoryRepository by lazy {
+    val quoteCategoryRepository: QuoteCategoryContract by lazy {
         QuoteCategoryRepository()
+    }
+
+    val notificationRepository: NotificationRepositoryContract by lazy {
+        NotificationRepository()
     }
 
     /**

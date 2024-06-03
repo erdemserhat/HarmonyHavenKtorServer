@@ -15,7 +15,9 @@ import com.erdemserhat.routes.quote.v1.quote.deleteQuoteV1
 import com.erdemserhat.routes.quote.v1.quote.getQuotesByCategoryV1
 import com.erdemserhat.routes.quote.v1.quote.updateQuoteV1
 import com.erdemserhat.routes.user.*
+import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
@@ -75,6 +77,15 @@ fun Route.versionedApiRoutes() {
         deleteQuoteCategoryV1()
         getQuoteCategoryV1()
         updateQuoteCategoryV1()
+
+        authenticate {
+            get("check-auth-status") {
+                call.respond(
+                    status = HttpStatusCode.OK,
+                    message = "ok"
+                )
+            }
+        }
 
     }
 
