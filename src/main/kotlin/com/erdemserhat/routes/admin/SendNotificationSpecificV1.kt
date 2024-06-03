@@ -1,6 +1,8 @@
 package com.erdemserhat.routes.admin
 
 import com.erdemserhat.dto.requests.*
+import com.erdemserhat.models.Notification
+import com.erdemserhat.service.di.DatabaseModule
 import com.google.firebase.messaging.FirebaseMessaging
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -13,7 +15,7 @@ import org.jetbrains.exposed.sql.not
 
 @OptIn(DelicateCoroutinesApi::class)
 fun Route.sendNotificationSpecificV1() {
-    authenticate {
+    //authenticate {
         route("/notification/send-specific") {
             post {
                 val notifications = call.receiveNullable<SendNotificationDto>() ?: run {
@@ -22,7 +24,6 @@ fun Route.sendNotificationSpecificV1() {
                     return@post
                 }
 
-                // Asenkron olarak işlem yapmak için bir coroutine başlat
                 GlobalScope.launch {
                     val fcmNotification = notifications.notification
                     val deferreds = notifications.emails.map { email ->
@@ -43,6 +44,6 @@ fun Route.sendNotificationSpecificV1() {
 
 
         }
-    }
+   // }
 
 }

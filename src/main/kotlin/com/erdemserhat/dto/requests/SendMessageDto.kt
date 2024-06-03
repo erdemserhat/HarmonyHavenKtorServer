@@ -48,6 +48,7 @@ fun SendNotificationGeneralDto.toMessage(): Message {
 
 fun SendNotificationSpecific.toFcmMessage(): Message {
     val user = DatabaseModule.userRepository.getUserByEmailInformation(email)!!
+    val userId = user.id
     val specializedTitle =
         notification.title
             .replace("*name", user.name)
@@ -57,6 +58,19 @@ fun SendNotificationSpecific.toFcmMessage(): Message {
         notification.body
             .replace("*name", user.name)
             .replace("*surname", user.surname)
+
+    //save database
+    DatabaseModule.notificationRepository.addNotification(
+        com.erdemserhat.models.Notification(
+            id=0,
+            userId = userId,
+            title = specializedTitle,
+            content = specializedBody,
+            isRead = false,
+            timeStamp = System.currentTimeMillis()/1000
+
+        )
+    )
     return Message.builder()
         .setNotification(
             Notification.builder()
@@ -70,6 +84,5 @@ fun SendNotificationSpecific.toFcmMessage(): Message {
         }.build()
 
 }
-
 
 
