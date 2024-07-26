@@ -8,5 +8,6 @@ data class ArticleCategory(
     val id:Int,
     val name:String,
     val imagePath:String
-
 )
+
+

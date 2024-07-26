@@ -35,7 +35,6 @@ object FTPConfig {
         ftpClient.enterLocalPassiveMode()
         ftpClient.setFileType(FTP.BINARY_FILE_TYPE)
         ftpClient.changeWorkingDirectory(ftpDirectory)
-
         val inputStream = FileInputStream(file)
         ftpClient.storeFile(file.name, inputStream)
         inputStream.close()

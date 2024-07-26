@@ -1,5 +1,6 @@
 package com.erdemserhat.models
 
+import com.erdemserhat.dto.responses.UserInformationDto
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.util.UUID
@@ -18,6 +19,12 @@ data class User(
     val role: String = "user"
 
 )
+
+
+
+fun User.toDto(): UserInformationDto {
+    return UserInformationDto(name,email)
+}
 
 
 @Serializable

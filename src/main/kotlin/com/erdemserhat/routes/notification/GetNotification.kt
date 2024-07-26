@@ -14,7 +14,12 @@ fun Route.getNotificationV1(){
             val principal = call.principal<JWTPrincipal>()
             val email = principal?.payload?.getClaim("email")?.asString()!!
             val userId = DatabaseModule.userRepository.getUserByEmailInformation(email)!!.id
-            val notifications = DatabaseModule.notificationRepository.getNotifications(userId)
+
+            // Sayfa numarası ve boyutunu URL parametrelerinden al
+            val page = call.request.queryParameters["page"]?.toIntOrNull() ?: 1
+            val size = call.request.queryParameters["size"]?.toIntOrNull() ?: 20
+
+            val notifications = DatabaseModule.notificationRepository.getNotifications(userId,page,size)
             call.respond(
                 message = notifications,
                 status = HttpStatusCode.OK

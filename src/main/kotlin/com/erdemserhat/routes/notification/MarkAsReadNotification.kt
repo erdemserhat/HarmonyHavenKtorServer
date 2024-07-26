@@ -9,6 +9,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.markAsReadNotification() {
+    /*
     authenticate {
         patch("/mark-as-read-notification/{notificationId}") {
             val notificationId = call.parameters["notificationId"]?.toIntOrNull()
@@ -43,4 +44,6 @@ fun Route.markAsReadNotification() {
             call.respond(HttpStatusCode.OK)
         }
     }
+
+     */
 }

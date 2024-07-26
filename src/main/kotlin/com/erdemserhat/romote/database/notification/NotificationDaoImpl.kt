@@ -44,10 +44,27 @@ class NotificationDaoImpl() : NotificationDao {
 
     }
 
-    override fun getNotifications(userId: Int): List<DBNotificationEntity> {
-        return DatabaseConfig.ktormDatabase.sequenceOf(DBNotificationTable)
-            .filter { DBNotificationTable.user_id eq userId }
-            .toList()
+
+
+    override fun getNotifications(userId: Int, page: Int, size: Int): List<DBNotificationEntity> {
+        // Sayfa numarasına ve boyutuna göre offset hesapla
+        val offset = (page - 1) * size
+        println("gett")
+        // Veritabanı sorgusunu yap
+        val notifications = DatabaseConfig.ktormDatabase
+            .from(DBNotificationTable)
+            .select()
+            .where { DBNotificationTable.user_id eq userId }
+            .orderBy(DBNotificationTable.timeStamp.desc()) // Sıralama ekleyin
+            .limit(offset, size)  // Limit ve offset ile sayfalama yap
+            .map { row ->
+                println(row)  // Debug çıktısı
+                DBNotificationTable.createEntity(row)  // `DBNotificationEntity` döndürür
+            }
+
+        println("Fetched notifications: ${notifications.size}")
+
+        return notifications
     }
 
     override fun markAsRead(notificationId: Int):Boolean {

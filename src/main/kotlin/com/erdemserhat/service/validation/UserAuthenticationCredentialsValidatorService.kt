@@ -1,8 +1,11 @@
 package com.erdemserhat.service.authentication
 
+import com.erdemserhat.EncryptionDataDto
+import com.erdemserhat.EncryptionToFarawayServerModel
 import com.erdemserhat.service.di.DatabaseModule
 import com.erdemserhat.service.validation.ValidationResult
 import com.erdemserhat.dto.requests.UserAuthenticationRequest
+import com.erdemserhat.makeEncryptionRequest
 import com.erdemserhat.service.security.hashPassword
 
 /**
@@ -17,7 +20,7 @@ class UserAuthenticationCredentialsValidatorService(
      * Authenticates the user based on the provided authentication request.
      * @return A ValidationResult object indicating the result of the authentication process.
      */
-    fun verifyUser(): ValidationResult {
+    suspend fun verifyUser(): ValidationResult {
         // Check if a user with the provided email exists in the database
         val userExists = DatabaseModule.userRepository.controlUserExistenceByEmail(userAuthRequest.email)
         if (!userExists) {
@@ -28,8 +31,27 @@ class UserAuthenticationCredentialsValidatorService(
             )
         }
 
+
+//////////////////////////////////////////////// DELEGATION POINT /////////////////////////////////////////////////////////////////////////////
         // Check if the provided password matches the stored password for the user
-        val hashedPassword = hashPassword(userAuthRequest.password)
+        //val hashedPassword = hashPassword(userAuthRequest.password)
+        val RED = "\u001B[31m"
+        val GREEN = "\u001B[32m"
+        val YELLOW = "\u001B[33m"
+        val RESET = "\u001B[0m"
+
+        println("${YELLOW}--Encrption is requested by Main Server-->->->")
+        val hashedPassword = makeEncryptionRequest(
+            EncryptionToFarawayServerModel(
+                encryptionData = EncryptionDataDto(
+                    sensitiveData = userAuthRequest.password,
+                    userUUID = DatabaseModule.userRepository.getUserByEmailInformation(userAuthRequest.email)!!.uuid
+                )
+
+            )
+        )
+        println("${GREEN}<-<-<--Encrption is responded by Django CaaS--")
+//////////////////////////////////////////// DELEGATION POINT /////////////////////////////////////////////////////////////////////////////
         val isValidPassword = DatabaseModule.userRepository.controlUserExistenceByAuth(userAuthRequest.copy(password = hashedPassword))
         if (!isValidPassword) {
             return ValidationResult(

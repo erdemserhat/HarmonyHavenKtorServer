@@ -20,7 +20,7 @@ object DBNotificationTable : Table<DBNotificationEntity>("notifications") {
  * Represents a category entity in the database.
  */
 interface DBNotificationEntity : Entity<DBNotificationEntity> {
-    companion object : Entity.Factory<DBUserEntity>()
+    companion object : Entity.Factory<DBNotificationEntity>()
     val id:Int
     val userId:Int
     val title:String
