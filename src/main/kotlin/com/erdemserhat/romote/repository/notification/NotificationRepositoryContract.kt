@@ -7,6 +7,6 @@ interface NotificationRepositoryContract {
     fun addNotification(notification: Notification):Boolean
     fun deleteNotification(notificationId:Int):Boolean
     fun updateNotification(notification: Notification):Boolean
-    fun getNotifications(userId:Int):List<Notification>
+    fun getNotifications(userId: Int,page:Int,size:Int):List<Notification>
     fun markAsRead(notificationId:Int):Boolean
 }

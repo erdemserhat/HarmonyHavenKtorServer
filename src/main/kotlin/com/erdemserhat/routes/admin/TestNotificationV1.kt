@@ -18,14 +18,17 @@ fun Route.TestNotificationV1() {
 
     route("/test-notification") {
         post {
-            val request = call.receive<UserAuthenticationRequest>()
-            if(request.email=="me.serhaterdem@gmail.com" && request.password=="Erdem.3451."){
+            //val request = call.receive<UserAuthenticationRequest>()
+            if(true){
                 GlobalScope.launch(Dispatchers.IO) {
 
                     val promptList = listOf(
                         OpenAIPrompts.ABOUT_LIFE,
                         OpenAIPrompts.POSITIVE_AFFIRMATION,
-                        OpenAIPrompts.INSPIRATIONAL_QUOTE,
+                        OpenAIPrompts.QUOTE_MESSAGE,
+                        OpenAIPrompts.INFORMATION_MESSAGE
+
+
                     )
                     val randomPromptIx = (Math.random() * promptList.size).toInt()
                     val promptAnswer = OpenAIRequest(promptList[randomPromptIx]).getResult()

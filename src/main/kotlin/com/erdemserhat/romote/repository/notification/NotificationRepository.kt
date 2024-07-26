@@ -19,8 +19,8 @@ class NotificationRepository():NotificationRepositoryContract {
         return notificationDao.updateNotification(notification)
     }
 
-    override fun getNotifications(userId: Int): List<Notification> {
-        return notificationDao.getNotifications(userId).map { it.toNotification() }
+    override fun getNotifications(userId: Int,page:Int,size:Int): List<Notification> {
+        return notificationDao.getNotifications(userId,page,size).map { it.toNotification() }
     }
 
     override fun markAsRead(notificationId: Int): Boolean {

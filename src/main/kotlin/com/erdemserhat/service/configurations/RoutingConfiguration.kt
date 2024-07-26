@@ -6,18 +6,20 @@ import com.erdemserhat.routes.admin.openAIRequestV1
 import com.erdemserhat.routes.admin.sendNotificationSpecificV1
 import com.erdemserhat.routes.article.getAllArticlesV1
 import com.erdemserhat.routes.article.getArticleCategoriesV1
-import com.erdemserhat.routes.quote.v1.category.addQuoteCategoryV1
-import com.erdemserhat.routes.quote.v1.category.deleteQuoteCategoryV1
-import com.erdemserhat.routes.quote.v1.category.getQuoteCategoryV1
-import com.erdemserhat.routes.quote.v1.category.updateQuoteCategoryV1
-import com.erdemserhat.routes.quote.v1.quote.addQuoteV1
-import com.erdemserhat.routes.quote.v1.quote.deleteQuoteV1
-import com.erdemserhat.routes.quote.v1.quote.getQuotesByCategoryV1
-import com.erdemserhat.routes.quote.v1.quote.updateQuoteV1
+import com.erdemserhat.routes.quote.category.addQuoteCategoryV1
+import com.erdemserhat.routes.quote.category.deleteQuoteCategoryV1
+import com.erdemserhat.routes.quote.category.getQuoteCategoryV1
+import com.erdemserhat.routes.quote.category.updateQuoteCategoryV1
+import com.erdemserhat.routes.quote.quote.addQuoteV1
+import com.erdemserhat.routes.quote.quote.deleteQuoteV1
+import com.erdemserhat.routes.quote.quote.getQuotesByCategoryV1
+import com.erdemserhat.routes.quote.quote.updateQuoteV1
 import com.erdemserhat.routes.user.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
+import io.ktor.server.plugins.cors.routing.*
+import io.ktor.server.plugins.swagger.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
@@ -34,6 +36,32 @@ fun Application.configureRouting() {
         // Configure versioned API routes
         versionedApiRoutes()
     }
+
+
+// ...
+    routing {
+        install(CORS) {
+            anyHost() // Allow requests from any host. Replace with specific hosts in production.
+            allowMethod(HttpMethod.Options)
+            allowMethod(HttpMethod.Put)
+            allowMethod(HttpMethod.Delete)
+            allowMethod(HttpMethod.Get)
+            allowMethod(HttpMethod.Patch)
+            allowHeader(HttpHeaders.Authorization)
+            allowHeader("cart_session")
+            exposeHeader("cart_session")
+            allowHeader("MyCustomHeader")
+            allowHeader("X-Requested-With")
+            allowHeader("X-HTTP-Method-Override")
+            allowHeader("Content-Type")
+            allowHeader("Authorization")
+            allowHeader("Accept")
+            allowHeader("Access-Control-Allow-Credentials")
+            allowHeader("Accept")
+            allowHeader("Access-Control-Allow-Origin")
+        }
+        swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.yaml")
+    }
 }
 
 /**
@@ -49,6 +77,8 @@ fun Route.versionedApiRoutes() {
         updateUserV1()
         resetPasswordV1()
         fcmEnrolment()
+        getNotifications()
+        getUserInformation()
 
         // Article Routes
         getArticleCategoriesV1()

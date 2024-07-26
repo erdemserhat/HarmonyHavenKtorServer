@@ -13,13 +13,25 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
+import org.slf4j.LoggerFactory
 
 /**
  * Sets up the route for user authentication using the HTTP POST method.
  */
+val RED = "\u001B[31m"
+val GREEN = "\u001B[32m"
+val YELLOW = "\u001B[33m"
+val RESET = "\u001B[0m"
 fun Route.authenticateUserV1() {
+    val log = LoggerFactory.getLogger("com.erdemserhat")
+
+    val RED = "\u001B[31m"
+    val GREEN = "\u001B[32m"
+    val YELLOW = "\u001B[33m"
+    val RESET = "\u001B[0m"
     post("/user/authenticate") {
         val userAuth = call.receive<UserAuthenticationRequest>()
+        println("${YELLOW}Authentication Request from Client")
         try {
 
             // Initialize services
@@ -41,6 +53,7 @@ fun Route.authenticateUserV1() {
                         jwt = null
                     )
                 )
+                println("${RED}Authentication Request Result: Unsuccessfully")
                 return@post
             }
 
@@ -57,13 +70,15 @@ fun Route.authenticateUserV1() {
                         jwt = null
                     )
                 )
+                println("${RED}Authentication Request Result: Unsuccessfully")
                 return@post
             }
 
             // Generate JWT token
-            val jwt = jwtGenerator.generateJWT()
+             val jwt = jwtGenerator.generateJWT()
 
             // Respond with authentication success
+            println("${GREEN}Authentication Request Result: Successfully")
             call.respond(
                 status = HttpStatusCode.OK,
                 message = AuthenticationResponse(

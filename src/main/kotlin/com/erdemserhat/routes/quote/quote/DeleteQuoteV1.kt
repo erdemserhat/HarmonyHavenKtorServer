@@ -1,4 +1,4 @@
-package com.erdemserhat.routes.quote.v1.quote
+package com.erdemserhat.routes.quote.quote
 
 import com.erdemserhat.models.Quote
 import com.erdemserhat.service.di.DatabaseModule

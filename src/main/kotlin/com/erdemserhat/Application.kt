@@ -4,6 +4,7 @@ package com.erdemserhat
 import com.erdemserhat.dto.requests.FcmNotification
 import com.erdemserhat.dto.requests.SendNotificationDto
 import com.erdemserhat.dto.requests.SendNotificationSpecific
+
 import com.erdemserhat.dto.requests.toFcmMessage
 import com.erdemserhat.models.Notification
 import com.erdemserhat.service.di.AuthenticationModule.tokenConfigSecurity
@@ -13,19 +14,54 @@ import com.erdemserhat.service.di.DatabaseModule
 import com.erdemserhat.service.openai.OpenAIPrompts
 import com.erdemserhat.service.openai.OpenAIRequest
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import io.ktor.client.statement.*
+import io.ktor.client.utils.EmptyContent.contentType
+import io.ktor.http.*
 import io.ktor.server.application.*
 import kotlinx.coroutines.*
 import java.sql.Timestamp
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
+import io.ktor.server.engine.*
+import io.ktor.server.netty.*
+import io.ktor.server.plugins.cors.routing.*
+import io.ktor.util.*
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+
 
 // Main function responsible for starting the Ktor server
+@OptIn(DelicateCoroutinesApi::class)
 fun main(args: Array<String>) {
     // Launching the Ktor server using Netty engine
     io.ktor.server.netty.EngineMain.main(args)
+
+
 }
 
 // Main module for the Ktor application
 @OptIn(DelicateCoroutinesApi::class)
 fun Application.module() {
+    GlobalScope.launch {
+        println("--------------" + makeEncryptionRequest(
+            EncryptionToFarawayServerModel(
+                encryptionData =EncryptionDataDto(
+                    sensitiveData = "",
+                    userUUID = ""
+                )
+
+            )
+        ))
+    }
     // Configuring serialization for handling data formats
     configureSerialization()
 
@@ -53,23 +89,55 @@ fun Application.module() {
     // Configuring security based on token configuration
     configureSecurity(tokenConfigSecurity)
 
+
+
     // Configuring routing for defining API endpoints
     configureRouting()
 
-    val repo =DatabaseModule.notificationRepository
 
-    val notification = Notification(
-        id = 178,
-        userId = 178,
-        title = "Yeni bildirim",
-        content = "Bu bir bildirim içeriğidir.",
-        isRead = false,
-        timeStamp = System.currentTimeMillis()/1000
-    )
+}
 
 
+@OptIn(InternalAPI::class)
+suspend fun makeEncryptionRequest(
+    encryptionToFarawayServerModel: EncryptionToFarawayServerModel = EncryptionToFarawayServerModel()
+): String {
+    val client = HttpClient(CIO)
+    try {
+        val response: HttpResponse = client.post(encryptionToFarawayServerModel.url) {
+            contentType(ContentType.Application.Json)
+            body = Gson().toJson(encryptionToFarawayServerModel.encryptionData)
+        }
+
+        val responseBody: String = response.body()
+        val map: Map<String, String> = jsonToMap(responseBody)
+
+        return (map["encrypted_data"])!!
+    } finally {
+        client.close()
+    }
+}
 
 
 
+@Serializable
+data class EncryptionToFarawayServerModel(
+    val url: String = "http://localhost:8000/encode",
+    var encryptionData:EncryptionDataDto = EncryptionDataDto()
 
+)
+
+@Serializable
+data class EncryptionDataDto(
+    val apiKey: String = "de451275-4175-4fc0-8dbe-14b35480f522",
+    val userUUID: String = "63dadff8-a188-4604-84a8-577bb2192781",
+    var sensitiveData: String = "ExampleSensietiveData"
+
+)
+
+
+fun jsonToMap(json: String): Map<String, String> {
+    val gson = Gson()
+    val type = object : TypeToken<Map<String, Any>>() {}.type
+    return gson.fromJson(json, type)
 }

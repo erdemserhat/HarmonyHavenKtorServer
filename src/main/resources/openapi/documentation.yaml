@@ -1,0 +1,981 @@
+openapi: "3.0.3"
+info:
+  title: "harmony_haven API"
+  description: "harmony_haven API"
+  version: "1.0.0"
+servers:
+- url: "http://localhost:5000"
+paths:
+  /:
+    get:
+      description: "Default root endpoint"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Harmony Haven Server"
+  /api/v1/add-quote:
+    post:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/Quote"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /api/v1/add-quote-category:
+    post:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/CategoryRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /api/v1/api/v1/admin/delete-user:
+    delete:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/Map_String"
+        required: true
+      responses:
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "You are not allowed to use this service"
+        "422":
+          description: "Unprocessable Entity"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "User is not found in the system"
+                Example#2:
+                  value: "Invalid email format"
+                Example#3:
+                  value: "Email information must be provided to use this service"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+        "500":
+          description: "Internal Server Error <br> Handle internal server error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Internal Server Error; please check your request body and\
+                    \ try again"
+  /api/v1/articles:
+    get:
+      description: "Route to retrieve all articles"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Article"
+        "401":
+          description: "Unauthorized <br> User not authenticated, deny access"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Unauthorized access"
+  /api/v1/articles/{id}:
+    get:
+      description: "Route to get an article by ID"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Invalid ID"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ArticleResponseType"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /api/v1/articles/category/{id}:
+    get:
+      description: "Route to get articles by category ID"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "400":
+          description: "Bad Request <br> Error occurred while retrieving articles\
+            \ by category"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/ArticleResponseType"
+  /api/v1/articles/recent/{size}:
+    get:
+      description: "Route to get recent articles by specifying size"
+      parameters:
+      - name: "size"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "400":
+          description: "Bad Request <br> Error occurred while retrieving articles"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Article"
+  /api/v1/categories:
+    get:
+      description: "Route to retrieve all categories"
+      responses:
+        "200":
+          description: "OK <br> Respond with all categories from the repository"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/ArticleCategory"
+  /api/v1/check-auth-status:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "ok"
+  /api/v1/delete-quote-category/{categoryId}:
+    delete:
+      description: ""
+      parameters:
+      - name: "categoryId"
+        in: "path"
+        required: true
+        schema:
+          type: "integer"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Invalid categoryId"
+  /api/v1/delete-quote/{quoteId}:
+    delete:
+      description: ""
+      parameters:
+      - name: "quoteId"
+        in: "path"
+        required: true
+        schema:
+          type: "integer"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Invalid quoteId"
+  /api/v1/get-quote-by-category/{categoryId}:
+    get:
+      description: ""
+      parameters:
+      - name: "categoryId"
+        in: "path"
+        required: true
+        schema:
+          type: "integer"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Quote"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Invalid categoryId"
+  /api/v1/get-quote-category:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/QuoteCategory"
+  /api/v1/notification/send-specific:
+    post:
+      description: ""
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /api/v1/openai-request:
+    post:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/OpenAIPromptDto"
+        required: true
+      responses:
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "You are not allowed to use this service"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /api/v1/test-notification:
+    post:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Not Sent :("
+                Example#2:
+                  value: "Sent :)"
+  /api/v1/update-quote:
+    patch:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/Quote"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /api/v1/update-quote-category:
+    patch:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/QuoteCategory"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /api/v1/user/authenticate:
+    post:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/UserAuthenticationRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK <br> Respond with authentication success"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AuthenticationResponse"
+              examples:
+                Example#1:
+                  description: ""
+                  value:
+                    formValidationResult: "null"
+                    credentialsValidationResult: "null"
+                    isAuthenticated: true
+                    jwt: "null"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /api/v1/user/delete:
+    delete:
+      description: ""
+      responses:
+        "200":
+          description: "OK <br> If deletion is successful, respond with a success\
+            \ message"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "User successfully deleted."
+        "404":
+          description: "Not Found <br> If user does not exist, respond with a not\
+            \ found status code"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "User with this email does not exist."
+        "500":
+          description: "Internal Server Error <br> If an unexpected error occurs,\
+            \ respond with an internal server error status code"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /api/v1/user/fcm-enrolment:
+    post:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/FcmSetupDto"
+        required: true
+      responses:
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Please try again, an error occurred"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+  /api/v1/user/forgot-password/auth:
+    post:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/ForgotPasswordAuthModel"
+        required: true
+      responses:
+        "422":
+          description: "Unprocessable Entity"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PasswordResetAuthenticateResponse"
+              examples:
+                Example#1:
+                  description: ""
+                  value:
+                    result: false
+                    message: "null"
+                    uuid: "-"
+        "429":
+          description: "Too Many Requests"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PasswordResetAuthenticateResponse"
+              examples:
+                Example#1:
+                  description: ""
+                  value:
+                    result: false
+                    message: "null"
+                    uuid: "-"
+        "202":
+          description: "Accepted"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PasswordResetAuthenticateResponse"
+              examples:
+                Example#1:
+                  description: ""
+                  value:
+                    result: true
+                    message: "Successfully"
+                    uuid: "-"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PasswordResetAuthenticateResponse"
+              examples:
+                Example#1:
+                  description: ""
+                  value:
+                    result: false
+                    message: "null"
+                    uuid: "-"
+  /api/v1/user/forgot-password/mailer:
+    post:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/ForgotPasswordMailerModel"
+        required: true
+      responses:
+        "422":
+          description: "Unprocessable Entity"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PasswordResetMailerResponse"
+              examples:
+                Example#1:
+                  description: ""
+                  value:
+                    result: false
+                    message: "null"
+                Example#2:
+                  description: ""
+                  value:
+                    result: false
+                    message: "There is no user with this email"
+                Example#3:
+                  description: ""
+                  value:
+                    result: false
+                    message: "Invalid email format."
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PasswordResetMailerResponse"
+              examples:
+                Example#1:
+                  description: ""
+                  value:
+                    result: true
+                    message: "null"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PasswordResetMailerResponse"
+              examples:
+                Example#1:
+                  description: ""
+                  value:
+                    result: false
+                    message: "Internal Server Error"
+  /api/v1/user/forgot-password/reset-password:
+    patch:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/ForgotPasswordResetModel"
+        required: true
+      responses:
+        "422":
+          description: "Unprocessable Entity"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PasswordResetFinalResponse"
+              examples:
+                Example#1:
+                  description: ""
+                  value:
+                    result: false
+                    message: "null"
+                Example#2:
+                  description: ""
+                  value:
+                    result: false
+                    message: "null"
+                Example#3:
+                  description: ""
+                  value:
+                    result: false
+                    message: "Invalid password request uuid format"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PasswordResetFinalResponse"
+              examples:
+                Example#1:
+                  description: ""
+                  value:
+                    result: true
+                    message: "Password changed successfully."
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PasswordResetFinalResponse"
+              examples:
+                Example#1:
+                  description: ""
+                  value:
+                    result: false
+                    message: "Internal Server Error"
+  /api/v1/user/register:
+    post:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/UserInformationSchema"
+        required: true
+      responses:
+        "422":
+          description: "Unprocessable Entity <br> Respond with unprocessable entity\
+            \ status code and validation result"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/RegistrationResponse"
+              examples:
+                Example#1:
+                  description: ""
+                  value:
+                    formValidationResult: "null"
+                    isRegistered: false
+        "201":
+          description: "Created <br> Respond with a success message"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/RegistrationResponse"
+              examples:
+                Example#1:
+                  description: ""
+                  value:
+                    formValidationResult: "null"
+                    isRegistered: true
+        "500":
+          description: "Internal Server Error <br> Respond with internal server error\
+            \ status code and error message"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /api/v1/user/update:
+    patch:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/UserInformationSchema"
+        required: true
+      responses:
+        "422":
+          description: "Unprocessable Entity"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "There is a problem with your session"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  description: ""
+                  value:
+                    result: true
+                    message: ""
+                Example#2:
+                  value: "Information is updated..."
+components:
+  schemas:
+    Quote:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        quote:
+          type: "string"
+        writer:
+          type: "string"
+        categoryId:
+          type: "integer"
+          format: "int32"
+      required:
+      - "quote"
+      - "writer"
+    CategoryRequest:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+      required:
+      - "name"
+    Map:
+      type: "object"
+      properties: {}
+    Map_String:
+      type: "string"
+    Article:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        title:
+          type: "string"
+        content:
+          type: "string"
+        contentPreview:
+          type: "string"
+        publishDate:
+          type: "string"
+        categoryId:
+          type: "integer"
+          format: "int32"
+        imagePath:
+          type: "string"
+      required:
+      - "title"
+      - "content"
+      - "contentPreview"
+      - "publishDate"
+      - "imagePath"
+    ArticleResponseType:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        title:
+          type: "string"
+        content:
+          type: "string"
+        publishDate:
+          type: "string"
+        category:
+          type: "string"
+        imagePath:
+          type: "string"
+      required:
+      - "title"
+      - "content"
+      - "publishDate"
+      - "imagePath"
+    ArticleCategory:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        name:
+          type: "string"
+        imagePath:
+          type: "string"
+      required:
+      - "name"
+      - "imagePath"
+    QuoteCategory:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        name:
+          type: "string"
+      required:
+      - "name"
+    OpenAIPromptDto:
+      type: "object"
+      properties:
+        prompt:
+          type: "string"
+      required:
+      - "prompt"
+    UserAuthenticationRequest:
+      type: "object"
+      properties:
+        email:
+          type: "string"
+        password:
+          type: "string"
+      required:
+      - "email"
+      - "password"
+    ValidationResult:
+      type: "object"
+      properties:
+        errorMessage:
+          type: "string"
+        errorCode:
+          type: "integer"
+          format: "int32"
+      required:
+      - "errorMessage"
+    AuthenticationResponse:
+      type: "object"
+      properties:
+        formValidationResult:
+          $ref: "#/components/schemas/ValidationResult"
+        credentialsValidationResult:
+          $ref: "#/components/schemas/ValidationResult"
+        jwt:
+          type: "string"
+      required:
+      - "formValidationResult"
+    FcmSetupDto:
+      type: "object"
+      properties:
+        fcmID:
+          type: "string"
+      required:
+      - "fcmID"
+    ForgotPasswordAuthModel:
+      type: "object"
+      properties:
+        code:
+          type: "string"
+        email:
+          type: "string"
+      required:
+      - "code"
+      - "email"
+    PasswordResetAuthenticateResponse:
+      type: "object"
+      properties:
+        result:
+          type: "boolean"
+        message:
+          type: "string"
+        uuid:
+          type: "string"
+      required:
+      - "message"
+      - "uuid"
+    ForgotPasswordMailerModel:
+      type: "object"
+      properties:
+        email:
+          type: "string"
+      required:
+      - "email"
+    PasswordResetMailerResponse:
+      type: "object"
+      properties:
+        result:
+          type: "boolean"
+        message:
+          type: "string"
+      required:
+      - "message"
+    ForgotPasswordResetModel:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+        password:
+          type: "string"
+      required:
+      - "uuid"
+      - "password"
+    PasswordResetFinalResponse:
+      type: "object"
+      properties:
+        result:
+          type: "boolean"
+        message:
+          type: "string"
+      required:
+      - "message"
+    UserInformationSchema:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        surname:
+          type: "string"
+        email:
+          type: "string"
+        password:
+          type: "string"
+        gender:
+          type: "string"
+      required:
+      - "name"
+      - "surname"
+      - "email"
+      - "password"
+      - "gender"
+    RegistrationResponse:
+      type: "object"
+      properties:
+        formValidationResult:
+          $ref: "#/components/schemas/ValidationResult"
+      required:
+      - "formValidationResult"
+    RequestResult:
+      type: "object"
+      properties:
+        result:
+          type: "boolean"
+        message:
+          type: "string"
+      required:
+      - "message"

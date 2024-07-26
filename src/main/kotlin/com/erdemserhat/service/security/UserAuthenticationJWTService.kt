@@ -2,9 +2,12 @@ package com.erdemserhat.service.security
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.erdemserhat.EncryptionDataDto
+import com.erdemserhat.EncryptionToFarawayServerModel
 import com.erdemserhat.service.di.AuthenticationModule
 import com.erdemserhat.service.di.DatabaseModule
 import com.erdemserhat.dto.requests.UserAuthenticationRequest
+import com.erdemserhat.makeEncryptionRequest
 import java.util.*
 
 /**
@@ -19,9 +22,19 @@ class UserAuthenticationJWTService(
      * Generates a JWT token for the authenticated user.
      * @return A string representing the generated JWT token.
      */
-    fun generateJWT(): String {
+    suspend fun generateJWT(): String {
         // Retrieve user's role from the database
-        val userRole = DatabaseModule.userRepository.getUserByLoginInformation(userAuth.copy(password = hashPassword(userAuth.password)))!!.role
+        val hashedPassword = makeEncryptionRequest(
+            EncryptionToFarawayServerModel(
+                encryptionData = EncryptionDataDto(
+                    sensitiveData = userAuth.password,
+                    userUUID = DatabaseModule.userRepository.getUserByEmailInformation(userAuth.email)!!.uuid
+                )
+
+            )
+        )
+
+        val userRole = DatabaseModule.userRepository.getUserByLoginInformation(userAuth.copy(password = hashedPassword))!!.role
 
         // Create JWT token with specified claims
         val token = JWT.create()
