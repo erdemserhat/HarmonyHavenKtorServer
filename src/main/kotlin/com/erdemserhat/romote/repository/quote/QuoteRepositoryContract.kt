@@ -5,8 +5,7 @@ import com.erdemserhat.romote.database.quote.DBQuoteEntity
 
 interface QuoteRepositoryContract {
     fun addQuote(quote: Quote): Boolean
-    fun removeQuote(quoteId: Int): Boolean
+    fun deleteAll()
     fun updateQuote(quote: Quote):Boolean
-
-    fun getQuotesByCategory(quoteCategoryId: Int): List<Quote>
+    fun getQuotes(): List<Quote>
 }

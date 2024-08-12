@@ -22,8 +22,15 @@ class UserInformationValidatorService(
      *
      */
     fun validateForm(
-        byCheckingExistenceOfUser: Boolean = true
+        byCheckingExistenceOfUser: Boolean = true,
+        shouldOnlyValidatePassword:Boolean = false
     ): ValidationResult {
+
+        if (shouldOnlyValidatePassword){
+            return validatePassword(shouldOnlyValidatePassword = true)
+
+        }
+
         // Validate name
         if (user.name.length < 2)
             return ValidationResult(
@@ -85,7 +92,7 @@ class UserInformationValidatorService(
      * @return A ValidationResult indicating whether the password meets the criteria or not,
      * along with an error message if validation fails.
      */
-    private fun validatePassword(): ValidationResult {
+    private fun validatePassword(shouldOnlyValidatePassword:Boolean = false): ValidationResult {
         // Validate password length
         if (user.password.length < 8)
             return ValidationResult(
@@ -103,6 +110,11 @@ class UserInformationValidatorService(
                 errorMessage = "Password must contain at least one uppercase letter, one lowercase letter, and one digit.",
                 errorCode = 208
             )
+
+        if(shouldOnlyValidatePassword)
+            return ValidationResult()
+
+
 
         // Check if password contains name, surname, or email
         val lowerCaseName = user.name.lowercase(Locale.getDefault())

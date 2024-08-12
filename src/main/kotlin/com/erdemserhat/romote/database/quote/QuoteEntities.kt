@@ -15,7 +15,6 @@ object DBQuoteTable : Table<DBQuoteEntity>("quotes") {
     val id = int("id").primaryKey().bindTo { it.id }
     val quote = text("quote").bindTo { it.quote }
     val writer = varchar("writer").bindTo { it.writer }
-    val category_id = int("category_id").bindTo { it.categoryId }
 
 }
 
@@ -24,6 +23,6 @@ interface DBQuoteEntity : Entity<DBQuoteEntity> {
     val id: Int
     val quote: String
     val writer: String
-    val categoryId:Int
+
 }
 
