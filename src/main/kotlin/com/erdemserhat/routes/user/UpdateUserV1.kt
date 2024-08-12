@@ -1,11 +1,21 @@
 package com.erdemserhat.routes.user
 
+import com.erdemserhat.EncryptionDataDto
+import com.erdemserhat.EncryptionToFarawayServerModel
+import com.erdemserhat.dto.requests.UserAuthenticationRequest
 import com.erdemserhat.service.di.DatabaseModule.userRepository
 import com.erdemserhat.service.validation.validateIfEmailChanged
 import com.erdemserhat.models.UserInformationSchema
 import com.erdemserhat.dto.responses.RequestResult
+import com.erdemserhat.dto.responses.UpdateNameDto
+import com.erdemserhat.dto.responses.UpdatePasswordDto
+import com.erdemserhat.makeEncryptionRequest
 import com.erdemserhat.models.toUser
+import com.erdemserhat.service.authentication.UserAuthenticationCredentialsValidatorService
+import com.erdemserhat.service.di.DatabaseModule
+import com.erdemserhat.service.validation.UserAuthenticationInputValidatorService
 import com.erdemserhat.service.validation.UserInformationValidatorService
+import com.erdemserhat.service.validation.ValidationResult
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -70,6 +80,120 @@ fun Route.updateUserV1() {
 
 
         }
+
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    authenticate {
+        patch("/user/update-password") {
+
+            val principal = call.principal<JWTPrincipal>()
+            val email = principal?.payload?.getClaim("email")?.asString()
+            val user = userRepository.getUserByEmailInformation(email!!)
+            val newPasswordData = call.receive<UpdatePasswordDto>()
+            val credentialValidator = UserAuthenticationCredentialsValidatorService(UserAuthenticationRequest(
+                email = email,
+                password = newPasswordData.currentPassword
+            ))
+
+            val newPasswordValidationResult = UserInformationValidatorService(
+                user = UserInformationSchema(password = newPasswordData.newPassword)
+            ).validateForm(shouldOnlyValidatePassword = true)
+
+            println(newPasswordData.newPassword)
+            println(newPasswordValidationResult.toString())
+
+            val validationResult = credentialValidator.verifyUser()
+            if(!validationResult.isValid){
+                call.respond(
+                    status = HttpStatusCode.Unauthorized,
+                    message = ValidationResult(
+                        isValid = false,
+                        errorMessage = validationResult.errorMessage,
+                        errorCode = 0
+
+                    )
+                )
+                return@patch
+
+
+            }
+
+            if(!newPasswordValidationResult.isValid){
+                call.respond(
+                    status = HttpStatusCode.Unauthorized,
+                    message = newPasswordValidationResult
+
+                    )
+
+                return@patch
+
+
+            }
+
+            val hashedPassword = makeEncryptionRequest(
+            EncryptionToFarawayServerModel(
+                encryptionData = EncryptionDataDto(
+                    sensitiveData = newPasswordData.newPassword,
+                    userUUID = user!!.uuid
+                )
+            )
+        )
+            println(hashedPassword)
+
+            userRepository.updateUserPasswordByEmail(email,hashedPassword)
+
+            call.respond(
+                status = HttpStatusCode.OK,
+                message = ValidationResult()
+            )
+
+
+
+
+
+
+
+
+        }
+
+
+
+
+        patch("user/update-name") {
+            val principal = call.principal<JWTPrincipal>()
+            val email = principal?.payload?.getClaim("email")?.asString()
+            val user = userRepository.getUserByEmailInformation(email!!)
+            val newName = call.receive<UpdateNameDto>().name
+            userRepository.updateUserByEmail(email, newUser = user!!.copy(name = newName))
+
+            call.respond(
+                status = HttpStatusCode.OK,
+                message = ValidationResult()
+            )
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     }
 

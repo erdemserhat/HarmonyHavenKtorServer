@@ -1,5 +1,7 @@
 package com.erdemserhat.routes.user
 
+import com.erdemserhat.EncryptionDataDto
+import com.erdemserhat.EncryptionToFarawayServerModel
 import com.erdemserhat.service.di.DatabaseModule.userRepository
 import com.erdemserhat.service.pwrservice.PasswordResetRequestsPool
 import com.erdemserhat.service.validation.*
@@ -9,6 +11,8 @@ import com.erdemserhat.dto.requests.ForgotPasswordResetModel
 import com.erdemserhat.dto.requests.UserAuthenticationRequest
 import com.erdemserhat.dto.responses.PasswordResetResponse
 import com.erdemserhat.dto.responses.RequestResultUUID
+import com.erdemserhat.makeEncryptionRequest
+import com.erdemserhat.service.di.DatabaseModule
 import com.erdemserhat.service.security.hashPassword
 import com.erdemserhat.util.isUUIDFormat
 import io.ktor.http.*
@@ -189,7 +193,18 @@ fun Route.resetPasswordV1() {
                 }
 
                 val userEmail = provideEmailOfRequesterIfExistResult.message
-                userRepository.updateUserPasswordByEmail(userEmail, hashPassword(response.password))
+
+                val hashedPassword = makeEncryptionRequest(
+                    EncryptionToFarawayServerModel(
+                        encryptionData = EncryptionDataDto(
+                            sensitiveData =response.password,
+                            userUUID =  userRepository.getUserByEmailInformation(email = userEmail)!!.uuid
+                        )
+
+                    )
+                )
+
+                userRepository.updateUserPasswordByEmail(userEmail, hashedPassword)
 
                 PasswordResetRequestsPool.usePermission(userEmail)
                 call.respond(

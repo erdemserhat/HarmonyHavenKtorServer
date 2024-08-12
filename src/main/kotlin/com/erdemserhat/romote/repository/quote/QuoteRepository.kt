@@ -15,23 +15,23 @@ class QuoteRepository() : QuoteRepositoryContract {
         return quoteDao.addQuote(quote) > 0
     }
 
-    override fun removeQuote(quoteId: Int): Boolean {
-        return quoteDao.removeQuote(quoteId) > 0
+    override fun deleteAll() {
+         quoteDao.deleteAll()
     }
 
     override fun updateQuote(quote: Quote): Boolean {
         return quoteDao.updateQuote(quote)
     }
 
-    override fun getQuotesByCategory(quoteCategoryId: Int): List<Quote> {
-        return quoteDao.getQuotesByCategory(quoteCategoryId).map { it.toQuote() }
+    override fun getQuotes(): List<Quote> {
+        return quoteDao.getCategories().map { it.toQuote() }
 
     }
 }
 
 fun DBQuoteEntity.toQuote(): Quote {
     return Quote(
-        id, quote, writer, categoryId
+        id, quote, writer
     )
 
 }

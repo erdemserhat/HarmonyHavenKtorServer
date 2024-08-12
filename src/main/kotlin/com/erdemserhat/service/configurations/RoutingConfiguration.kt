@@ -6,14 +6,10 @@ import com.erdemserhat.routes.admin.openAIRequestV1
 import com.erdemserhat.routes.admin.sendNotificationSpecificV1
 import com.erdemserhat.routes.article.getAllArticlesV1
 import com.erdemserhat.routes.article.getArticleCategoriesV1
-import com.erdemserhat.routes.quote.category.addQuoteCategoryV1
-import com.erdemserhat.routes.quote.category.deleteQuoteCategoryV1
-import com.erdemserhat.routes.quote.category.getQuoteCategoryV1
-import com.erdemserhat.routes.quote.category.updateQuoteCategoryV1
-import com.erdemserhat.routes.quote.quote.addQuoteV1
-import com.erdemserhat.routes.quote.quote.deleteQuoteV1
-import com.erdemserhat.routes.quote.quote.getQuotesByCategoryV1
-import com.erdemserhat.routes.quote.quote.updateQuoteV1
+import com.erdemserhat.routes.quote.addQuoteV1
+import com.erdemserhat.routes.quote.deleteQuotes
+import com.erdemserhat.routes.quote.getQuotes
+import com.erdemserhat.routes.quote.updateQuoteV1
 import com.erdemserhat.routes.user.*
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -98,15 +94,11 @@ fun Route.versionedApiRoutes() {
 
         //Quotes routes
         addQuoteV1()
-        deleteQuoteV1()
-        getQuotesByCategoryV1()
+        deleteQuotes()
+        getQuotes()
         updateQuoteV1()
 
         //quotes category
-        addQuoteCategoryV1()
-        deleteQuoteCategoryV1()
-        getQuoteCategoryV1()
-        updateQuoteCategoryV1()
 
         authenticate {
             get("check-auth-status") {

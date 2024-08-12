@@ -29,11 +29,11 @@ fun User.toDto(): UserInformationDto {
 
 @Serializable
 class UserInformationSchema(
-    val name: String,
-    val surname: String,
-    val email: String,
+    val name: String ="",
+    val surname: String ="",
+    val email: String ="",
     val password: String,
-    val gender: String,
+    val gender: String="",
 )
 
 
