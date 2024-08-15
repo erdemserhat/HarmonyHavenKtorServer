@@ -31,6 +31,7 @@ fun Route.getAllArticlesV1() {
 
     // Route to get an article by ID
     get("articles/{id}") {
+        println("worked")
         // Retrieve article ID from path parameters
         val id = call.parameters["id"] ?: return@get call.respond(HttpStatusCode.BadRequest, "Invalid ID")
         // Retrieve article from repository

@@ -6,7 +6,7 @@ import com.erdemserhat.util.RandomNumberGenerator.Companion.generateRandomAuthCo
 import kotlinx.coroutines.DelicateCoroutinesApi
 
 /**
- * Service responsible for password reset functionality.
+ * Şifre sıfırlama işlevselliği için sorumlu hizmet.
  */
 @OptIn(DelicateCoroutinesApi::class)
 class PasswordResetService {
@@ -14,78 +14,76 @@ class PasswordResetService {
     private var code: String = ""
 
     /**
-     * Creates a password reset request for the given email.
+     * Verilen e-posta adresi için şifre sıfırlama talebi oluşturur.
      */
     fun createRequest(email: String): RequestResult {
-        // Generate a random authentication code
+        // Rastgele bir kimlik doğrulama kodu oluştur
         code = generateRandomAuthCode(6)
 
-        // Remove expired requests from the pool
+        // Havuzdan süresi dolmuş talepleri kaldır
         PasswordResetRequestsPool.removeExpiredRequests()
 
-        // Check if there is already an active request with this email
+        // Bu e-posta ile zaten aktif bir talep olup olmadığını kontrol et
         val isAlreadyRequested = PasswordResetRequestsPool.isAlreadyRequested(email)
         if (isAlreadyRequested) {
             return RequestResult(
                 false,
-                "An active request with this email is already in progress. " +
-                        "Please wait a few minutes and try again."
+                "Bu e-posta ile zaten aktif bir talep var. Lütfen birkaç dakika bekleyin ve tekrar deneyin."
             )
         }
 
-        // Send password reset mail
+        // Şifre sıfırlama maili gönder
         sendPasswordResetMail(email, code)
 
-        // Add the candidate reset request to the pool
+        // Aday sıfırlama talebini havuza ekle
         PasswordResetRequestsPool.addCandidateResetRequest(CandidatePasswordResetRequest(code, email))
 
         return RequestResult(
             true,
-            "An email has been sent to $email address."
+            "$email adresine bir e-posta gönderildi."
         )
     }
 
     /**
-     * Authenticates a password reset request.
+     * Şifre sıfırlama talebini doğrular.
      */
     fun authenticateRequest(email: String, code: String): RequestResult {
-        // Get the reset request from the pool
+        // Havuzdan sıfırlama talebini al
         val claim = PasswordResetRequestsPool.getRequestIfExist(email)
 
-        // If there is no pending request with this email, return an error
+        // Bu e-posta ile bekleyen bir talep yoksa, hata döndür
         if (claim == null) {
             return RequestResult(
                 false,
-                message = "There is no pending request with this email. Please create one."
+                "Bu e-posta ile bekleyen bir talep bulunmuyor. Lütfen yeni bir talep oluşturun."
             )
         }
 
-        // If the request is expired, return an error
+        // Talep süresi dolmuşsa, hata döndür
         if (claim.isExpired) {
             return RequestResult(
                 false,
-                message = "Your request is expired. Please enter the code within the specified time."
+                "Talebiniz süresi dolmuş. Lütfen kodu belirtilen süre içinde girin."
             )
         }
 
-        // If the code is invalid, increment the attempt count and return an error
+        // Kod geçersizse, deneme sayısını artır ve hata döndür
         if (claim.code != code) {
             claim.incrementAttempt()
             if (claim.attempts > 3) {
                 PasswordResetRequestsPool.removeExpiredRequests()
                 return RequestResult(
                     false,
-                    message = "You have entered the wrong code 3 times. " +
-                            "Please create a new request for security reasons."
+                    "Yanlış kodu 3 kez girdiniz. Güvenlik nedenleriyle yeni bir talep oluşturun."
                 )
             }
             return RequestResult(
                 false,
-                message = "Invalid code."
+                "Geçersiz kod."
             )
         }
 
-        // If authentication is successful, return success
+        // Doğrulama başarılıysa, başarı döndür
         return RequestResult(true)
     }
 }
