@@ -1,7 +1,7 @@
 package com.erdemserhat.service.configurations
 
-import com.erdemserhat.romote.ftp.FTPConfig
-import com.erdemserhat.romote.ftp.FTPModel
+import com.erdemserhat.data.ftp.FTPConfig
+import com.erdemserhat.data.ftp.FTPModel
 import io.ktor.server.application.*
 
 /**

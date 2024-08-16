@@ -1,6 +1,6 @@
 package com.erdemserhat.service.pwrservice
 
-import com.erdemserhat.romote.mail.sendPasswordResetMail
+import com.erdemserhat.data.mail.sendPasswordResetMail
 import com.erdemserhat.dto.responses.RequestResult
 import com.erdemserhat.util.RandomNumberGenerator.Companion.generateRandomAuthCode
 import kotlinx.coroutines.DelicateCoroutinesApi

@@ -13,10 +13,11 @@ data class Notification(
     val title:String,
     val content:String,
     val isRead:Boolean,
-    val timeStamp:Long
+    val timeStamp:Long,
+    val screenCode:String
 )
 
 
 fun Notification.toDto(): NotificationDto {
-    return NotificationDto(id,title,content,timeStamp)
+    return NotificationDto(id,title,content,timeStamp,screenCode)
 }

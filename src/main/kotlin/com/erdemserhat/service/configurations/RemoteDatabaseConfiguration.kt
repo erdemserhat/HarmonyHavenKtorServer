@@ -1,7 +1,7 @@
 package com.erdemserhat.service.configurations
 
-import com.erdemserhat.romote.database.DatabaseConfig
-import com.erdemserhat.romote.database.DatabaseModel
+import com.erdemserhat.data.database.DatabaseConfig
+import com.erdemserhat.data.database.DatabaseModel
 import io.ktor.server.application.*
 
 /**

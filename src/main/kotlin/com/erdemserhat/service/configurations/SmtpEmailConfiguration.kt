@@ -1,7 +1,7 @@
 package com.erdemserhat.service.configurations
 
-import com.erdemserhat.romote.mail.EmailConfig
-import com.erdemserhat.romote.mail.SMTPModel
+import com.erdemserhat.data.mail.EmailConfig
+import com.erdemserhat.data.mail.SMTPModel
 import io.ktor.server.application.*
 
 /**

@@ -70,7 +70,8 @@ fun SendNotificationSpecific.toFcmMessage(): Message {
             title = specializedTitle,
             content = specializedBody,
             isRead = false,
-            timeStamp = System.currentTimeMillis() / 1000
+            timeStamp = System.currentTimeMillis() / 1000,
+            screenCode = notification.screen
         )
     )
 
