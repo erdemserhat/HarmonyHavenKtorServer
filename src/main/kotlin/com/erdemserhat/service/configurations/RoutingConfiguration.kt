@@ -1,9 +1,6 @@
 package com.erdemserhat.service.configurations
 
-import com.erdemserhat.routes.admin.TestNotificationV1
-import com.erdemserhat.routes.admin.deleteUserAdminV1
-import com.erdemserhat.routes.admin.openAIRequestV1
-import com.erdemserhat.routes.admin.sendNotificationSpecificV1
+import com.erdemserhat.routes.admin.*
 import com.erdemserhat.routes.article.getAllArticlesV1
 import com.erdemserhat.routes.article.getArticleCategoriesV1
 import com.erdemserhat.routes.quote.addQuoteV1
@@ -82,14 +79,15 @@ fun Route.versionedApiRoutes() {
 
         // Firebase Notification Service Routes
         sendNotificationSpecificV1()
+        sendNotificationGeneralV1()
 
         // Admin Routes
         deleteUserAdminV1()
 
 
         //openai routes
-        openAIRequestV1()
-        TestNotificationV1()
+        //openAIRequestV1()
+        //TestNotificationV1()
 
 
         //Quotes routes

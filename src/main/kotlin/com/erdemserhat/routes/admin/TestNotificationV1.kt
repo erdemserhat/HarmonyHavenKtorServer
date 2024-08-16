@@ -14,13 +14,19 @@ import io.ktor.server.routing.*
 import kotlinx.coroutines.*
 
 @OptIn(DelicateCoroutinesApi::class)
-fun Route.TestNotificationV1() {
+fun Route.testNotificationV1() {
 
-    route("/test-notification") {
+    route("/notification/send-ai") {
         post {
             //val request = call.receive<UserAuthenticationRequest>()
+
+
             if(true){
                 GlobalScope.launch(Dispatchers.IO) {
+
+
+
+
 
                     val promptList = listOf(
                         OpenAIPrompts.ABOUT_LIFE,
@@ -30,6 +36,8 @@ fun Route.TestNotificationV1() {
 
 
                     )
+
+
                     val randomPromptIx = (Math.random() * promptList.size).toInt()
                     val promptAnswer = OpenAIRequest(promptList[randomPromptIx]).getResult()
 

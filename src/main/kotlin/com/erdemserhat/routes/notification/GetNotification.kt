@@ -20,6 +20,7 @@ fun Route.getNotificationV1(){
             val size = call.request.queryParameters["size"]?.toIntOrNull() ?: 20
 
             val notifications = DatabaseModule.notificationRepository.getNotifications(userId,page,size)
+            println(notifications[0].toString())
             call.respond(
                 message = notifications,
                 status = HttpStatusCode.OK

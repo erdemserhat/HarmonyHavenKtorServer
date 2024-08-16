@@ -68,7 +68,7 @@ fun Route.resetPasswordV1() {
                 if (!userRepository.controlUserExistenceByEmail(resetPasswordRequest.email)) {
                     call.respond(
                         status = HttpStatusCode.UnprocessableEntity,
-                        message = PasswordResetMailerResponse(false, "There is no user with this email")
+                        message = PasswordResetMailerResponse(false, "Bu e posta adresi ile bağlantılı bir hesap bulamadık")
                     )
                     return@post
 
