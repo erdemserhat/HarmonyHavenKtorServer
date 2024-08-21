@@ -5,7 +5,7 @@ import com.erdemserhat.data.database.notification.DBNotificationEntity
 import com.erdemserhat.data.database.notification.NotificationDao
 import com.erdemserhat.data.database.notification.NotificationDaoImpl
 
-class NotificationRepository():NotificationRepositoryContract {
+class NotificationRepository :NotificationRepositoryContract {
     private val notificationDao:NotificationDao = NotificationDaoImpl()
     override fun addNotification(notification: Notification): Boolean {
         return notificationDao.addNotification(notification)>0

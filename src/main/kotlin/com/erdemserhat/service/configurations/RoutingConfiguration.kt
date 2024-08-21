@@ -53,7 +53,7 @@ fun Application.configureRouting() {
             allowHeader("Accept")
             allowHeader("Access-Control-Allow-Origin")
         }
-        swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.yaml")
+       // swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.yaml")
     }
 }
 
@@ -66,7 +66,7 @@ fun Route.versionedApiRoutes() {
         // User Routes
         registerUserV1()
         authenticateUserV1()
-        deleteUserV1()
+        //deleteUserV1()
         updateUserV1()
         resetPasswordV1()
         fcmEnrolment()
@@ -82,7 +82,7 @@ fun Route.versionedApiRoutes() {
         sendNotificationGeneralV1()
 
         // Admin Routes
-        deleteUserAdminV1()
+        //deleteUserAdminV1()
 
 
         //openai routes
@@ -91,10 +91,10 @@ fun Route.versionedApiRoutes() {
 
 
         //Quotes routes
-        addQuoteV1()
-        deleteQuotes()
+        //addQuoteV1()
+        //deleteQuotes()
         getQuotes()
-        updateQuoteV1()
+        //updateQuoteV1()
 
         //quotes category
 

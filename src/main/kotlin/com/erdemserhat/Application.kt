@@ -1,11 +1,9 @@
 package com.erdemserhat
 
 // Importing necessary modules and configurations
-import com.erdemserhat.dto.requests.FcmNotification
-import com.erdemserhat.dto.requests.SendNotificationDto
-import com.erdemserhat.dto.requests.SendNotificationSpecific
+import com.erdemserhat.data.mail.sendWelcomeMail
+import com.erdemserhat.dto.requests.*
 
-import com.erdemserhat.dto.requests.toFcmMessage
 import com.erdemserhat.models.Notification
 import com.erdemserhat.service.di.AuthenticationModule.tokenConfigSecurity
 import com.erdemserhat.service.configurations.*
@@ -43,7 +41,7 @@ import kotlinx.serialization.json.Json
 @OptIn(DelicateCoroutinesApi::class)
 fun main(args: Array<String>) {
     // Launching the Ktor server using Netty engine
-    io.ktor.server.netty.EngineMain.main(args)
+    EngineMain.main(args)
 
 
 }
@@ -51,17 +49,7 @@ fun main(args: Array<String>) {
 // Main module for the Ktor application
 @OptIn(DelicateCoroutinesApi::class)
 fun Application.module() {
-    GlobalScope.launch {
-        println("--------------" + makeEncryptionRequest(
-            EncryptionToFarawayServerModel(
-                encryptionData =EncryptionDataDto(
-                    sensitiveData = "",
-                    userUUID = ""
-                )
 
-            )
-        ))
-    }
     // Configuring serialization for handling data formats
     configureSerialization()
 
@@ -70,6 +58,7 @@ fun Application.module() {
 
     // Configuring SMTP for sending emails
     configureSMTP()
+
 
     // Configuring OpenAI service for AI functionality
     configureOpenAIService()
@@ -89,13 +78,12 @@ fun Application.module() {
     // Configuring security based on token configuration
     configureSecurity(tokenConfigSecurity)
 
-
-
     // Configuring routing for defining API endpoints
     configureRouting()
 
 
 }
+
 
 
 @OptIn(InternalAPI::class)

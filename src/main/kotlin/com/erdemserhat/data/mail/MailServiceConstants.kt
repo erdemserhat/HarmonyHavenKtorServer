@@ -7,10 +7,11 @@ object MailServiceConstants {
     /**
      * Subject for the welcome email.
      */
-    val welcomeMailSubject = "Welcome to Harmony Haven"
+    val welcomeMailSubject = "Harmony Haven'a Hoş Geldin"
 
     /**
      * Subject for the password reset email.
      */
-    val resetPasswordMailSubject = "Harmony Haven: 6-Digit Password Reset Code"
+    val resetPasswordMailSubject = "Harmony Haven: 6 Haneli Şifre Sıfırlama Kodu"
+
 }

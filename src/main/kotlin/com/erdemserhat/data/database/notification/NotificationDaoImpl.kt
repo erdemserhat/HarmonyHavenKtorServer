@@ -4,7 +4,7 @@ import com.erdemserhat.models.Notification
 import com.erdemserhat.data.database.DatabaseConfig
 import org.ktorm.dsl.*
 
-class NotificationDaoImpl() : NotificationDao {
+class NotificationDaoImpl : NotificationDao {
     override fun addNotification(notification: Notification): Int {
         return DatabaseConfig.ktormDatabase.insert(DBNotificationTable) {
             set(DBNotificationTable.user_id, notification.userId)

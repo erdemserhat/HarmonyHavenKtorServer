@@ -7,7 +7,7 @@ import org.ktorm.database.Database
  */
 object DatabaseConfig {
 
-     lateinit var ktormDatabase: Database
+    lateinit var ktormDatabase: Database
 
     // Database connection parameters
     private lateinit var HOST: String
@@ -15,7 +15,7 @@ object DatabaseConfig {
     private lateinit var USERNAME: String
     private lateinit var PASSWORD: String
     private lateinit var PORT: String
-    private lateinit var USE_SSL: String
+    private var USE_SSL: Boolean = false  // Use Boolean instead of String
 
     /**
      * Initializes the database connection with the provided [DatabaseModel].
@@ -27,11 +27,12 @@ object DatabaseConfig {
         USERNAME = databaseModel.username
         PASSWORD = databaseModel.password
         PORT = databaseModel.port
-        USE_SSL = databaseModel.useSSL
+        USE_SSL = databaseModel.useSSL.toBoolean() // Convert to Boolean
 
         // Construct JDBC URL
         val JDBC_URL = "jdbc:mysql://$HOST:$PORT/$DATABASE_NAME?user=$USERNAME&password=$PASSWORD&useSSL=$USE_SSL"
-        println("JDBC URL: $JDBC_URL")
+
+
 
         // Initialize KTorm database connection
         ktormDatabase = Database.connect(JDBC_URL)

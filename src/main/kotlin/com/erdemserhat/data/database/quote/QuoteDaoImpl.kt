@@ -6,7 +6,7 @@ import org.ktorm.dsl.*
 import org.ktorm.entity.sequenceOf
 import org.ktorm.entity.toList
 
-class QuoteDaoImpl() : QuoteDao {
+class QuoteDaoImpl : QuoteDao {
     override fun addQuote(quote: Quote): Int {
         return DatabaseConfig.ktormDatabase.insert(DBQuoteTable) {
             set(DBQuoteTable.quote, quote.quote)

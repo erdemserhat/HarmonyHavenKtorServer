@@ -11,7 +11,6 @@ import com.erdemserhat.dto.requests.ForgotPasswordResetModel
 import com.erdemserhat.dto.requests.UserAuthenticationRequest
 import com.erdemserhat.dto.responses.PasswordResetResponse
 import com.erdemserhat.dto.responses.RequestResultUUID
-import com.erdemserhat.makeEncryptionRequest
 import com.erdemserhat.service.di.DatabaseModule
 import com.erdemserhat.service.security.hashPassword
 import com.erdemserhat.util.isUUIDFormat
@@ -194,15 +193,16 @@ fun Route.resetPasswordV1() {
 
                 val userEmail = provideEmailOfRequesterIfExistResult.message
 
-                val hashedPassword = makeEncryptionRequest(
-                    EncryptionToFarawayServerModel(
-                        encryptionData = EncryptionDataDto(
-                            sensitiveData =response.password,
-                            userUUID =  userRepository.getUserByEmailInformation(email = userEmail)!!.uuid
-                        )
+              //  val hashedPassword = makeEncryptionRequest(
+              //      EncryptionToFarawayServerModel(
+                //        encryptionData = EncryptionDataDto(
+                 //           sensitiveData =response.password,
+                 //           userUUID =  userRepository.getUserByEmailInformation(email = userEmail)!!.uuid
+                  //      )
+                 //   )
+              //  )
 
-                    )
-                )
+                val hashedPassword = hashPassword(response.password)
 
                 userRepository.updateUserPasswordByEmail(userEmail, hashedPassword)
 
