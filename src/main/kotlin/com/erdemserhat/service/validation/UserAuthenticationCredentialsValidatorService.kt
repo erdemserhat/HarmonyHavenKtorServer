@@ -34,11 +34,13 @@ class UserAuthenticationCredentialsValidatorService(
 
 //////////////////////////////////////////////// DELEGATION POINT /////////////////////////////////////////////////////////////////////////////
         // Check if the provided password matches the stored password for the user
-        //val hashedPassword = hashPassword(userAuthRequest.password)
+        val hashedPassword = hashPassword(userAuthRequest.password)
         val RED = "\u001B[31m"
         val GREEN = "\u001B[32m"
         val YELLOW = "\u001B[33m"
         val RESET = "\u001B[0m"
+
+        /*
 
         println("${YELLOW}--Encrption is requested by Main Server-->->->")
         val hashedPassword = makeEncryptionRequest(
@@ -50,6 +52,8 @@ class UserAuthenticationCredentialsValidatorService(
 
             )
         )
+        */
+
         println("${GREEN}<-<-<--Encrption is responded by Django CaaS--")
 //////////////////////////////////////////// DELEGATION POINT /////////////////////////////////////////////////////////////////////////////
         val isValidPassword = DatabaseModule.userRepository.controlUserExistenceByAuth(userAuthRequest.copy(password = hashedPassword))

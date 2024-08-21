@@ -9,7 +9,7 @@ import org.ktorm.dsl.update
 import org.ktorm.entity.sequenceOf
 import org.ktorm.entity.toList
 
-class QuoteCategoryDaoImpl() : QuoteCategoryDao {
+class QuoteCategoryDaoImpl : QuoteCategoryDao {
     override fun addCategory(category: QuoteCategory): Int {
         return DatabaseConfig.ktormDatabase.insert(DBQuoteCategoryTable) {
             set(DBQuoteCategoryTable.name, category.name)

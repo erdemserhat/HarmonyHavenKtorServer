@@ -18,7 +18,7 @@ fun Application.configureFTP() {
     val ftpModel = FTPModel(ftpServer, ftpUsername, ftpPassword)
 
     // Print FTP model for debugging purposes
-    println(ftpModel.toString())
+    //println(ftpModel.toString())
 
     // Initialize FTP configuration with the FTP model
     FTPConfig.init(ftpModel)

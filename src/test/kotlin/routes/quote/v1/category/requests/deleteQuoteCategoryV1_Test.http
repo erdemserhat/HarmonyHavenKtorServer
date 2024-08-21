@@ -1,4 +1,0 @@
-DELETE http://localhost:5000/api/v1/delete-quote-category/2
-Accept: application/json
-
-###

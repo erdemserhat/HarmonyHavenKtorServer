@@ -43,7 +43,7 @@ fun Application.configureTokenConfig() {
     val audience = environment.config.property("jwt.audience").getString()
 
     // Create a TokenConfig with the read configuration
-    val tokenConfig = TokenConfig(issuer, audience, 360000000, secret)
+    val tokenConfig = TokenConfig(issuer, audience, Long.MAX_VALUE, secret)
 
     // Assign the TokenConfig to the global tokenConfigSecurity variable
     tokenConfigSecurity = tokenConfig

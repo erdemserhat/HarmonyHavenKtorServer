@@ -7,7 +7,6 @@ import com.erdemserhat.EncryptionToFarawayServerModel
 import com.erdemserhat.service.di.AuthenticationModule
 import com.erdemserhat.service.di.DatabaseModule
 import com.erdemserhat.dto.requests.UserAuthenticationRequest
-import com.erdemserhat.makeEncryptionRequest
 import java.util.*
 
 /**
@@ -24,15 +23,17 @@ class UserAuthenticationJWTService(
      */
     suspend fun generateJWT(): String {
         // Retrieve user's role from the database
-        val hashedPassword = makeEncryptionRequest(
-            EncryptionToFarawayServerModel(
-                encryptionData = EncryptionDataDto(
-                    sensitiveData = userAuth.password,
-                    userUUID = DatabaseModule.userRepository.getUserByEmailInformation(userAuth.email)!!.uuid
-                )
+       // val hashedPassword = makeEncryptionRequest(
+       //     EncryptionToFarawayServerModel(
+         //       encryptionData = EncryptionDataDto(
+            //        sensitiveData = userAuth.password,
+             ///       userUUID = DatabaseModule.userRepository.getUserByEmailInformation(userAuth.email)!!.uuid
+             //   )
 
-            )
-        )
+          //  )
+       // )
+
+        val hashedPassword = hashPassword(userAuth.password)
 
         val userRole = DatabaseModule.userRepository.getUserByLoginInformation(userAuth.copy(password = hashedPassword))!!.role
 

@@ -29,8 +29,8 @@ fun sendEmail(to: String, subject: String, messageText: String) {
         // Create a new MimeBodyPart to hold the message content
         val mimeBodyPart = MimeBodyPart()
 
-        // Set the content of the MimeBodyPart to the message text
-        mimeBodyPart.setContent(messageText, "text/html; charset=utf-8")
+        // Set the content of the MimeBodyPart to the message text with UTF-8 charset
+        mimeBodyPart.setContent(messageText, "text/html; charset=UTF-8")
 
         // Create a new Multipart to hold the MimeBodyPart
         val multipart: Multipart = MimeMultipart()

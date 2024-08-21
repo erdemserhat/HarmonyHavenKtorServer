@@ -5,7 +5,7 @@ import com.erdemserhat.data.database.quote.DBQuoteEntity
 import com.erdemserhat.data.database.quote.QuoteDao
 import com.erdemserhat.data.database.quote.QuoteDaoImpl
 
-class QuoteRepository() : QuoteRepositoryContract {
+class QuoteRepository : QuoteRepositoryContract {
     private val quoteDao: QuoteDao = QuoteDaoImpl()
 
     override fun addQuote(quote: Quote): Boolean {

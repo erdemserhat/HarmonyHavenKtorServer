@@ -7,7 +7,7 @@ import java.io.StringWriter
 
 // FreeMarker konfigürasyonunu oluştur
 val configuration = Configuration(Configuration.VERSION_2_3_31).apply {
-    setTemplateLoader(ClassTemplateLoader(this::class.java.classLoader, "templates"))
+    templateLoader = ClassTemplateLoader(this::class.java.classLoader, "templates")
 }
 
 // FreeMarkerContent nesnesini bir dizeye dönüştürme

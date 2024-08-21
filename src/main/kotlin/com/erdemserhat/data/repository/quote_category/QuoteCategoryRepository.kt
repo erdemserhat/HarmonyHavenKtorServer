@@ -5,7 +5,7 @@ import com.erdemserhat.data.database.quote_category.DBQuoteCategoryEntity
 import com.erdemserhat.data.database.quote_category.QuoteCategoryDao
 import com.erdemserhat.data.database.quote_category.QuoteCategoryDaoImpl
 
-class QuoteCategoryRepository():QuoteCategoryContract{
+class QuoteCategoryRepository :QuoteCategoryContract{
     private val quoteCategoryDao:QuoteCategoryDao = QuoteCategoryDaoImpl()
     override fun addCategory(category: QuoteCategory): Boolean {
         return quoteCategoryDao.addCategory(category)>0

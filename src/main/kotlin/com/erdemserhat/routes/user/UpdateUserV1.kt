@@ -9,10 +9,10 @@ import com.erdemserhat.models.UserInformationSchema
 import com.erdemserhat.dto.responses.RequestResult
 import com.erdemserhat.dto.responses.UpdateNameDto
 import com.erdemserhat.dto.responses.UpdatePasswordDto
-import com.erdemserhat.makeEncryptionRequest
 import com.erdemserhat.models.toUser
 import com.erdemserhat.service.authentication.UserAuthenticationCredentialsValidatorService
 import com.erdemserhat.service.di.DatabaseModule
+import com.erdemserhat.service.security.hashPassword
 import com.erdemserhat.service.validation.UserAuthenticationInputValidatorService
 import com.erdemserhat.service.validation.UserInformationValidatorService
 import com.erdemserhat.service.validation.ValidationResult
@@ -131,14 +131,16 @@ fun Route.updateUserV1() {
 
             }
 
-            val hashedPassword = makeEncryptionRequest(
-            EncryptionToFarawayServerModel(
-                encryptionData = EncryptionDataDto(
-                    sensitiveData = newPasswordData.newPassword,
-                    userUUID = user!!.uuid
-                )
-            )
-        )
+         //   val hashedPassword = makeEncryptionRequest(
+         //   EncryptionToFarawayServerModel(
+           //     encryptionData = EncryptionDataDto(
+            //        sensitiveData = newPasswordData.newPassword,
+            //        userUUID = user!!.uuid
+           //     )
+          //  )
+       // )
+
+            val hashedPassword = hashPassword(newPasswordData.newPassword)
             println(hashedPassword)
 
             userRepository.updateUserPasswordByEmail(email,hashedPassword)

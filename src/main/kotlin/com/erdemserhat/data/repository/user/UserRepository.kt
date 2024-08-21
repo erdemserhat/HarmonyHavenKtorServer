@@ -9,7 +9,7 @@ import com.erdemserhat.dto.requests.UserAuthenticationRequest
 /**
  * Repository class for user-related operations.
  */
-class UserRepository() : UserRepositoryContract {
+class UserRepository : UserRepositoryContract {
     private val database: UserDao = UserDaoImpl()
     override fun getAllUsers(): List<User> {
         return database.getAllUsers().map { it.toUser() }
