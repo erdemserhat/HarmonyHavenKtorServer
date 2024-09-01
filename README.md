@@ -1,6 +1,19 @@
 # **Harmony Haven Server (Geliştirilme Aşamasında)**
 
-**Harmony Haven**, geliştirilme aşamasında olan bir projedir ve çeşitli kütüphaneleri kullanarak gelişimini sürdürmektedir. Temel olarak bir motivasyon uygulaması olan *Harmony Haven*, kullanıcılara farklı kategorilerden makaleler sunar ve yapay zeka kullanarak kişiselleştirilmiş bildirimler sağlar. Ayrıca, kullanıcılara kişiselleştirilmiş özlü sözler sunarak günlük yaşamlarına ilham katar.
+Harmony Haven Server, Harmony Haven uygulamasının arka planında çalışan, gelişmiş bir altyapıya sahip sunucudur. Ktor kullanarak API hizmetlerini sağlayan bu sunucu, AWS üzerinde barındırılarak ölçeklenebilirlik ve yüksek performans sunar. Kullanıcı yönetimi, makale erişimi ve AI destekli bildirimlerin yanı sıra, HTTPS ve OAuth2/JWT ile güvenli veri iletimi ve kimlik doğrulama sağlar. Harmony Haven Server, uygulamanın tüm özelliklerini destekleyen sağlam ve güvenilir bir altyapı sunarak kullanıcı deneyimini güçlendirir.
+
+## Sunucu API Hizmetlerine Erişin 
+
+
+
+<div align="center">
+
+![1232](https://github.com/user-attachments/assets/cc10eb17-3ccf-4365-a066-c21a341975db)
+
+API ile etkileşimde bulunmak için şu adresi ziyaret edebilirsiniz: [http://51.20.136.184:5000/](http://51.20.136.184:5000/)
+
+</div>
+
 
 ## Sistem İşleyişi Genel Görünüm
 
