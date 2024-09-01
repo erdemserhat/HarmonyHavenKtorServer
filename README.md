@@ -21,53 +21,6 @@ Endpoint'ler ile ilgili detaylı bilgi aşağıda verilmiştir.
 
 ![image](https://github.com/erdemserhat/HarmonyHavenAndroidClient/assets/116950260/b02ad5f5-0154-48bf-a813-33b750f34397)
 
-## Sunucu Mimari Genel Görünüm
-
-```plaintext
-src
-└── main
-    └── kotlin
-        └── com.erdemserhat
-            ├── dto
-            │   ├── requests
-            │   └── responses
-            ├── models
-            ├── plugins
-            ├── remote
-            │   ├── database
-            │   │   ├── article
-            │   │   ├── article_category
-            │   │   ├── notification
-            │   │   ├── quote
-            │   │   ├── quote_category
-            │   │   └── user
-            │   ├── ftp
-            │   ├── mail
-            │   └── repository
-            │       ├── article
-            │       ├── article_category
-            │       ├── notification
-            │       ├── quote
-            │       ├── quote_category
-            │       └── user
-            ├── routes
-            │   ├── admin
-            │   ├── article
-            │   ├── notification
-            │   └── quote
-            │       ├── category
-            │       └── quote
-            ├── service
-            │   ├── configurations
-            │   ├── di
-            │   ├── openai
-            │   ├── pwrservice
-            │   └── security
-            │       ├── hashing
-            │       └── token
-            ├── validation
-            └── util
-```
 
 ## Kullanılan Teknolojiler ve Paradigmalar:
 
