@@ -40,9 +40,9 @@ Endpoint'ler ile ilgili detaylı bilgi aşağıda verilmiştir.
 - Swagger UI (API Dokümantasyonu): API Dokümantasyonu
 - AWS EC2: Dağıtım
 
-## 📡 **API** Uç Noktaları
+## 📡 **API** Endpoint'leri
 
-📌 **Kök Uç Nokta**
+📌 **Root Endpoint **
 - **GET `/`**: Varsayılan kök uç noktası, başarılı olduğunda "Harmony Haven Server" döner.
 
 📌 **Alıntı Ekle**
