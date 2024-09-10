@@ -1,40 +1,26 @@
 package com.erdemserhat
 
 // Importing necessary modules and configurations
-import com.erdemserhat.data.mail.sendWelcomeMail
-import com.erdemserhat.dto.requests.*
 
-import com.erdemserhat.models.Notification
+import MessageScheduler
 import com.erdemserhat.service.di.AuthenticationModule.tokenConfigSecurity
 import com.erdemserhat.service.configurations.*
 import com.erdemserhat.plugins.*
-import com.erdemserhat.service.di.DatabaseModule
-import com.erdemserhat.service.openai.OpenAIPrompts
-import com.erdemserhat.service.openai.OpenAIRequest
-import com.google.firebase.messaging.FirebaseMessaging
+import com.erdemserhat.service.NotificationAICategories
+import com.erdemserhat.service.sendAIBasedMessage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.ktor.client.statement.*
-import io.ktor.client.utils.EmptyContent.contentType
 import io.ktor.http.*
 import io.ktor.server.application.*
 import kotlinx.coroutines.*
-import java.sql.Timestamp
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
-import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
-import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import io.ktor.server.plugins.cors.routing.*
 import io.ktor.util.*
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 
 // Main function responsible for starting the Ktor server
@@ -81,9 +67,20 @@ fun Application.module() {
     // Configuring routing for defining API endpoints
     configureRouting()
 
+    configureNotificationScheduler()
+
+    sendAIBasedMessage(
+        NotificationAICategories.motivation(),
+        sendSpecificByEmailList = listOf(
+            "vhjgui@hguui.com"
+        )
+    )
+
+
+
+
 
 }
-
 
 
 @OptIn(InternalAPI::class)
@@ -107,11 +104,10 @@ suspend fun makeEncryptionRequest(
 }
 
 
-
 @Serializable
 data class EncryptionToFarawayServerModel(
     val url: String = "http://localhost:8000/encode",
-    var encryptionData:EncryptionDataDto = EncryptionDataDto()
+    var encryptionData: EncryptionDataDto = EncryptionDataDto()
 
 )
 

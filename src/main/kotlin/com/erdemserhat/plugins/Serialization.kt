@@ -10,6 +10,7 @@ import io.ktor.server.plugins.contentnegotiation.*
  * This function installs JSON content negotiation for serialization/deserialization.
  */
 fun Application.configureSerialization() {
+    println("Serialization Configured")
     install(ContentNegotiation) {
         json()
     }

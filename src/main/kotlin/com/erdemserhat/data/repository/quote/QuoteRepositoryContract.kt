@@ -4,6 +4,7 @@ import com.erdemserhat.models.Quote
 
 interface QuoteRepositoryContract {
     fun addQuote(quote: Quote): Boolean
+    fun deleteQuoteById(id: Int): Boolean
     fun deleteAll()
     fun updateQuote(quote: Quote):Boolean
     fun getQuotes(): List<Quote>

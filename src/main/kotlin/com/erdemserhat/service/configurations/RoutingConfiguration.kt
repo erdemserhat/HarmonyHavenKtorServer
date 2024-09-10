@@ -11,10 +11,20 @@ import com.erdemserhat.routes.user.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
+import io.ktor.server.plugins.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.swagger.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 /**
  * Configures the routing for the application.
@@ -60,6 +70,7 @@ fun Application.configureRouting() {
 /**
  * Defines versioned API routes.
  */
+@OptIn(DelicateCoroutinesApi::class)
 fun Route.versionedApiRoutes() {
     // Version 1 API routes
     route("/api/v1") {
@@ -91,8 +102,8 @@ fun Route.versionedApiRoutes() {
 
 
         //Quotes routes
-        //addQuoteV1()
-        //deleteQuotes()
+        addQuoteV1()
+        deleteQuotes()
         getQuotes()
         //updateQuoteV1()
 
@@ -104,6 +115,24 @@ fun Route.versionedApiRoutes() {
                     status = HttpStatusCode.OK,
                     message = "ok"
                 )
+
+                GlobalScope.launch(Dispatchers.IO) {
+                    val principal = call.principal<JWTPrincipal>()
+                    val email = principal?.payload?.getClaim("email")?.asString()!!
+
+                    // Get the IP address from the request
+                    val ipAddress = call.request.origin.remoteHost
+
+                    // Get the current date and time and format it in English
+                    val currentDateTime = LocalDateTime.now()
+                    val formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm:ss", Locale.ENGLISH)
+                    val formattedDateTime = currentDateTime.format(formatter)
+
+                    // Construct the log message
+                    val msg = "$email opened the app. Date and time: $formattedDateTime, IP Address: $ipAddress"
+                    println(msg)
+                }
+
             }
         }
 
