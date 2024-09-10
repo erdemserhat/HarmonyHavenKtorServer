@@ -12,6 +12,10 @@ class QuoteRepository : QuoteRepositoryContract {
         return quoteDao.addQuote(quote) > 0
     }
 
+    override fun deleteQuoteById(id: Int): Boolean {
+        return  quoteDao.deleteQuoteById(id) >0
+    }
+
     override fun deleteAll() {
          quoteDao.deleteAll()
     }

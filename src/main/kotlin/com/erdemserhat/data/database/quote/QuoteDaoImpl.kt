@@ -2,6 +2,7 @@ package com.erdemserhat.data.database.quote
 
 import com.erdemserhat.models.Quote
 import com.erdemserhat.data.database.DatabaseConfig
+import com.erdemserhat.data.database.quote_category.DBQuoteCategoryTable
 import org.ktorm.dsl.*
 import org.ktorm.entity.sequenceOf
 import org.ktorm.entity.toList
@@ -12,6 +13,13 @@ class QuoteDaoImpl : QuoteDao {
             set(DBQuoteTable.quote, quote.quote)
             set(DBQuoteTable.writer, quote.writer)
             set(DBQuoteTable.imageUrl, quote.imageUrl)
+
+        }
+    }
+
+    override fun deleteQuoteById(id: Int): Int {
+        return DatabaseConfig.ktormDatabase.delete(DBQuoteTable) {
+            DBQuoteTable.id eq id
 
         }
     }

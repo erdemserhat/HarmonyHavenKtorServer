@@ -34,5 +34,32 @@ fun Route.deleteQuotes() {
                 e.printStackTrace()
             }
         }
+
+        delete("/delete-quote/{quoteId}") {
+            val principal = call.principal<JWTPrincipal>()
+            val role = principal?.payload?.getClaim("role")?.asString()
+            val quoteId = call.parameters["quoteId"]?.toIntOrNull()
+
+            // Verify if the authenticated user has the admin role
+            if (role != "admin") {
+                call.respond(
+                    status = HttpStatusCode.Unauthorized,
+                    message = "You are not authorized to use this service."
+                )
+                return@delete
+            }
+
+            try {
+                if (quoteId != null) {
+                    DatabaseModule.quoteRepository.deleteQuoteById(quoteId)
+                    call.respond(HttpStatusCode.OK)
+                } else {
+                    call.respond(HttpStatusCode.BadRequest, "Invalid quoteId")
+                }
+            } catch (e: Exception) {
+                call.respond(HttpStatusCode.InternalServerError, "An error occurred: ${e.localizedMessage}")
+                e.printStackTrace()
+            }
+        }
     }
 }
