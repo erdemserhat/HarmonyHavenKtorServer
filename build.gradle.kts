@@ -106,6 +106,7 @@ dependencies {
     //swagger ui
     implementation("io.ktor:ktor-server-swagger:$ktor_version")
     implementation("io.ktor:ktor-server-cors:2.3.3")
+    implementation("org.quartz-scheduler:quartz:2.3.2")
 
 
 
