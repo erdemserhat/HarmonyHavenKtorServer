@@ -13,7 +13,7 @@ interface ArticleCategoryRepositoryContract {
      * @param category The category to be added.
      * @return `true` if the operation is successful, `false` otherwise.
      */
-    fun addCategory(category: ArticleCategory): Boolean
+    suspend fun addCategory(category: ArticleCategory): Boolean
 
     /**
      * Updates an existing category in the repository.
@@ -22,7 +22,7 @@ interface ArticleCategoryRepositoryContract {
      * @param updatedCategory The updated category information.
      * @return `true` if the update is successful, `false` otherwise.
      */
-    fun updateCategory(categoryId: Int, updatedCategory: ArticleCategory): Boolean
+    suspend fun updateCategory(categoryId: Int, updatedCategory: ArticleCategory): Boolean
 
     /**
      * Deletes a category from the repository.
@@ -30,7 +30,7 @@ interface ArticleCategoryRepositoryContract {
      * @param categoryId The ID of the category to be deleted.
      * @return `true` if the deletion is successful, `false` otherwise.
      */
-    fun deleteCategory(categoryId: Int): Boolean
+    suspend fun deleteCategory(categoryId: Int): Boolean
 
     /**
      * Retrieves a category from the repository by its ID.
@@ -38,12 +38,12 @@ interface ArticleCategoryRepositoryContract {
      * @param categoryId The ID of the category to retrieve.
      * @return The retrieved category object if found, or `null` if not found.
      */
-    fun getCategory(categoryId: Int): ArticleCategory?
+    suspend fun getCategory(categoryId: Int): ArticleCategory?
 
     /**
      * Retrieves all categories stored in the repository.
      *
      * @return A list containing all categories.
      */
-    fun getAllCategory(): List<ArticleCategory>
+    suspend fun getAllCategory(): List<ArticleCategory>
 }

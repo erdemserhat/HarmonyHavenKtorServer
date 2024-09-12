@@ -21,7 +21,7 @@ class UserInformationValidatorService(
      *
      *
      */
-    fun validateForm(
+    suspend fun validateForm(
         byCheckingExistenceOfUser: Boolean = true,
         shouldOnlyValidatePassword:Boolean = false
     ): ValidationResult {

@@ -12,7 +12,7 @@ interface ArticleDao {
      * @param article The article to add.
      * @return The ID of the newly added article.
      */
-    fun addArticle(article: Article): Int
+    suspend fun addArticle(article: Article): Int
 
     /**
      * Updates an existing article in the database.
@@ -21,7 +21,7 @@ interface ArticleDao {
      * @param updatedArticle The updated article data.
      * @return `true` if the update was successful, `false` otherwise.
      */
-    fun updateArticle(articleId: Int, updatedArticle: Article): Boolean
+    suspend fun updateArticle(articleId: Int, updatedArticle: Article): Boolean
 
     /**
      * Deletes an article from the database.
@@ -29,7 +29,7 @@ interface ArticleDao {
      * @param articleId The ID of the article to delete.
      * @return `true` if the deletion was successful, `false` otherwise.
      */
-    fun deleteArticle(articleId: Int): Boolean
+    suspend fun deleteArticle(articleId: Int): Boolean
 
     /**
      * Retrieves an article from the database by its ID.
@@ -44,7 +44,7 @@ interface ArticleDao {
      *
      * @return A list of all articles in the database.
      */
-    fun getAllArticles(): List<DBArticleEntity>
+    suspend fun getAllArticles(): List<DBArticleEntity>
 
     /**
      * Retrieves articles belonging to a specific category from the database.
@@ -52,7 +52,7 @@ interface ArticleDao {
      * @param categoryId The ID of the category.
      * @return A list of articles belonging to the specified category.
      */
-    fun getArticlesByCategory(categoryId: Int): List<DBArticleEntity>
+    suspend fun getArticlesByCategory(categoryId: Int): List<DBArticleEntity>
 
 
 }

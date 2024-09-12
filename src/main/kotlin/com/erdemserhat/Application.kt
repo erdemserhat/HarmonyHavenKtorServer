@@ -2,7 +2,6 @@ package com.erdemserhat
 
 // Importing necessary modules and configurations
 
-import MessageScheduler
 import com.erdemserhat.service.di.AuthenticationModule.tokenConfigSecurity
 import com.erdemserhat.service.configurations.*
 import com.erdemserhat.plugins.*
@@ -36,6 +35,7 @@ fun main(args: Array<String>) {
 @OptIn(DelicateCoroutinesApi::class)
 fun Application.module() {
 
+
     // Configuring serialization for handling data formats
     configureSerialization()
 
@@ -67,14 +67,18 @@ fun Application.module() {
     // Configuring routing for defining API endpoints
     configureRouting()
 
-    configureNotificationScheduler()
+    CoroutineScope(Dispatchers.IO).launch{
+        configureNotificationScheduler()
 
-    sendAIBasedMessage(
-        NotificationAICategories.motivation(),
-        sendSpecificByEmailList = listOf(
-            "vhjgui@hguui.com"
-        )
-    )
+    }
+
+
+
+
+
+
+
+
 
 
 

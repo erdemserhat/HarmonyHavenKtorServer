@@ -1,16 +1,19 @@
+package com.erdemserhat.service
+
 import kotlinx.coroutines.*
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 
 class MessageScheduler(
-    val onTime: () -> Unit,
+    val onTime: suspend () -> Unit,
     val cycleDay: Long,
     val performingHour: Int,
+    val performingMinute: Int=0,
 ) {
     private val scope = CoroutineScope(Dispatchers.IO)
 
-    fun start() {
+    suspend fun start() {
         scope.launch {
             while (true) {
                 val now = LocalDateTime.now(ZoneId.of("Europe/Istanbul"))
@@ -28,7 +31,7 @@ class MessageScheduler(
 
     private fun calculateNextRunTime(now: LocalDateTime): LocalDateTime {
         // Calculate the next run time for the given performing hour today
-        var nextRun = now.withHour(performingHour).withMinute(0).withSecond(0).withNano(0)
+        var nextRun = now.withHour(performingHour).withMinute(performingMinute).withSecond(0).withNano(0)
 
         // If the current time is after the scheduled time, move to the next cycle day
         if (now.isAfter(nextRun)) {

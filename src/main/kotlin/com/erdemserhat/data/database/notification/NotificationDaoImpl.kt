@@ -5,7 +5,7 @@ import com.erdemserhat.data.database.DatabaseConfig
 import org.ktorm.dsl.*
 
 class NotificationDaoImpl : NotificationDao {
-    override fun addNotification(notification: Notification): Int {
+    override suspend fun addNotification(notification: Notification): Int {
         return DatabaseConfig.ktormDatabase.insert(DBNotificationTable) {
             set(DBNotificationTable.user_id, notification.userId)
             set(DBNotificationTable.title, notification.title)
@@ -16,14 +16,14 @@ class NotificationDaoImpl : NotificationDao {
         }
     }
 
-    override fun deleteNotification(notificationId: Int): Boolean {
+    override suspend fun deleteNotification(notificationId: Int): Boolean {
         val affectedRows = DatabaseConfig.ktormDatabase.delete(DBNotificationTable) {
             DBNotificationTable.id eq notificationId
         }
         return affectedRows > 0
     }
 
-    override fun updateNotification(notification: Notification): Boolean {
+    override suspend fun updateNotification(notification: Notification): Boolean {
         try {
             DatabaseConfig.ktormDatabase.update(DBNotificationTable) {
                 set(DBNotificationTable.title, notification.title)
@@ -44,7 +44,7 @@ class NotificationDaoImpl : NotificationDao {
 
 
 
-    override fun getNotifications(userId: Int, page: Int, size: Int): List<DBNotificationEntity> {
+    override suspend fun getNotifications(userId: Int, page: Int, size: Int): List<DBNotificationEntity> {
         // Sayfa numarasına ve boyutuna göre offset hesapla
         val offset = (page - 1) * size
         // Veritabanı sorgusunu yap
@@ -64,7 +64,7 @@ class NotificationDaoImpl : NotificationDao {
         return notifications
     }
 
-    override fun markAsRead(notificationId: Int):Boolean {
+    override suspend fun markAsRead(notificationId: Int):Boolean {
         return DatabaseConfig.ktormDatabase.update(DBNotificationTable){
             set(DBNotificationTable.is_read, true)
             where {

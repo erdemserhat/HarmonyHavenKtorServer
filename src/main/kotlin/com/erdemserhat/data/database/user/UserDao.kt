@@ -9,40 +9,40 @@ import com.erdemserhat.dto.requests.UserAuthenticationRequest
 interface UserDao {
 
     // Retrieve a user by ID
-    fun getUserById(userId: Int): DBUserEntity?
+    suspend fun getUserById(userId: Int): DBUserEntity?
 
     // Retrieve a user by login information
-    fun getUserByLoginInformation(userLogin: UserAuthenticationRequest): DBUserEntity?
+    suspend fun getUserByLoginInformation(userLogin: UserAuthenticationRequest): DBUserEntity?
 
     // Retrieve all users
-    fun getAllUsers(): List<DBUserEntity>
+    suspend fun getAllUsers(): List<DBUserEntity>
 
     // Add a new user
-    fun addUser(user: User): Int
+    suspend fun addUser(user: User): Int
 
     // Update a user by ID
-    fun updateUserById(userId: Int, newUser: User): DBUserEntity?
+    suspend fun updateUserById(userId: Int, newUser: User): DBUserEntity?
 
     // Update a user by email
-    fun updateUserByEmail(email: String, newUser: User): DBUserEntity?
+    suspend fun updateUserByEmail(email: String, newUser: User): DBUserEntity?
 
     // Delete a user by ID
-    fun deleteUser(userId: Int): Boolean
+    suspend fun deleteUser(userId: Int): Boolean
 
     // Check if a user exists by email
-    fun controlUserExistenceByEmail(email: String): Boolean
+    suspend fun controlUserExistenceByEmail(email: String): Boolean
 
     // Delete a user by email
-    fun deleteUserByEmailInformation(email: String): Boolean
+    suspend fun deleteUserByEmailInformation(email: String): Boolean
 
     // Check if a user exists by authentication
-    fun controlUserExistenceByAuth(loginInformation: UserAuthenticationRequest): Boolean
+    suspend fun controlUserExistenceByAuth(loginInformation: UserAuthenticationRequest): Boolean
 
     // Update user password by email
-    fun updateUserPasswordByEmail(email: String, newPassword: String): DBUserEntity?
+    suspend fun updateUserPasswordByEmail(email: String, newPassword: String): DBUserEntity?
 
     // Get a user by email
-    fun getUserByEmail(email: String): DBUserEntity?
+    suspend fun getUserByEmail(email: String): DBUserEntity?
 
-    fun enrolFcm(email:String, fcmId:String):Boolean
+    suspend fun enrolFcm(email:String, fcmId:String):Boolean
 }

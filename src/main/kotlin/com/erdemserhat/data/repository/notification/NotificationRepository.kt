@@ -7,23 +7,23 @@ import com.erdemserhat.data.database.notification.NotificationDaoImpl
 
 class NotificationRepository :NotificationRepositoryContract {
     private val notificationDao:NotificationDao = NotificationDaoImpl()
-    override fun addNotification(notification: Notification): Boolean {
+    override suspend fun addNotification(notification: Notification): Boolean {
         return notificationDao.addNotification(notification)>0
     }
 
-    override fun deleteNotification(notificationId: Int): Boolean {
+    override suspend fun deleteNotification(notificationId: Int): Boolean {
         return notificationDao.deleteNotification(notificationId)
     }
 
-    override fun updateNotification(notification: Notification): Boolean {
+    override suspend fun updateNotification(notification: Notification): Boolean {
         return notificationDao.updateNotification(notification)
     }
 
-    override fun getNotifications(userId: Int,page:Int,size:Int): List<Notification> {
+    override suspend fun getNotifications(userId: Int,page:Int,size:Int): List<Notification> {
         return notificationDao.getNotifications(userId,page,size).map { it.toNotification() }
     }
 
-    override fun markAsRead(notificationId: Int): Boolean {
+    override suspend fun markAsRead(notificationId: Int): Boolean {
         return notificationDao.markAsRead(notificationId)
     }
 

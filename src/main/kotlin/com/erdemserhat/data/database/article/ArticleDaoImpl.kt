@@ -13,7 +13,7 @@ class ArticleDaoImpl : ArticleDao {
     /**
      * Adds a new article to the database.
      */
-    override fun addArticle(article: Article): Int {
+    override suspend fun addArticle(article: Article): Int {
         return DatabaseConfig.ktormDatabase.insert(DBArticleTable) {
             set(DBArticleTable.title, article.title)
             set(DBArticleTable.content, article.content)
@@ -26,7 +26,7 @@ class ArticleDaoImpl : ArticleDao {
     /**
      * Updates an existing article in the database.
      */
-    override fun updateArticle(articleId: Int, updatedArticle: Article): Boolean {
+    override suspend fun updateArticle(articleId: Int, updatedArticle: Article): Boolean {
         return try {
             DatabaseConfig.ktormDatabase.update(DBArticleTable) {
                 set(DBArticleTable.title, updatedArticle.title)
@@ -47,7 +47,7 @@ class ArticleDaoImpl : ArticleDao {
     /**
      * Deletes an article from the database.
      */
-    override fun deleteArticle(articleId: Int): Boolean {
+    override suspend fun deleteArticle(articleId: Int): Boolean {
         val affectedRows = DatabaseConfig.ktormDatabase.delete(DBArticleTable) {
             DBArticleTable.id eq articleId
         }
@@ -65,14 +65,14 @@ class ArticleDaoImpl : ArticleDao {
     /**
      * Retrieves all articles from the database.
      */
-    override fun getAllArticles(): List<DBArticleEntity> {
+    override suspend fun getAllArticles(): List<DBArticleEntity> {
         return DatabaseConfig.ktormDatabase.sequenceOf(DBArticleTable).toList()
     }
 
     /**
      * Retrieves articles belonging to a specific category from the database.
      */
-    override fun getArticlesByCategory(categoryId: Int): List<DBArticleEntity> {
+    override suspend fun getArticlesByCategory(categoryId: Int): List<DBArticleEntity> {
         return DatabaseConfig.ktormDatabase.sequenceOf(DBArticleTable)
             .filter { DBArticleTable.categoryId eq categoryId }.toList()
     }

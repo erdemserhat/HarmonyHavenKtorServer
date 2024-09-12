@@ -7,14 +7,17 @@ import com.erdemserhat.service.di.DatabaseModule
 import com.erdemserhat.service.openai.OpenAIRequest
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.*
+import kotlinx.coroutines.sync.Semaphore
+import java.lang.System.err
+import kotlin.coroutines.coroutineContext
 
-@OptIn(DelicateCoroutinesApi::class)
-fun sendAIBasedMessage(
+suspend fun sendAIBasedMessage(
     notificationAI: NotificationAI,
     sendSpecificByEmailList: List<String> = emptyList()
 
 ) {
-    GlobalScope.launch {
+    //you must be inside a corutine scope to start a coroutine (async and launch)
+    coroutineScope {
         var body = ""
 
         do {
@@ -33,31 +36,45 @@ fun sendAIBasedMessage(
         )
 
         if (sendSpecificByEmailList.isEmpty()) {
-            val users = DatabaseModule.userRepository.getAllUsers().filter { it.fcmId.length > 10 }
-            val deferred = users.map {
-                async {
-                    val specificNotification = SendNotificationSpecific(
-                        it.email, fcmNotification
-                    )
-                    FirebaseMessaging.getInstance().send(specificNotification.toFcmMessage())
+            val deferredUser = async(Dispatchers.IO){
+                DatabaseModule.userRepository.getAllUsers().filter { it.fcmId.length > 10 }
+            }
+            val semaphore = Semaphore(10) //maximum 10 coroutine
+            deferredUser.await().forEach {
+                //creates new coroutines for every request as asynchronously which is child of coroutineScope
+                launch() {
+                    semaphore.acquire() // take semaphore
+                    try {
+                        val specificNotification = SendNotificationSpecific(it.email, fcmNotification)
+                        FirebaseMessaging.getInstance().send(specificNotification.toFcmMessage())
+                    } catch (e: Exception) {
+                        err.println("sendAIBasedMessage(): ${e.message}")
+                    } finally {
+                        semaphore.release() //release semaphore
+                    }
                 }
             }
-
-            deferred.awaitAll()
 
 
         } else {
 
-            val deferred = sendSpecificByEmailList.map { email ->
-                async {
-                    val specificNotification = SendNotificationSpecific(
-                        email, fcmNotification
-                    )
-                    FirebaseMessaging.getInstance().send(specificNotification.toFcmMessage())
+            val semaphore = Semaphore(10)
+            sendSpecificByEmailList.forEach { email ->
+                launch {
+                    semaphore.acquire()
+                    try {
+                        val specificNotification = SendNotificationSpecific(
+                            email, fcmNotification
+                        )
+                        FirebaseMessaging.getInstance().send(specificNotification.toFcmMessage())
+                    } catch (e: Exception) {
+                        err.println("sendAIBasedMessage(): ${e.message}")
+                    } finally {
+                        semaphore.release() //release semaphore
+                    }
+
                 }
             }
-
-            deferred.awaitAll()
 
 
         }
@@ -84,9 +101,7 @@ object NotificationAICategories {
         "✨ *name, sana özel bir hatırlatma: 💫",
         "Bugün senin günün *name! 🌞",
         "*name... 🌟 Unutma ki, sen çok güçlüsün! 💪",
-        "*name, seni destekleyen bir not! 🌈",
         "Küçük bir hatırlatma, *name! 💡",
-        "Sana özel bir güç verici mesaj, *name! 🔥",
         "✨ *name, bugün her şey mümkün! 🚀",
         "Gün senin günün, *name! 🌅",
         "🌸 *name, sana ilham verecek bir not! ✨",
@@ -94,21 +109,22 @@ object NotificationAICategories {
         "Kendine güven, *name! Sen başaracaksın! 💪",
         "*name, hep ileriye! 🏆",
         "Bir adım daha, *name! 🌟",
-        "Haydi *name, senin için bir mesaj! 🚀",
         "Parla *name! Bugün senin zamanın! ✨",
         "*name, hatırlatmak istedim: Sen harikasın! 🌟",
         "Unutma *name, başarı çok yakın! 🔥"
     )
     val list = listOf(
         advice(),
-        healthAndWellness(),
+        //healthAndWellness(),
         mindfulness(),
         careerAndProductivity(),
-        healthAndWellness(),
+        //healthAndWellness(),
         spirituality(),
-        learningAndKnowledge(),
+        //learningAndKnowledge(),
         personalGrowth(),
-        philosophyAndWisdom()
+        philosophyAndWisdom(),
+        //hobbiesAndCreativity(),
+        motivation()
 
     )
 
@@ -416,11 +432,10 @@ object NotificationAICategories {
             "derin nefes almanın önemi",
             "zihni sakinleştirme teknikleri",
             "anda kalma pratiği",
-            "farkındalık meditasyonu",
-            "stresi azaltmak için mindfulness",
+            //"stresi azaltmak için mindfulness",
             "zihinsel berraklığı artırma",
             "düşüncelerini gözlemleme",
-            "günlük mindfulness alışkanlıkları",
+            //"günlük mindfulness alışkanlıkları",
             "beden farkındalığı"
         )
 
@@ -759,8 +774,6 @@ object NotificationAICategories {
             title = randomTitle
         )
     }
-
-
 
 
 }

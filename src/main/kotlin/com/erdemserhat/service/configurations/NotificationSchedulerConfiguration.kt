@@ -1,21 +1,13 @@
 package com.erdemserhat.service.configurations
 
-import MessageScheduler
+import com.erdemserhat.service.MessageScheduler
 import com.erdemserhat.service.NotificationAICategories
 import com.erdemserhat.service.sendAIBasedMessage
-import io.ktor.server.application.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
-fun Application.configureNotificationScheduler() {
-    val coroutineScope = CoroutineScope(Dispatchers.Default)
-    coroutineScope.launch {
-
-        ///////////////////////////// S P E C I A L ///////////////////////////////////////////////////////
-
-        val deferredSpecialNotifications = async {
+suspend fun configureNotificationScheduler() {
+    coroutineScope {
+        launch {
             println("Special Notifications Activated")
             val agaMessageScheduler = MessageScheduler(
                 onTime = {
@@ -34,10 +26,8 @@ fun Application.configureNotificationScheduler() {
             )
             agaMessageScheduler.start()
         }
-        deferredSpecialNotifications.await()
 
-        ///////////////////////////// M O R N I N G //////////////////////////////
-        val deferredGoodMorningNotifications = async {
+        launch {
             println("Good Morning Notifications Activated")
             val goodMorningMessageScheduler = MessageScheduler(
                 onTime = {
@@ -46,16 +36,15 @@ fun Application.configureNotificationScheduler() {
                     )
 
                 },
-                cycleDay = 2,
-                performingHour = 10
+                cycleDay = 3,
+                performingHour = 10,
+                performingMinute = 15
             )
             goodMorningMessageScheduler.start()
         }
-        deferredGoodMorningNotifications.await()
 
-        ///////////////////////////// N I G H T //////////////////////////////
 
-        val deferredGoodNightNotifications = async {
+        launch {
             println("Good Night Notifications Activated")
             val goodNightMessageScheduler = MessageScheduler(
                 onTime = {
@@ -64,34 +53,15 @@ fun Application.configureNotificationScheduler() {
                     )
 
                 },
-                cycleDay = 3,
-                performingHour = 22
+                cycleDay = 2,
+                performingHour = 22,
+                performingMinute = 20
             )
             goodNightMessageScheduler.start()
         }
-        deferredGoodNightNotifications.await()
 
-        /////////////////////// MOTIVATION MESSAGE ////////////////////////
 
-        val deferredMotivationNotifications = async {
-            println("Motivation Notifications Activated")
-            val motivationMessageScheduler = MessageScheduler(
-                onTime = {
-                    sendAIBasedMessage(
-                        NotificationAICategories.motivation()
-                    )
-
-                },
-                cycleDay = 2,
-                performingHour = 16
-            )
-            motivationMessageScheduler.start()
-        }
-        deferredMotivationNotifications.await()
-
-        /////////////////////// RANDOM MESSAGE ////////////////////////
-
-        val deferredRandomNotifications = async {
+        launch {
             println("Random Notifications Activated")
             val randomMessageScheduler = MessageScheduler(
                 onTime = {
@@ -100,15 +70,29 @@ fun Application.configureNotificationScheduler() {
                     )
 
                 },
-                cycleDay = 3,
-                performingHour = 18
+                cycleDay = 1,
+                performingHour = 16,
+                performingMinute = 45
             )
             randomMessageScheduler.start()
         }
-        deferredRandomNotifications.await()
 
+        launch {
+            println("Random Notifications Activated")
+            val randomMessageScheduler = MessageScheduler(
+                onTime = {
+                    sendAIBasedMessage(
+                        NotificationAICategories.list.random()
+                    )
+
+                },
+                cycleDay = 10,
+                performingHour = 3,
+                performingMinute = 57
+            )
+            randomMessageScheduler.start()
+        }
 
     }
-
-
 }
+

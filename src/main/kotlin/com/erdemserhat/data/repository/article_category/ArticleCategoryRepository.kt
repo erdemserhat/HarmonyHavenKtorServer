@@ -18,7 +18,7 @@ class ArticleCategoryRepository : ArticleCategoryRepositoryContract {
      * @param category The category to be added.
      * @return `true` if the category is added successfully, `false` otherwise.
      */
-    override fun addCategory(category: ArticleCategory): Boolean {
+    override suspend fun addCategory(category: ArticleCategory): Boolean {
         return categoryDao.addCategory(category) > 0
     }
 
@@ -28,7 +28,7 @@ class ArticleCategoryRepository : ArticleCategoryRepositoryContract {
      * @param updatedCategory The updated category information.
      * @return `true` if the category is updated successfully, `false` otherwise.
      */
-    override fun updateCategory(categoryId: Int, updatedCategory: ArticleCategory): Boolean {
+    override suspend fun updateCategory(categoryId: Int, updatedCategory: ArticleCategory): Boolean {
         return categoryDao.updateCategory(categoryId, updatedCategory)
     }
 
@@ -37,7 +37,7 @@ class ArticleCategoryRepository : ArticleCategoryRepositoryContract {
      * @param categoryId The ID of the category to be deleted.
      * @return `true` if the category is deleted successfully, `false` otherwise.
      */
-    override fun deleteCategory(categoryId: Int): Boolean {
+    override suspend fun deleteCategory(categoryId: Int): Boolean {
         return categoryDao.deleteCategory(categoryId)
     }
 
@@ -46,7 +46,7 @@ class ArticleCategoryRepository : ArticleCategoryRepositoryContract {
      * @param categoryId The ID of the category to be retrieved.
      * @return The retrieved category, or `null` if not found.
      */
-    override fun getCategory(categoryId: Int): ArticleCategory? {
+    override suspend fun getCategory(categoryId: Int): ArticleCategory? {
         return categoryDao.getCategory(categoryId)?.toCategory()
     }
 
@@ -54,7 +54,7 @@ class ArticleCategoryRepository : ArticleCategoryRepositoryContract {
      * Retrieves all categories from the database.
      * @return A list of all categories.
      */
-    override fun getAllCategory(): List<ArticleCategory> {
+    override suspend fun getAllCategory(): List<ArticleCategory> {
         return categoryDao.getAllCategory().map { it.toCategory() }
     }
 }

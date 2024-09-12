@@ -34,21 +34,21 @@ class ArticleRepository : ArticleRepositoryContract {
     /**
      * Adds an article to the database.
      */
-    override fun addArticle(article: Article): Boolean {
+    override suspend fun addArticle(article: Article): Boolean {
         return articleDao.addArticle(article) > 0
     }
 
     /**
      * Updates an existing article in the database.
      */
-    override fun updateArticle(articleId: Int, updatedArticle: Article): Boolean {
+    override suspend fun updateArticle(articleId: Int, updatedArticle: Article): Boolean {
         return articleDao.updateArticle(articleId, updatedArticle)
     }
 
     /**
      * Deletes an article from the database.
      */
-    override fun deleteCategory(articleId: Int): Boolean {
+    override suspend fun deleteCategory(articleId: Int): Boolean {
         return articleDao.deleteArticle(articleId)
     }
 
@@ -62,21 +62,21 @@ class ArticleRepository : ArticleRepositoryContract {
     /**
      * Retrieves all articles from the database.
      */
-    override fun getAllArticles(): List<Article> {
+    override suspend fun getAllArticles(): List<Article> {
         return articleDao.getAllArticles().map { it.toArticle() }
     }
 
     /**
      * Retrieves articles belonging to a specific category.
      */
-    override fun getArticlesByCategory(categoryId: Int): List<ArticleResponseType> {
+    override suspend fun getArticlesByCategory(categoryId: Int): List<ArticleResponseType> {
         return articleDao.getArticlesByCategory(categoryId).map { it.toArticleResponseType() }
     }
 
     /**
      * Converts a DBArticleEntity to an ArticleResponseType model.
      */
-    private fun DBArticleEntity.toArticleResponseType(): ArticleResponseType {
+    private suspend fun DBArticleEntity.toArticleResponseType(): ArticleResponseType {
         return ArticleResponseType(
             id = id,
             title = title,

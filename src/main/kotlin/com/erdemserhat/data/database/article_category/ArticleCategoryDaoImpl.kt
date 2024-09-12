@@ -15,7 +15,7 @@ import org.ktorm.entity.toList
  * Implementation of [ArticleCategoryDao] interface for interacting with category data in the database.
  */
 class ArticleCategoryDaoImpl : ArticleCategoryDao {
-    override fun addCategory(category: ArticleCategory): Int {
+    override suspend fun addCategory(category: ArticleCategory): Int {
         // Insert a new category into the database and return its ID
         return ktormDatabase.insert(DBArticleCategoryTable) {
             set(DBArticleCategoryTable.name, category.name)
@@ -23,7 +23,7 @@ class ArticleCategoryDaoImpl : ArticleCategoryDao {
         }
     }
 
-    override fun updateCategory(categoryId: Int, updatedCategory: ArticleCategory): Boolean {
+    override suspend fun updateCategory(categoryId: Int, updatedCategory: ArticleCategory): Boolean {
         // Update an existing category in the database
         try {
             ktormDatabase.update(DBArticleCategoryTable) {
@@ -39,7 +39,7 @@ class ArticleCategoryDaoImpl : ArticleCategoryDao {
         }
     }
 
-    override fun deleteCategory(categoryId: Int): Boolean {
+    override suspend fun deleteCategory(categoryId: Int): Boolean {
         // Delete a category from the database
         val affectedRows = ktormDatabase.delete(DBArticleCategoryTable) {
             DBArticleCategoryTable.id eq categoryId
@@ -47,13 +47,13 @@ class ArticleCategoryDaoImpl : ArticleCategoryDao {
         return affectedRows > 0
     }
 
-    override fun getCategory(categoryId: Int): DBArticleCategoryEntity? {
+    override suspend fun getCategory(categoryId: Int): DBArticleCategoryEntity? {
         // Retrieve a category from the database by its ID
         return ktormDatabase.sequenceOf(DBArticleCategoryTable)
             .firstOrNull { DBArticleCategoryTable.id eq categoryId }
     }
 
-    override fun getAllCategory(): List<DBArticleCategoryEntity> {
+    override suspend fun getAllCategory(): List<DBArticleCategoryEntity> {
         // Retrieve all categories from the database
         return ktormDatabase.sequenceOf(DBArticleCategoryTable).toList()
     }
