@@ -9,10 +9,10 @@ import java.util.UUID
 data class User(
     val id: Int,
     val name: String,
-    val surname: String,
+    val surname: String="-",
     val email: String,
     val password: String,
-    val gender: String,
+    val gender: String="-",
     val profilePhotoPath: String = "-",
     val fcmId: String = "-",
     @Contextual val uuid: String = UUID.randomUUID().toString(),
@@ -34,6 +34,7 @@ class UserInformationSchema(
     val email: String ="",
     val password: String,
     val gender: String="",
+    val profilePhotoPath: String="-"
 )
 
 
@@ -45,6 +46,7 @@ fun UserInformationSchema.toUser(): User {
         email = email,
         password = password,
         gender = gender,
+        profilePhotoPath = profilePhotoPath
 
         )
 }

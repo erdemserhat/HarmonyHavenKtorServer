@@ -11,9 +11,8 @@ import io.ktor.server.routing.*
 fun Route.getQuotes() {
     authenticate {
         get("/get-quotes") {
-            val quotes = DatabaseModule.quoteRepository.getQuotes().reversed()
-            call.respond(HttpStatusCode.OK, quotes)
-            //
+            val quoteList= DatabaseModule.quoteRepository.getQuotes().shuffled()
+            call.respond(HttpStatusCode.OK, quoteList)
 
         }
     }
