@@ -11,3 +11,8 @@ data class AuthenticationResponse(
     val jwt: String?,
 )
 
+@Serializable
+data class GoogleAuthenticationResponse(
+    val jwt:String
+)
+

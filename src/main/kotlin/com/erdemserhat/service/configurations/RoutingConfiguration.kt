@@ -75,6 +75,7 @@ fun Route.versionedApiRoutes() {
     // Version 1 API routes
     route("/api/v1") {
         // User Routes
+        googleLogin()
         registerUserV1()
         authenticateUserV1()
         //deleteUserV1()
@@ -135,6 +136,8 @@ fun Route.versionedApiRoutes() {
 
             }
         }
+
+
 
     }
 
