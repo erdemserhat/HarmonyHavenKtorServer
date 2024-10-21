@@ -77,21 +77,7 @@ suspend fun configureNotificationScheduler() {
             randomMessageScheduler.start()
         }
 
-        launch {
-            println("Random Notifications Activated")
-            val randomMessageScheduler = MessageScheduler(
-                onTime = {
-                    sendAIBasedMessage(
-                        NotificationAICategories.list.random()
-                    )
 
-                },
-                cycleDay = 10,
-                performingHour = 3,
-                performingMinute = 57
-            )
-            randomMessageScheduler.start()
-        }
 
     }
 }
