@@ -3,6 +3,7 @@ package com.erdemserhat.dto.requests
 import com.erdemserhat.service.di.DatabaseModule
 import com.google.firebase.messaging.Message
 import com.google.firebase.messaging.Notification
+import kotlinx.coroutines.*
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.not
 
@@ -48,44 +49,51 @@ fun SendNotificationGeneralDto.toMessage(): Message {
 
 }
 
-fun SendNotificationSpecific.toFcmMessage(): Message {
-    val user = DatabaseModule.userRepository.getUserByEmailInformation(email)!!
-    val userId = user.id
-    val specializedTitle =
-        notification.title
-            .replace("*name", user.name)
+suspend fun SendNotificationSpecific.toFcmMessage(): Message {
+    // IO dispatcher kullanarak, veritabanı erişimi gibi ağır işlemleri IO thread'de yapıyoruz
+    return withContext(Dispatchers.IO) {
+        // Kullanıcıyı veritabanından asenkron olarak alıyoruz
+        val user = DatabaseModule.userRepository.getUserByEmailInformation(email)
+            ?: throw IllegalArgumentException("User not found for email: $email")
+
+        val specializedTitle = notification.title
+            .replace("*name", user.name.extractFirstName())
             .replace("*surname", user.surname)
 
-    val specializedBody =
-        notification.body
-            .replace("*name", user.name)
+        val specializedBody = notification.body
+            .replace("*name", user.name.extractFirstName())
             .replace("*surname", user.surname)
 
 
-    // Save to database
-    DatabaseModule.notificationRepository.addNotification(
-        com.erdemserhat.models.Notification(
-            id = 0,
-            userId = userId,
-            title = specializedTitle,
-            content = specializedBody,
-            isRead = false,
-            timeStamp = System.currentTimeMillis() / 1000,
-            screenCode = notification.screen
+        DatabaseModule.notificationRepository.addNotification(
+            com.erdemserhat.models.Notification(
+                id = 0,
+                userId = user.id,
+                title = specializedTitle,
+                content = specializedBody,
+                isRead = false,
+                timeStamp = System.currentTimeMillis() / 1000,
+                screenCode = notification.screen
+            )
         )
-    )
 
-    // Create the data payload
-    val data = mapOf(
-        "title" to specializedTitle,
-        "body" to specializedBody,
-        "image" to notification.image,
-        "screen" to notification.screen
-    )
+        // Veriyi oluşturuyoruz
+        val data = mapOf(
+            "title" to specializedTitle,
+            "body" to specializedBody,
+            "image" to notification.image,
+            "screen" to notification.screen
+        )
 
-    return Message.builder()
-        .putAllData(data) // Set data payload
-        .setToken(user.fcmId) // FCM token of the recipient
-        .build()
+        // FCM mesajını döndürüyoruz
+        Message.builder()
+            .putAllData(data) // Veriyi ekle
+            .setToken(user.fcmId) // Kullanıcının FCM token'i
+            .build()
+    }
+}
+
+private fun String.extractFirstName(): String {
+    return this.substringBefore(" ").lowercase().replaceFirstChar { it.uppercase() }
 }
 

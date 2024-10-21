@@ -4,10 +4,10 @@ import com.erdemserhat.models.Notification
 
 interface NotificationDao {
 
-    fun addNotification(notification: Notification):Int
-    fun deleteNotification(notificationId:Int):Boolean
-    fun updateNotification(notification: Notification):Boolean
-    fun getNotifications(userId: Int,page:Int,size:Int):List<DBNotificationEntity>
-    fun markAsRead(notificationId:Int):Boolean
+    suspend fun addNotification(notification: Notification): Int
+    suspend fun deleteNotification(notificationId: Int): Boolean
+    suspend fun updateNotification(notification: Notification): Boolean
+    suspend fun getNotifications(userId: Int, page: Int, size: Int): List<DBNotificationEntity>
+    suspend fun markAsRead(notificationId: Int): Boolean
 
 }

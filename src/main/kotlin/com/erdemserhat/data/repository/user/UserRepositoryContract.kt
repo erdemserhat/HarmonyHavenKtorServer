@@ -11,63 +11,63 @@ interface UserRepositoryContract {
     /**
      * Retrieves all users from the database.
      */
-    fun getAllUsers(): List<User>
+    suspend fun getAllUsers(): List<User>
 
     /**
      * Retrieves a user by their ID from the database.
      */
-    fun getUserById(userId: Int): User?
+    suspend fun getUserById(userId: Int): User?
 
     /**
      * Retrieves a user by their login information from the database.
      */
-    fun getUserByLoginInformation(login: UserAuthenticationRequest): User?
+    suspend fun getUserByLoginInformation(login: UserAuthenticationRequest): User?
 
     /**
      * Retrieves a user by their email from the database.
      */
-    fun getUserByEmailInformation(email: String): User?
+    suspend fun getUserByEmailInformation(email: String): User?
 
     /**
      * Adds a new user to the database.
      */
-    fun addUser(user: User): Int
+    suspend fun addUser(user: User): Int
 
     /**
      * Updates a user by their ID in the database.
      */
-    fun updateUserById(userId: Int, newUser: User): DBUserEntity?
+    suspend fun updateUserById(userId: Int, newUser: User): DBUserEntity?
 
     /**
      * Updates a user by their email in the database.
      */
-    fun updateUserByEmail(email: String, newUser: User): DBUserEntity?
+    suspend fun updateUserByEmail(email: String, newUser: User): DBUserEntity?
 
     /**
      * Deletes a user by their ID from the database.
      */
-    fun deleteUser(id: Int): Boolean
+    suspend fun deleteUser(id: Int): Boolean
 
     /**
      * Checks if a user with the given email exists in the database.
      */
-    fun controlUserExistenceByEmail(email: String): Boolean
+    suspend fun controlUserExistenceByEmail(email: String): Boolean
 
     /**
      * Deletes a user by their email from the database.
      */
-    fun deleteUserByEmailInformation(email: String): Boolean
+    suspend fun deleteUserByEmailInformation(email: String): Boolean
 
     /**
      * Checks if a user with the given authentication information exists in the database.
      */
-    fun controlUserExistenceByAuth(login: UserAuthenticationRequest): Boolean
+    suspend fun controlUserExistenceByAuth(login: UserAuthenticationRequest): Boolean
 
     /**
      * Updates a user's password by their email in the database.
      */
-    fun updateUserPasswordByEmail(email: String, newPassword: String): User?
+    suspend fun updateUserPasswordByEmail(email: String, newPassword: String): User?
 
-    fun enrolFcm(email:String, fcmId:String):Boolean
+    suspend fun enrolFcm(email:String, fcmId:String):Boolean
 
 }

@@ -8,23 +8,23 @@ import com.erdemserhat.data.database.quote.QuoteDaoImpl
 class QuoteRepository : QuoteRepositoryContract {
     private val quoteDao: QuoteDao = QuoteDaoImpl()
 
-    override fun addQuote(quote: Quote): Boolean {
+    override suspend fun addQuote(quote: Quote): Boolean {
         return quoteDao.addQuote(quote) > 0
     }
 
-    override fun deleteQuoteById(id: Int): Boolean {
+    override suspend fun deleteQuoteById(id: Int): Boolean {
         return  quoteDao.deleteQuoteById(id) >0
     }
 
-    override fun deleteAll() {
+    override suspend fun deleteAll() {
          quoteDao.deleteAll()
     }
 
-    override fun updateQuote(quote: Quote): Boolean {
+    override suspend fun updateQuote(quote: Quote): Boolean {
         return quoteDao.updateQuote(quote)
     }
 
-    override fun getQuotes(): List<Quote> {
+    override suspend fun getQuotes(): List<Quote> {
         return quoteDao.getCategories().map { it.toQuote() }
 
     }

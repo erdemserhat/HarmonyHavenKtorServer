@@ -11,55 +11,55 @@ import com.erdemserhat.dto.requests.UserAuthenticationRequest
  */
 class UserRepository : UserRepositoryContract {
     private val database: UserDao = UserDaoImpl()
-    override fun getAllUsers(): List<User> {
+    override suspend fun getAllUsers(): List<User> {
         return database.getAllUsers().map { it.toUser() }
     }
 
-    override fun getUserById(userId: Int): User? {
+    override suspend fun getUserById(userId: Int): User? {
         return database.getUserById(userId)?.toUser()
     }
 
-    override fun getUserByLoginInformation(login: UserAuthenticationRequest): User? {
+    override suspend fun getUserByLoginInformation(login: UserAuthenticationRequest): User? {
         return database.getUserByLoginInformation(login)?.toUser()
     }
 
-    override fun getUserByEmailInformation(email: String): User? {
+    override suspend fun getUserByEmailInformation(email: String): User? {
         return database.getUserByEmail(email)?.toUser()
     }
 
-    override fun addUser(user: User): Int {
+    override suspend fun addUser(user: User): Int {
         return database.addUser(user)
     }
 
-    override fun updateUserById(userId: Int, newUser: User): DBUserEntity? {
+    override suspend fun updateUserById(userId: Int, newUser: User): DBUserEntity? {
         return database.updateUserById(userId, newUser)
     }
 
-    override fun updateUserByEmail(email: String, newUser: User): DBUserEntity? {
+    override suspend fun updateUserByEmail(email: String, newUser: User): DBUserEntity? {
         return database.updateUserByEmail(email, newUser)
     }
 
-    override fun deleteUser(id: Int): Boolean {
+    override suspend fun deleteUser(id: Int): Boolean {
         return database.deleteUser(id)
     }
 
-    override fun controlUserExistenceByEmail(email: String): Boolean {
+    override suspend fun controlUserExistenceByEmail(email: String): Boolean {
         return database.controlUserExistenceByEmail(email)
     }
 
-    override fun deleteUserByEmailInformation(email: String): Boolean {
+    override suspend fun deleteUserByEmailInformation(email: String): Boolean {
         return database.deleteUserByEmailInformation(email)
     }
 
-    override fun controlUserExistenceByAuth(login: UserAuthenticationRequest): Boolean {
+    override suspend fun controlUserExistenceByAuth(login: UserAuthenticationRequest): Boolean {
         return database.controlUserExistenceByAuth(login)
     }
 
-    override fun updateUserPasswordByEmail(email: String, newPassword: String): User? {
+    override suspend fun updateUserPasswordByEmail(email: String, newPassword: String): User? {
         return database.updateUserPasswordByEmail(email, newPassword)?.toUser()
     }
 
-    override fun enrolFcm(email: String, fcmId: String): Boolean {
+    override suspend fun enrolFcm(email: String, fcmId: String): Boolean {
         return database.enrolFcm(email,fcmId)
     }
 

@@ -18,7 +18,7 @@ class UserDaoImpl : UserDao {
      * @param userId The ID of the user to retrieve.
      * @return The user entity if found, otherwise null.
      */
-    override fun getUserById(userId: Int): DBUserEntity? {
+    override suspend fun getUserById(userId: Int): DBUserEntity? {
         return ktormDatabase.sequenceOf(DBUserTable)
             .firstOrNull { DBUserTable.id eq userId }
     }
@@ -28,7 +28,7 @@ class UserDaoImpl : UserDao {
      * @param userLogin The user's login information.
      * @return The user entity if found, otherwise null.
      */
-    override fun getUserByLoginInformation(userLogin: UserAuthenticationRequest): DBUserEntity? {
+    override suspend fun getUserByLoginInformation(userLogin: UserAuthenticationRequest): DBUserEntity? {
         return ktormDatabase.sequenceOf(DBUserTable)
             .firstOrNull { (DBUserTable.email eq userLogin.email) and (DBUserTable.password eq userLogin.password) }
     }
@@ -37,7 +37,7 @@ class UserDaoImpl : UserDao {
      * Retrieves all users from the database.
      * @return A list of user entities.
      */
-    override fun getAllUsers(): List<DBUserEntity> {
+    override suspend fun getAllUsers(): List<DBUserEntity> {
         return ktormDatabase.sequenceOf(DBUserTable).toList()
     }
 
@@ -46,7 +46,7 @@ class UserDaoImpl : UserDao {
      * @param user The user to add.
      * @return The ID of the newly added user.
      */
-    override fun addUser(user: User): Int {
+    override suspend fun addUser(user: User): Int {
         return ktormDatabase.insert(DBUserTable) {
             set(DBUserTable.name, user.name)
             set(DBUserTable.surname, user.surname)
@@ -66,7 +66,7 @@ class UserDaoImpl : UserDao {
      * @param newUser The new user information.
      * @return The updated user entity.
      */
-    override fun updateUserById(userId: Int, newUser: User): DBUserEntity? {
+    override suspend fun updateUserById(userId: Int, newUser: User): DBUserEntity? {
         ktormDatabase.update(DBUserTable) {
             set(DBUserTable.name, newUser.name)
             set(DBUserTable.surname, newUser.surname)
@@ -91,7 +91,7 @@ class UserDaoImpl : UserDao {
      * @param newUser The new user information.
      * @return The updated user entity.
      */
-    override fun updateUserByEmail(email: String, newUser: User): DBUserEntity? {
+    override suspend fun updateUserByEmail(email: String, newUser: User): DBUserEntity? {
         ktormDatabase.update(DBUserTable) {
             set(DBUserTable.name, newUser.name)
             set(DBUserTable.surname, newUser.surname)
@@ -115,7 +115,7 @@ class UserDaoImpl : UserDao {
      * @param userId The ID of the user to delete.
      * @return True if the user was deleted, false otherwise.
      */
-    override fun deleteUser(userId: Int): Boolean {
+    override suspend fun deleteUser(userId: Int): Boolean {
         val affectedRows = ktormDatabase.delete(DBUserTable) {
             DBUserTable.id eq userId
         }
@@ -127,7 +127,7 @@ class UserDaoImpl : UserDao {
      * @param email The email to check.
      * @return True if the user exists, false otherwise.
      */
-    override fun controlUserExistenceByEmail(email: String): Boolean {
+    override suspend fun controlUserExistenceByEmail(email: String): Boolean {
         val user = ktormDatabase.sequenceOf(DBUserTable)
             .firstOrNull { DBUserTable.email eq email }
         return user != null
@@ -138,7 +138,7 @@ class UserDaoImpl : UserDao {
      * @param email The email of the user to delete.
      * @return True if the user was deleted, false otherwise.
      */
-    override fun deleteUserByEmailInformation(email: String): Boolean {
+    override suspend fun deleteUserByEmailInformation(email: String): Boolean {
         val affectedRows = ktormDatabase.delete(DBUserTable) {
             (DBUserTable.email eq email)
         }
@@ -150,7 +150,7 @@ class UserDaoImpl : UserDao {
      * @param loginInformation The login information to check.
      * @return True if the user exists, false otherwise.
      */
-    override fun controlUserExistenceByAuth(loginInformation: UserAuthenticationRequest): Boolean {
+    override suspend fun controlUserExistenceByAuth(loginInformation: UserAuthenticationRequest): Boolean {
         val user = ktormDatabase.sequenceOf(DBUserTable)
             .firstOrNull { (DBUserTable.email eq loginInformation.email) and (DBUserTable.password eq loginInformation.password) }
         return user != null
@@ -162,7 +162,7 @@ class UserDaoImpl : UserDao {
      * @param newPassword The new password.
      * @return The updated user entity.
      */
-    override fun updateUserPasswordByEmail(email: String, newPassword: String): DBUserEntity? {
+    override suspend fun updateUserPasswordByEmail(email: String, newPassword: String): DBUserEntity? {
         ktormDatabase.update(DBUserTable) {
             set(DBUserTable.password, newPassword)
             where {
@@ -178,14 +178,14 @@ class UserDaoImpl : UserDao {
      * @param email The email of the user to retrieve.
      * @return The user entity if found, otherwise null.
      */
-    override fun getUserByEmail(email: String): DBUserEntity? {
+    override suspend fun getUserByEmail(email: String): DBUserEntity? {
         return ktormDatabase.sequenceOf(DBUserTable)
             .firstOrNull {
                 DBUserTable.email eq email
             }
     }
 
-    override fun enrolFcm(email: String, fcmId: String): Boolean {
+    override suspend fun enrolFcm(email: String, fcmId: String): Boolean {
         val affectedRows = ktormDatabase.update(DBUserTable) {
             set(it.fcmId, fcmId)
             where {
