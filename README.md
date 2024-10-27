@@ -1,124 +1,120 @@
-# **Harmony Haven Server (Geliştirilme Aşamasında)**
+# **Harmony Haven Server **
 
-Harmony Haven Server, Harmony Haven uygulamasının arka planında çalışan, gelişmiş bir altyapıya sahip sunucudur. Ktor kullanarak API hizmetlerini sağlayan bu sunucu, AWS üzerinde barındırılarak ölçeklenebilirlik ve yüksek performans sunar. Kullanıcı yönetimi, makale erişimi ve AI destekli bildirimlerin yanı sıra, HTTPS ve OAuth2/JWT ile güvenli veri iletimi ve kimlik doğrulama sağlar. Harmony Haven Server, uygulamanın tüm özelliklerini destekleyen sağlam ve güvenilir bir altyapı sunarak kullanıcı deneyimini güçlendirir.
+The Harmony Haven Server is a robust backend infrastructure that powers the Harmony Haven application. Built using Ktor for API services, this server is hosted on AWS, providing scalability and high performance. It supports user management, article access, and AI-powered notifications, along with secure data transmission and authentication via HTTPS and OAuth2/JWT. The Harmony Haven Server strengthens the user experience by offering a solid and reliable infrastructure that supports all features of the application.
 
-## Sunucu API Hizmetlerine Erişin 
-
-
+## Access the Server API Services
 
 <div align="center">
 
 ![1232](https://github.com/user-attachments/assets/cc10eb17-3ccf-4365-a066-c21a341975db)
 
-API ile etkileşimde bulunmak için şu adresi ziyaret edebilirsiniz: [http://51.20.136.184:5000/](http://51.20.136.184:5000/)
+To interact with the API, please visit: [http://51.20.136.184:5000/](http://51.20.136.184:5000/)
 
-Endpoint'ler ile ilgili detaylı bilgi aşağıda verilmiştir.
+Detailed information about the endpoints is provided below.
 
 </div>
 
-
-## Sistem İşleyişi Genel Görünüm
+## Overview of System Operations
 
 ![image](https://github.com/erdemserhat/HarmonyHavenAndroidClient/assets/116950260/b02ad5f5-0154-48bf-a813-33b750f34397)
 
+## Technologies and Paradigms Used:
 
-## Kullanılan Teknolojiler ve Paradigmalar:
-
-- MVC (Model-View-Controller) mimarisi: Mimari
-- Clean Architecture: Mimari
-- SOLID prensipleri: En İyi Uygulamalar
-- JWT Kimlik Doğrulama ve Yetkilendirme: Güvenlik
+- MVC (Model-View-Controller) architecture: Architecture
+- Clean Architecture: Architecture
+- SOLID principles: Best Practices
+- JWT Authentication and Authorization: Security
 - Ktorm: ORM
-- REST API: Ağ
-- OpenAI API: AI Entegrasyonu
-- FreeMarker: Şablonlama
-- Javax Mail Service: E-posta
-- Google Guava: Araçlar
-- MySQL: Veritabanı
-- Firebase (Sunucu Tarafı Bildirimleri): Bildirimler
-- Django CAAS (Cryptography as a Service, kendi uygulamam): Kriptografi
-- Swagger UI (API Dokümantasyonu): API Dokümantasyonu
-- AWS EC2: Dağıtım
+- REST API: Networking
+- OpenAI API: AI Integration
+- FreeMarker: Templating
+- Javax Mail Service: Email
+- Google Guava: Utilities
+- MySQL: Database
+- Firebase (Server-Side Notifications): Notifications
+- Django CAAS (Cryptography as a Service, our own application): Cryptography
+- Swagger UI (API Documentation): API Documentation
+- AWS EC2: Deployment
 
-## 📡 **API** Endpoint'leri
+## 📡 **API** Endpoints
 
-📌 **Root Endpoint **
-- **GET `/`**: Varsayılan kök uç noktası, başarılı olduğunda "Harmony Haven Server" döner.
+📌 **Root Endpoint**
+- **GET `/`**: The default root endpoint returns "Harmony Haven Server" upon success.
 
-📌 **Alıntı Ekle**
-- **POST `/api/v1/add-quote`**: Yeni bir alıntı ekler. İstek gövdesinde bir Quote nesnesi gerektirir.
+📌 **Add Quote**
+- **POST `/api/v1/add-quote`**: Adds a new quote. Requires a Quote object in the request body.
 
-📌 **Alıntı Kategorisi Ekle**
-- **POST `/api/v1/add-quote-category`**: Yeni bir alıntı kategorisi ekler. İstek gövdesinde bir CategoryRequest nesnesi gerektirir.
+📌 **Add Quote Category**
+- **POST `/api/v1/add-quote-category`**: Adds a new quote category. Requires a CategoryRequest object in the request body.
 
-📌 **Yönetici Kullanıcı Sil**
-- **DELETE `/api/v1/admin/delete-user`**: Bir kullanıcıyı siler. İstek gövdesinde bir Map_String nesnesi gerektirir.
+📌 **Delete Admin User**
+- **DELETE `/api/v1/admin/delete-user`**: Deletes a user. Requires a Map_String object in the request body.
 
-📌 **Tüm Makaleleri Al**
-- **GET `/api/v1/articles`**: Tüm makaleleri alır. Bir dizi Article nesnesi döner.
+📌 **Get All Articles**
+- **GET `/api/v1/articles`**: Retrieves all articles. Returns an array of Article objects.
 
-📌 **ID'ye Göre Makale Al**
-- **GET `/api/v1/articles/{id}`**: Belirli bir ID'ye göre makale alır. Yol parametresi olarak id gerektirir.
+📌 **Get Article by ID**
+- **GET `/api/v1/articles/{id}`**: Retrieves an article by a specific ID. Requires the ID as a path parameter.
 
-📌 **Kategori ID'ye Göre Makaleleri Al**
-- **GET `/api/v1/articles/category/{id}`**: Kategori ID'ye göre makale alır. Yol parametresi olarak id gerektirir.
+📌 **Get Articles by Category ID**
+- **GET `/api/v1/articles/category/{id}`**: Retrieves articles by category ID. Requires the ID as a path parameter.
 
-📌 **Son Makaleleri Al**
-- **GET `/api/v1/articles/recent/{size}`**: Belirtilen sayıda son makaleyi alır.
+📌 **Get Recent Articles**
+- **GET `/api/v1/articles/recent/{size}`**: Retrieves the specified number of recent articles.
 
-📌 **Tüm Kategorileri Al**
-- **GET `/api/v1/categories`**: Tüm makale kategorilerini alır.
+📌 **Get All Categories**
+- **GET `/api/v1/categories`**: Retrieves all article categories.
 
-📌 **Kimlik Doğrulama Durumunu Kontrol Et**
-- **GET `/api/v1/check-auth-status`**: Kullanıcının kimlik doğrulama durumunu kontrol eder.
+📌 **Check Authentication Status**
+- **GET `/api/v1/check-auth-status`**: Checks the user's authentication status.
 
-📌 **Alıntı Kategorisini Sil**
-- **DELETE `/api/v1/delete-quote-category/{categoryId}`**: Belirli bir kategori ID'sine göre alıntı kategorisini siler. Yol parametresi olarak categoryId gerektirir.
+📌 **Delete Quote Category**
+- **DELETE `/api/v1/delete-quote-category/{categoryId}`**: Deletes a quote category by a specific category ID. Requires the categoryId as a path parameter.
 
-📌 **Alıntı Sil**
-- **DELETE `/api/v1/delete-quote/{quoteId}`**: Belirli bir alıntıyı siler. Yol parametresi olarak quoteId gerektirir.
+📌 **Delete Quote**
+- **DELETE `/api/v1/delete-quote/{quoteId}`**: Deletes a specific quote by quoteId. Requires the quoteId as a path parameter.
 
-📌 **Kategoriye Göre Alıntı Al**
-- **GET `/api/v1/get-quote-by-category/{categoryId}`**: Kategori ID'sine göre alıntı alır. Yol parametresi olarak categoryId gerektirir.
+📌 **Get Quote by Category**
+- **GET `/api/v1/get-quote-by-category/{categoryId}`**: Retrieves a quote by category ID. Requires the categoryId as a path parameter.
 
-📌 **Alıntı Kategorilerini Al**
-- **GET `/api/v1/get-quote-category`**: Tüm alıntı kategorilerini alır.
+📌 **Get Quote Categories**
+- **GET `/api/v1/get-quote-category`**: Retrieves all quote categories.
 
-📌 **Belirli Bildirim Gönder**
-- **POST `/api/v1/notification/send-specific`**: Belirli bir bildirim gönderir.
+📌 **Send Specific Notification**
+- **POST `/api/v1/notification/send-specific`**: Sends a specific notification.
 
-📌 **OpenAI İsteği**
-- **POST `/api/v1/openai-request`**: OpenAI API'ye bir istek gönderir. İstek gövdesinde bir OpenAIPromptDto nesnesi gerektirir.
+📌 **OpenAI Request**
+- **POST `/api/v1/openai-request`**: Sends a request to the OpenAI API. Requires an OpenAIPromptDto object in the request body.
 
-📌 **Bildirim Testi**
-- **POST `/api/v1/test-notification`**: Bildirim gönderme işlevselliğini test eder.
+📌 **Test Notification**
+- **POST `/api/v1/test-notification`**: Tests the notification sending functionality.
 
-📌 **Alıntıyı Güncelle**
-- **PATCH `/api/v1/update-quote`**: Var olan bir alıntıyı günceller. İstek gövdesinde bir Quote nesnesi gerektirir.
+📌 **Update Quote**
+- **PATCH `/api/v1/update-quote`**: Updates an existing quote. Requires a Quote object in the request body.
 
-📌 **Alıntı Kategorisini Güncelle**
-- **PATCH `/api/v1/update-quote-category`**: Var olan bir alıntı kategorisini günceller. İstek gövdesinde bir QuoteCategory nesnesi gerektirir.
+📌 **Update Quote Category**
+- **PATCH `/api/v1/update-quote-category`**: Updates an existing quote category. Requires a QuoteCategory object in the request body.
 
-📌 **Kullanıcı Kimlik Doğrula**
-- **POST `/api/v1/user/authenticate`**: Bir kullanıcıyı kimlik doğrular. İstek gövdesinde bir UserAuthenticationRequest nesnesi gerektirir.
+📌 **User Authentication**
+- **POST `/api/v1/user/authenticate`**: Authenticates a user. Requires a UserAuthenticationRequest object in the request body.
 
-📌 **Kullanıcı Sil**
-- **DELETE `/api/v1/user/delete`**: Bir kullanıcıyı siler.
+📌 **Delete User**
+- **DELETE `/api/v1/user/delete`**: Deletes a user.
 
-📌 **Kullanıcı FCM Kaydı**
-- **POST `/api/v1/user/fcm-enrolment`**: Bir kullanıcıyı FCM (Firebase Cloud Messaging) için kaydeder. İstek gövdesinde bir FcmSetupDto nesnesi gerektirir.
+📌 **User FCM Enrollment**
+- **POST `/api/v1/user/fcm-enrolment`**: Enrolls a user for FCM (Firebase Cloud Messaging). Requires an FcmSetupDto object in the request body.
 
-📌 **Şifre Unutma Kimlik Doğrulama**
-- **POST `/api/v1/user/forgot-password/auth`**: Şifre sıfırlama için kullanıcıyı kimlik doğrular. İstek gövdesinde bir ForgotPasswordAuthModel nesnesi gerektirir.
+📌 **Forgot Password Authentication**
+- **POST `/api/v1/user/forgot-password/auth`**: Authenticates a user for password reset. Requires a ForgotPasswordAuthModel object in the request body.
 
-📌 **Şifre Unutma E-posta Gönderimi**
-- **POST `/api/v1/user/forgot-password/mailer`**: Şifre sıfırlama e-postası gönderir. İstek gövdesinde bir ForgotPasswordMailerModel nesnesi gerektirir.
+📌 **Send Forgot Password Email**
+- **POST `/api/v1/user/forgot-password/mailer`**: Sends a password reset email. Requires a ForgotPasswordMailerModel object in the request body.
 
-📌 **Şifre Unutma Sıfırlama**
-- **PATCH `/api/v1/user/forgot-password/reset-password`**: Kullanıcının şifresini sıfırlar. İstek gövdesinde bir ForgotPasswordResetModel nesnesi gerektirir.
+📌 **Reset Forgotten Password**
+- **PATCH `/api/v1/user/forgot-password/reset-password`**: Resets a user's password. Requires a ForgotPasswordResetModel object in the request body.
 
-📌 **Kullanıcı Kaydı**
-- **POST `/api/v1/user/register`**: Yeni bir kullanıcı kaydeder. İstek gövdesinde bir UserInformationSchema nesnesi gerektirir.
+📌 **User Registration**
+- **POST `/api/v1/user/register`**: Registers a new user. Requires a UserInformationSchema object in the request body.
 
-📌 **Kullanıcı Güncelle**
-- **PATCH `/api/v1/user/update`**: Kullanıcı bilgilerini günceller. İstek gövdesinde bir UserInformationSchema nesnesi gerektirir.
+📌 **Update User**
+- **PATCH `/api/v1/user/update`**: Updates user information. Requires a UserInformationSchema object in the request body.
