@@ -1,4 +1,4 @@
-# **Harmony Haven Server **
+# Harmony Haven Server 
 
 The Harmony Haven Server is a robust backend infrastructure that powers the Harmony Haven application. Built using Ktor for API services, this server is hosted on AWS, providing scalability and high performance. It supports user management, article access, and AI-powered notifications, along with secure data transmission and authentication via HTTPS and OAuth2/JWT. The Harmony Haven Server strengthens the user experience by offering a solid and reliable infrastructure that supports all features of the application.
 
