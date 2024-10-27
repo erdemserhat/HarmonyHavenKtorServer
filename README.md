@@ -1,4 +1,4 @@
-# **Harmony Haven Server (Geliştirilme Aşamasında)**
+# **Harmony Haven Server**
 
 Harmony Haven Server, Harmony Haven uygulamasının arka planında çalışan, gelişmiş bir altyapıya sahip sunucudur. Ktor kullanarak API hizmetlerini sağlayan bu sunucu, AWS üzerinde barındırılarak ölçeklenebilirlik ve yüksek performans sunar. Kullanıcı yönetimi, makale erişimi ve AI destekli bildirimlerin yanı sıra, HTTPS ve OAuth2/JWT ile güvenli veri iletimi ve kimlik doğrulama sağlar. Harmony Haven Server, uygulamanın tüm özelliklerini destekleyen sağlam ve güvenilir bir altyapı sunarak kullanıcı deneyimini güçlendirir.
 
