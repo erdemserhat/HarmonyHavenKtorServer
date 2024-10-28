@@ -95,23 +95,23 @@ private fun validateAIResponse(message: String): Boolean {
 
 object NotificationAICategories {
     private val titleListCommon = arrayOf(
-        "Kısa bir hatırlatma *name ⭐✨",
+        //"Kısa bir hatırlatma *name ⭐✨",
         "*name.. 🌟",
-        "*name, küçük bir not: 🎯",
-        "✨ *name, sana özel bir hatırlatma: 💫",
+        //"*name, küçük bir not: 🎯",
+        //"✨ *name, sana özel bir hatırlatma: 💫",
         "Bugün senin günün *name! 🌞",
-        "*name... 🌟 Unutma ki, sen çok güçlüsün! 💪",
-        "Küçük bir hatırlatma, *name! 💡",
+        //"*name... 🌟 Unutma ki, sen çok güçlüsün! 💪",
+        //"Küçük bir hatırlatma, *name! 💡",
         "✨ *name, bugün her şey mümkün! 🚀",
         "Gün senin günün, *name! 🌅",
-        "🌸 *name, sana ilham verecek bir not! ✨",
-        "*name, harika şeyler seni bekliyor! 🌟",
-        "Kendine güven, *name! Sen başaracaksın! 💪",
-        "*name, hep ileriye! 🏆",
-        "Bir adım daha, *name! 🌟",
-        "Parla *name! Bugün senin zamanın! ✨",
-        "*name, hatırlatmak istedim: Sen harikasın! 🌟",
-        "Unutma *name, başarı çok yakın! 🔥"
+        //"🌸 *name, sana ilham verecek bir not! ✨",
+        //"*name, harika şeyler seni bekliyor! 🌟",
+        //"Kendine güven, *name! Sen başaracaksın! 💪",
+        //"*name, hep ileriye! 🏆",
+        //"Bir adım daha, *name! 🌟",
+        //"Parla *name! Bugün senin zamanın! ✨",
+        //"*name, hatırlatmak istedim: Sen harikasın! 🌟",
+        //"Unutma *name, başarı çok yakın! 🔥"
     )
     val list = listOf(
         advice(),
@@ -326,15 +326,15 @@ object NotificationAICategories {
 
         val titleList = arrayOf(
             "İyi Geceler *name! 🌙",
-            "Tatlı Rüyalar *name! ✨",
-            "Huzurlu Bir Gece Geçir *name! 🌟",
-            "Geceyi Huzurla Geçir *name! 🌠",
-            "*name, Geceyi Huzurla Kapat! 🌙",
+            //"Tatlı Rüyalar *name! ✨",
+            //"Huzurlu Bir Gece Geçir *name! 🌟",
+            //"Geceyi Huzurla Geçir *name! 🌠",
+            //"*name, Geceyi Huzurla Kapat! 🌙",
             "İyi Uykular *name! 🌛",
-            "🌙 Yıldızlarla Dolu Bir Gece Senin Olsun! ✨",
-            "💤 Gece Senin İçin Huzurla Dolsun. 🌟",
-            "🌌 Senin İçin Yıldızlar Parlasın. 🌙",
-            "🌟Tatlı Rüyalar! ✨",
+            //"🌙 Yıldızlarla Dolu Bir Gece Senin Olsun! ✨",
+            //"💤 Gece Senin İçin Huzurla Dolsun. 🌟",
+            //"🌌 Senin İçin Yıldızlar Parlasın. 🌙",
+            //"🌟Tatlı Rüyalar! ✨",
         )
 
         val randomTone = toneList.random()

@@ -6,6 +6,7 @@ import com.erdemserhat.service.di.AuthenticationModule.tokenConfigSecurity
 import com.erdemserhat.service.configurations.*
 import com.erdemserhat.plugins.*
 import com.erdemserhat.service.NotificationAICategories
+import com.erdemserhat.service.openai.OpenAIRequest
 import com.erdemserhat.service.sendAIBasedMessage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

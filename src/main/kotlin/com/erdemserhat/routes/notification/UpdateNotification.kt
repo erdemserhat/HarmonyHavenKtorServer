@@ -2,7 +2,7 @@ package com.erdemserhat.routes.notification
 
 import com.erdemserhat.models.Notification
 import com.erdemserhat.service.di.DatabaseModule
-import com.erdemserhat.util.Role
+import com.erdemserhat.service.security.Role
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
