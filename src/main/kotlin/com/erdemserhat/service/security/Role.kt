@@ -1,4 +1,4 @@
-package com.erdemserhat.util
+package com.erdemserhat.service.security
 
 object Role {
     val ADMIN ="admin"
