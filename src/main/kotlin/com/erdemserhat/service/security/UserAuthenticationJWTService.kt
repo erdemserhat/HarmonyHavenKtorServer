@@ -35,7 +35,9 @@ class UserAuthenticationJWTService(
 
         val hashedPassword = hashPassword(userAuth.password)
 
-        val userRole = DatabaseModule.userRepository.getUserByLoginInformation(userAuth.copy(password = hashedPassword))!!.role
+        val user  = DatabaseModule.userRepository.getUserByLoginInformation(userAuth.copy(password = hashedPassword))!!
+        val userRole =user.role
+        val userId = user.id
 
         // Create JWT token with specified claims
         val token = JWT.create()
@@ -43,6 +45,7 @@ class UserAuthenticationJWTService(
             .withIssuer(AuthenticationModule.tokenConfigSecurity.issuer)
             .withClaim("email", userAuth.email)
             .withClaim("role", userRole)
+            .withClaim("id",userId)
             .withExpiresAt(Date(System.currentTimeMillis() + 600000000000)) // Token expiration time
             .sign(Algorithm.HMAC256(AuthenticationModule.tokenConfigSecurity.secret))
 

@@ -2,10 +2,13 @@ package com.erdemserhat
 
 // Importing necessary modules and configurations
 
+import com.erdemserhat.models.Quote
 import com.erdemserhat.service.di.AuthenticationModule.tokenConfigSecurity
 import com.erdemserhat.service.configurations.*
 import com.erdemserhat.plugins.*
 import com.erdemserhat.service.NotificationAICategories
+import com.erdemserhat.service.di.DatabaseModule.likedQuoteRepository
+import com.erdemserhat.service.di.DatabaseModule.quoteRepository
 import com.erdemserhat.service.openai.OpenAIRequest
 import com.erdemserhat.service.sendAIBasedMessage
 import com.google.gson.Gson
@@ -70,6 +73,10 @@ fun Application.module() {
 
     CoroutineScope(Dispatchers.IO).launch{
         configureNotificationScheduler()
+        //likedQuoteRepository.unLikeQuote(421,80)
+
+        val condition = likedQuoteRepository.getAllLikedQuotesOfUser(4221)
+        println("lloook ${condition.toString()}")
 
     }
 
