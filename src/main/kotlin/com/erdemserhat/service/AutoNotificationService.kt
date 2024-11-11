@@ -29,7 +29,7 @@ suspend fun sendAIBasedMessage(
 
 
         val fcmNotification = FcmNotification(
-            title = title,
+            title = "Harmony Haven",
             body = body,
             image = "",
             screen = "1"
@@ -448,16 +448,16 @@ object NotificationAICategories {
         )
 
         val titleList = arrayOf(
-            "Anda Kal *name! 🧘‍♀️",
-            "Farkındalık Zamanı *name! 🌿",
-            "Şu Anın Tadını Çıkar *name! 🌸",
-            "Zihnini Sakinleştir *name! 🌙",
-            "Derin Bir Nefes Al *name! 🌬️",
-            "Huzur Bul *name! 🌼",
+            //"Anda Kal *name! 🧘‍♀️",
+            //"Farkındalık Zamanı *name! 🌿",
+            //"Şu Anın Tadını Çıkar *name! 🌸",
+            //"Zihnini Sakinleştir *name! 🌙",
+            //"Derin Bir Nefes Al *name! 🌬️",
+            //"Huzur Bul *name! 🌼",
             "Anı Yaşa *name! 💫",
-            "Dinginlik ve Farkındalık *name! 🧘‍♂️",
-            "Bugün Anda Kal! *name 🧠",
-            "Zihnine Huzur Ver *name! 🌟"
+            //"Dinginlik ve Farkındalık *name! 🧘‍♂️",
+            //"Bugün Anda Kal! *name 🧠",
+            //"Zihnine Huzur Ver *name! 🌟"
         )
 
         val randomSubject = subjectList.random()
