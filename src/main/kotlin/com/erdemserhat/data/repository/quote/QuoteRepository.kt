@@ -32,7 +32,7 @@ class QuoteRepository : QuoteRepositoryContract {
 
 fun DBQuoteEntity.toQuote(): Quote {
     return Quote(
-        id, quote, writer,imageUrl
+        id, quote, writer,imageUrl,quoteCategory
     )
 
 }

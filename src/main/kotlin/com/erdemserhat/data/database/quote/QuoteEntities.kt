@@ -15,7 +15,7 @@ object DBQuoteTable : Table<DBQuoteEntity>("quotes") {
     val quote = text("quote").bindTo { it.quote }
     val writer = varchar("writer").bindTo { it.writer }
     val imageUrl = varchar("image_url").bindTo { it.imageUrl }
-    val quoteCategoryId = int("quote_category_id").references(DBQuoteCategoryTable) { it.quoteCategory }
+    val quoteCategoryId = int("quote_category_id").bindTo { it.quoteCategory }
 
 
 }
@@ -26,7 +26,7 @@ interface DBQuoteEntity : Entity<DBQuoteEntity> {
     val quote: String
     val writer: String
     val imageUrl: String
-    val quoteCategory: DBQuoteCategoryEntity
+    val quoteCategory: Int
 
 
 

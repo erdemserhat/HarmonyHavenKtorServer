@@ -14,7 +14,7 @@ data class Quote(
     fun convertToQuoteResponse(isLiked:Boolean): QuoteResponse{
         return QuoteResponse(
             id = this.id,
-            quote = this.writer,
+            quote = this.quote,
             writer = this.writer,
             imageUrl = this.imageUrl,
             quoteCategory = this.quoteCategory,

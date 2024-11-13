@@ -105,6 +105,7 @@ fun Route.versionedApiRoutes() {
         getQuotesV1()
         likeQuote()
         removeLikeQuoteV1()
+        getAllLikedQuotesV1()
         //updateQuoteV1()
 
         //quotes category

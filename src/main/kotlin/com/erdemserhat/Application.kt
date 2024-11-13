@@ -75,7 +75,7 @@ fun Application.module() {
         configureNotificationScheduler()
         //likedQuoteRepository.unLikeQuote(421,80)
 
-        val condition = likedQuoteRepository.getAllLikedQuotesOfUser(4221)
+        val condition = quoteRepository.getQuotes()
         println("lloook ${condition.toString()}")
 
     }
