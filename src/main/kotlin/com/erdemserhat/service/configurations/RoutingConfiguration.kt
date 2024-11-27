@@ -27,6 +27,7 @@ import java.util.*
  * Configures the routing for the application.
  */
 fun Application.configureRouting() {
+    configureCORS()
     routing {
         // Default root endpoint
         get("/") {
@@ -39,29 +40,6 @@ fun Application.configureRouting() {
 
 
 // ...
-    routing {
-        install(CORS) {
-            anyHost() // Allow requests from any host. Replace with specific hosts in production.
-            allowMethod(HttpMethod.Options)
-            allowMethod(HttpMethod.Put)
-            allowMethod(HttpMethod.Delete)
-            allowMethod(HttpMethod.Get)
-            allowMethod(HttpMethod.Patch)
-            allowHeader(HttpHeaders.Authorization)
-            allowHeader("cart_session")
-            exposeHeader("cart_session")
-            allowHeader("MyCustomHeader")
-            allowHeader("X-Requested-With")
-            allowHeader("X-HTTP-Method-Override")
-            allowHeader("Content-Type")
-            allowHeader("Authorization")
-            allowHeader("Accept")
-            allowHeader("Access-Control-Allow-Credentials")
-            allowHeader("Accept")
-            allowHeader("Access-Control-Allow-Origin")
-        }
-       // swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.yaml")
-    }
 }
 
 /**
