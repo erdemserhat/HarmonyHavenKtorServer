@@ -3,10 +3,9 @@ package com.erdemserhat.service.configurations
 import com.erdemserhat.routes.admin.*
 import com.erdemserhat.routes.article.getAllArticlesV1
 import com.erdemserhat.routes.article.getArticleCategoriesV1
-import com.erdemserhat.routes.quote.addQuoteV1
-import com.erdemserhat.routes.quote.deleteQuotes
-import com.erdemserhat.routes.quote.getQuotes
-import com.erdemserhat.routes.quote.updateQuoteV1
+import com.erdemserhat.routes.quote.*
+import com.erdemserhat.routes.quote.get_quotes.getQuotesV1
+import com.erdemserhat.routes.quote.get_quotes.getQuotesV2
 import com.erdemserhat.routes.user.*
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -14,14 +13,12 @@ import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.plugins.*
 import io.ktor.server.plugins.cors.routing.*
-import io.ktor.server.plugins.swagger.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -41,6 +38,7 @@ fun generateInitialLogs(): String {
  * Configures the routing for the application.
  */
 fun Application.configureRouting() {
+    configureCORS()
     routing {
         // Default root endpoint
         get("/") {
@@ -210,29 +208,6 @@ fun Application.configureRouting() {
 
 
 // ...
-    routing {
-        install(CORS) {
-            anyHost() // Allow requests from any host. Replace with specific hosts in production.
-            allowMethod(HttpMethod.Options)
-            allowMethod(HttpMethod.Put)
-            allowMethod(HttpMethod.Delete)
-            allowMethod(HttpMethod.Get)
-            allowMethod(HttpMethod.Patch)
-            allowHeader(HttpHeaders.Authorization)
-            allowHeader("cart_session")
-            exposeHeader("cart_session")
-            allowHeader("MyCustomHeader")
-            allowHeader("X-Requested-With")
-            allowHeader("X-HTTP-Method-Override")
-            allowHeader("Content-Type")
-            allowHeader("Authorization")
-            allowHeader("Accept")
-            allowHeader("Access-Control-Allow-Credentials")
-            allowHeader("Accept")
-            allowHeader("Access-Control-Allow-Origin")
-        }
-       // swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.yaml")
-    }
 }
 
 /**
@@ -273,7 +248,10 @@ fun Route.versionedApiRoutes() {
         //Quotes routes
         addQuoteV1()
         deleteQuotes()
-        getQuotes()
+        getQuotesV1()
+        likeQuote()
+        removeLikeQuoteV1()
+        getAllLikedQuotesV1()
         //updateQuoteV1()
 
         //quotes category
@@ -311,6 +289,8 @@ fun Route.versionedApiRoutes() {
 
     // Version 2 API routes
     route("/api/v2") {
+
+        getQuotesV2()
         /**
          * Use this section when updating an endpoint for a new feature.
          * Changing v1 endpoints may require clients using them to do significant work.

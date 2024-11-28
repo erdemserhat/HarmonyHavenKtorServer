@@ -5,6 +5,8 @@ import com.erdemserhat.data.repository.article.ArticleRepository
 import com.erdemserhat.data.repository.article.ArticleRepositoryContract
 import com.erdemserhat.data.repository.article_category.ArticleCategoryRepository
 import com.erdemserhat.data.repository.article_category.ArticleCategoryRepositoryContract
+import com.erdemserhat.data.repository.liked_quote.LikedQuoteRepository
+import com.erdemserhat.data.repository.liked_quote.LikedQuoteRepositoryContract
 import com.erdemserhat.data.repository.notification.NotificationRepository
 import com.erdemserhat.data.repository.notification.NotificationRepositoryContract
 import com.erdemserhat.data.repository.quote.QuoteRepository
@@ -50,6 +52,15 @@ object DatabaseModule {
     val notificationRepository: NotificationRepositoryContract by lazy {
         NotificationRepository()
     }
+
+    val likedQuoteRepository:LikedQuoteRepositoryContract by lazy {
+        LikedQuoteRepository()
+    }
+
+
+
+
+
 
     /**
      * Singleton instance of PasswordResetService, providing functionality for password reset operations.

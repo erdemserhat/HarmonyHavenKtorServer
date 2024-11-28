@@ -68,7 +68,8 @@ fun Route.googleLogin() {
                     .withIssuer(AuthenticationModule.tokenConfigSecurity.issuer)
                     .withClaim("email", userRegistered!!.email)
                     .withClaim("role", userRegistered.role)
-                    .withExpiresAt(Date(System.currentTimeMillis() + 600000000000)) // Token expiration time
+                    .withClaim("id",userRegistered.id)
+                    .withExpiresAt( Date(System.currentTimeMillis() + 315360000000L))
                     .sign(Algorithm.HMAC256(AuthenticationModule.tokenConfigSecurity.secret))
 
                 call.respond(
@@ -89,7 +90,8 @@ fun Route.googleLogin() {
                     .withIssuer(AuthenticationModule.tokenConfigSecurity.issuer)
                     .withClaim("email", existingUser!!.email)
                     .withClaim("role", existingUser.role)
-                    .withExpiresAt(Date(System.currentTimeMillis() + 600000000000)) // Token expiration time
+                    .withClaim("id",existingUser.id)
+                    .withExpiresAt( Date(System.currentTimeMillis() + 315360000000L))
                     .sign(Algorithm.HMAC256(AuthenticationModule.tokenConfigSecurity.secret))
 
                 call.respond(

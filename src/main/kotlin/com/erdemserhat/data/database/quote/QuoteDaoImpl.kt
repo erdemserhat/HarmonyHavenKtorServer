@@ -13,6 +13,7 @@ class QuoteDaoImpl : QuoteDao {
             set(DBQuoteTable.quote, quote.quote)
             set(DBQuoteTable.writer, quote.writer)
             set(DBQuoteTable.imageUrl, quote.imageUrl)
+            set(DBQuoteTable.quoteCategoryId, quote.quoteCategory)
 
         }
     }
@@ -36,6 +37,7 @@ class QuoteDaoImpl : QuoteDao {
                 set(DBQuoteTable.quote, quote.quote)
                 set(DBQuoteTable.writer, quote.writer)
                 set(DBQuoteTable.imageUrl, quote.imageUrl)
+                set(DBQuoteTable.quoteCategoryId, quote.quoteCategory)
                 where {
                     DBQuoteTable.id eq quote.id
                 }
