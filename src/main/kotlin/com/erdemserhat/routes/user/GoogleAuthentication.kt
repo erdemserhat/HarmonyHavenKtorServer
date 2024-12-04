@@ -2,8 +2,12 @@ package com.erdemserhat.routes.user
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.erdemserhat.data.mail.sendWelcomeMail
 import com.erdemserhat.data.sendWelcomeNotification
+import com.erdemserhat.dto.requests.FcmNotification
 import com.erdemserhat.dto.requests.GoogleAuthenticationRequest
+import com.erdemserhat.dto.requests.SendNotificationSpecific
+import com.erdemserhat.dto.requests.toFcmMessage
 import com.erdemserhat.dto.responses.GoogleAuthenticationResponse
 import com.erdemserhat.models.UserInformationSchema
 import com.erdemserhat.models.toUser
@@ -15,12 +19,16 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
+import com.google.firebase.messaging.FirebaseMessaging
 import io.ktor.http.*
+import io.ktor.server.plugins.*
 
 import io.ktor.server.response.*
+import kotlinx.coroutines.*
 import java.util.*
 
 
+@OptIn(ExperimentalCoroutinesApi::class, DelicateCoroutinesApi::class)
 fun Route.googleLogin() {
     post("/user/authenticate-google") {
         // Assuming you're receiving the ID token from the request body
@@ -58,7 +66,8 @@ fun Route.googleLogin() {
                     password = hashPassword(UUID.randomUUID().toString()),
                 ).toUser()
                 DatabaseModule.userRepository.addUser(user)
-                sendWelcomeNotification(email)
+                launch { sendWelcomeNotification(email) }
+
                 val userRegistered = DatabaseModule.userRepository.getUserByEmailInformation(email)
 
                 //TODO : OPTIMIZE HERE JWT GENERATION SHOULD NOT BE HERE DIRECTLY
@@ -71,6 +80,31 @@ fun Route.googleLogin() {
                     .withClaim("id",userRegistered.id)
                     .withExpiresAt( Date(System.currentTimeMillis() + 315360000000L))
                     .sign(Algorithm.HMAC256(AuthenticationModule.tokenConfigSecurity.secret))
+
+
+                launch(newSingleThreadContext("SINGLE")) {
+                    launch { sendWelcomeMail(to = userRegistered.email, name = userRegistered.name)  }
+                    launch {
+                        val ipAddress = call.request.origin.remoteHost
+                        val informationMessage =
+                            SendNotificationSpecific(
+                                email = "serhaterdem961@gmail.com",
+                                notification = FcmNotification(
+                                    title = "Yeni Bir Üye Katıldı: ${userRegistered.name} 😊",
+                                    body = "Merhaba! ${userRegistered.name}, ${userRegistered.email} (${ipAddress}) adresiyle Harmony Haven'a katıldı. Bir göz atmak isteyebilirsiniz! 👀",
+                                    screen = "1"
+                                )
+                            )
+
+                        FirebaseMessaging.getInstance().send(informationMessage.toFcmMessage())
+
+                    }
+
+
+
+                }
+
+
 
                 call.respond(
                     status = HttpStatusCode.OK,

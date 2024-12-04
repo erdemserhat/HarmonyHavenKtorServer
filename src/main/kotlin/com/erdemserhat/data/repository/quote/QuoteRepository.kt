@@ -4,6 +4,7 @@ import com.erdemserhat.models.Quote
 import com.erdemserhat.data.database.quote.DBQuoteEntity
 import com.erdemserhat.data.database.quote.QuoteDao
 import com.erdemserhat.data.database.quote.QuoteDaoImpl
+import com.erdemserhat.models.QuoteResponse
 
 class QuoteRepository : QuoteRepositoryContract {
     private val quoteDao: QuoteDao = QuoteDaoImpl()
@@ -25,8 +26,12 @@ class QuoteRepository : QuoteRepositoryContract {
     }
 
     override suspend fun getQuotes(): List<Quote> {
-        return quoteDao.getCategories().map { it.toQuote() }
+        return quoteDao.getQuotes().map { it.toQuote() }
 
+    }
+
+    override suspend fun getCategoriesWithPagination(page: Int, pageSize: Int, categoryIds: List<Int>,seed:Int,userId:Int): List<QuoteResponse> {
+        return quoteDao.getCategoriesWithPagination(page, pageSize, categoryIds,seed,userId)
     }
 }
 

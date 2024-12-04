@@ -39,7 +39,7 @@ class LikedQuotesDaoImpl : LikedQuotesDao {
     }
 
     override suspend fun getAllLikedQuotesOfUser(userId: Int): List<Int> {
-        val result = DatabaseConfig.ktormDatabase.from(DBLikedQuoteTable)
+        val result = ktormDatabase.from(DBLikedQuoteTable)
             .select(DBLikedQuoteTable.quoteId)
             .where { DBLikedQuoteTable.userId eq userId }
         return result.map { it[DBLikedQuoteTable.quoteId] as Int }

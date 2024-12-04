@@ -11,7 +11,7 @@ data class Quote(
     val imageUrl:String,
     val quoteCategory:Int =1
 ){
-    fun convertToQuoteResponse(isLiked:Boolean): QuoteResponse{
+    fun convertToQuoteResponse(isLiked:Boolean = false): QuoteResponse{
         return QuoteResponse(
             id = this.id,
             quote = this.quote,
@@ -33,7 +33,7 @@ data class QuoteResponse(
     val writer:String,
     val imageUrl:String,
     val quoteCategory:Int =1,
-    val isLiked:Boolean
+    val isLiked:Boolean = false
 )
 
 

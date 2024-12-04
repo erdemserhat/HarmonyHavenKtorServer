@@ -2,15 +2,11 @@ package com.erdemserhat
 
 // Importing necessary modules and configurations
 
-import com.erdemserhat.models.Quote
 import com.erdemserhat.service.di.AuthenticationModule.tokenConfigSecurity
 import com.erdemserhat.service.configurations.*
 import com.erdemserhat.plugins.*
-import com.erdemserhat.service.NotificationAICategories
-import com.erdemserhat.service.di.DatabaseModule.likedQuoteRepository
-import com.erdemserhat.service.di.DatabaseModule.quoteRepository
-import com.erdemserhat.service.openai.OpenAIRequest
-import com.erdemserhat.service.sendAIBasedMessage
+import com.erdemserhat.service.configurations.rate_limiting.configureRateLimiting
+import com.erdemserhat.service.configurations.rate_limiting.configureRateLimiting2
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.ktor.client.statement.*
@@ -38,6 +34,8 @@ fun main(args: Array<String>) {
 // Main module for the Ktor application
 @OptIn(DelicateCoroutinesApi::class)
 fun Application.module() {
+    //configureRateLimiting()
+    //configureRateLimiting2()
 
 
     // Configuring serialization for handling data formats
@@ -64,20 +62,17 @@ fun Application.module() {
 
     // Configuring token configuration for authentication
     configureTokenConfig()
-
     // Configuring security based on token configuration
     configureSecurity(tokenConfigSecurity)
+
+    configureApiKeySecurity()
+
 
     // Configuring routing for defining API endpoints
     configureRouting()
 
     CoroutineScope(Dispatchers.IO).launch{
         configureNotificationScheduler()
-        //likedQuoteRepository.unLikeQuote(421,80)
-
-        val condition = quoteRepository.getQuotes()
-        println("lloook ${condition.toString()}")
-
     }
 
 

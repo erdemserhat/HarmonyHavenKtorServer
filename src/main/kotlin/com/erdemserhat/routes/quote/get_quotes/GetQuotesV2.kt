@@ -13,7 +13,9 @@ fun Route.getQuotesV2() {
         get("/get-quotes") {
             val principal = call.principal<JWTPrincipal>()!!
             val userId = principal.payload.getClaim("id").asInt()
+
             val likedQuotes = DatabaseModule.likedQuoteRepository.getAllLikedQuotesOfUser(userId)
+
             val quoteList= DatabaseModule.quoteRepository.getQuotes().map {
                 it.convertToQuoteResponse(likedQuotes.contains(it.id))
             }
