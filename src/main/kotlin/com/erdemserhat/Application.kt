@@ -2,6 +2,7 @@ package com.erdemserhat
 
 // Importing necessary modules and configurations
 
+import com.erdemserhat.data.database.comment.CommentDaoImpl
 import com.erdemserhat.service.di.AuthenticationModule.tokenConfigSecurity
 import com.erdemserhat.service.configurations.*
 import com.erdemserhat.plugins.*
@@ -22,67 +23,35 @@ import io.ktor.util.*
 import kotlinx.serialization.Serializable
 
 
-// Main function responsible for starting the Ktor server
-@OptIn(DelicateCoroutinesApi::class)
 fun main(args: Array<String>) {
-    // Launching the Ktor server using Netty engine
     EngineMain.main(args)
-
-
 }
 
-// Main module for the Ktor application
-@OptIn(DelicateCoroutinesApi::class)
 fun Application.module() {
-    //configureRateLimiting()
-    //configureRateLimiting2()
-
-
-    // Configuring serialization for handling data formats
+    configureRateLimiting()
+    configureRateLimiting2()
     configureSerialization()
-
-    // Configuring templating for rendering HTML templates
     configureTemplating()
-
-    // Configuring SMTP for sending emails
     configureSMTP()
-
-
-    // Configuring OpenAI service for AI functionality
     configureOpenAIService()
-
-    // Configuring FTP for file transfer
     configureFTP()
-
-    // Configuring remote database connection
     configureRemoteDatabase()
-
-    // Configuring Firebase for Firebase services
     configureFirebase()
-
-    // Configuring token configuration for authentication
     configureTokenConfig()
-    // Configuring security based on token configuration
     configureSecurity(tokenConfigSecurity)
-
     configureApiKeySecurity()
-
-
-    // Configuring routing for defining API endpoints
     configureRouting()
 
-    CoroutineScope(Dispatchers.IO).launch{
-        configureNotificationScheduler()
+    CoroutineScope(Dispatchers.IO).launch {
+      //  configureNotificationScheduler()
+
+        val repo = CommentDaoImpl()
+        repo.addComment(
+            postId = 364,
+            userId = 401,
+            comment = "serhat"
+        )
     }
-
-
-
-
-
-
-
-
-
 
 
 

@@ -109,6 +109,9 @@ dependencies {
     implementation("org.quartz-scheduler:quartz:2.3.2")
     implementation("com.typesafe:config:1.4.2") // Version may vary
 
+    implementation("org.flywaydb:flyway-core:9.3.0")
+
+
 
 
 

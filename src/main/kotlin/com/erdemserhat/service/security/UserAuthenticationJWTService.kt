@@ -22,17 +22,6 @@ class UserAuthenticationJWTService(
      * @return A string representing the generated JWT token.
      */
     suspend fun generateJWT(): String {
-        // Retrieve user's role from the database
-       // val hashedPassword = makeEncryptionRequest(
-       //     EncryptionToFarawayServerModel(
-         //       encryptionData = EncryptionDataDto(
-            //        sensitiveData = userAuth.password,
-             ///       userUUID = DatabaseModule.userRepository.getUserByEmailInformation(userAuth.email)!!.uuid
-             //   )
-
-          //  )
-       // )
-
         val hashedPassword = hashPassword(userAuth.password)
 
         val user  = DatabaseModule.userRepository.getUserByLoginInformation(userAuth.copy(password = hashedPassword))!!

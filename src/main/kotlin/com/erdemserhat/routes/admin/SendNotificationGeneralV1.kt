@@ -11,6 +11,8 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.sync.Semaphore
+import java.lang.System.err
 
 @OptIn(DelicateCoroutinesApi::class)
 fun Route.sendNotificationGeneralV1() {
@@ -43,18 +45,24 @@ fun Route.sendNotificationGeneralV1() {
                 try {
 
                     GlobalScope.launch(Dispatchers.IO) {
-                        val users = DatabaseModule.userRepository.getAllUsers().filter { it.fcmId.length > 10 }
-
-                        val deferred = users.map {
-                            async {
-                                val specificNotification = SendNotificationSpecific(
-                                    it.email, fcmNotification)
-                                FirebaseMessaging.getInstance().send(specificNotification.toFcmMessage())
+                        val users = async{
+                            DatabaseModule.userRepository.getAllUsers().filter { it.fcmId.length > 10 }
+                        }
+                        val semaphore = Semaphore(10)
+                        users.await().forEach {
+                            //creates new coroutines for every request as asynchronously which is child of coroutineScope
+                            launch() {
+                                semaphore.acquire() // take semaphore
+                                try {
+                                    val specificNotification = SendNotificationSpecific(it.email, fcmNotification)
+                                    FirebaseMessaging.getInstance().send(specificNotification.toFcmMessage())
+                                } catch (e: Exception) {
+                                    err.println(e)
+                                } finally {
+                                    semaphore.release() //release semaphore
+                                }
                             }
                         }
-
-                        // Tüm görevlerin tamamlanmasını bekle
-                        deferred.awaitAll()
 
 
                     }
