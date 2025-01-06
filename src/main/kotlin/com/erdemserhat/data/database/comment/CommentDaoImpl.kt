@@ -6,10 +6,7 @@ import com.erdemserhat.data.database.article.DBArticleTable
 import org.ktorm.dsl.delete
 import org.ktorm.dsl.eq
 import org.ktorm.dsl.insert
-import org.ktorm.entity.filter
-import org.ktorm.entity.firstOrNull
-import org.ktorm.entity.sequenceOf
-import org.ktorm.entity.toList
+import org.ktorm.entity.*
 import java.time.LocalDateTime
 
 class CommentDaoImpl: CommentDao {
@@ -28,13 +25,18 @@ class CommentDaoImpl: CommentDao {
         }
     }
 
-    override suspend fun getAllComments(postId: Int): List<DBCommentEntity> {
+    override suspend fun getAllComments(): List<DBCommentEntity> {
         return DatabaseConfig.ktormDatabase.sequenceOf(DBCommentTable).toList()
     }
 
     override suspend fun getCommentByPostId(postId: Int): List<DBCommentEntity> {
         return DatabaseConfig.ktormDatabase.sequenceOf(DBCommentTable)
             .filter { DBCommentTable.postId eq postId }.toList()
+    }
+
+    override suspend fun getCommentById(id: Int): DBCommentEntity? {
+        return DatabaseConfig.ktormDatabase.sequenceOf(DBCommentTable)
+            .find { DBCommentTable.id eq id }
     }
 
 }

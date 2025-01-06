@@ -3,6 +3,7 @@ package com.erdemserhat.service.configurations
 import com.erdemserhat.routes.admin.*
 import com.erdemserhat.routes.article.getAllArticlesV1
 import com.erdemserhat.routes.article.getArticleCategoriesV1
+import com.erdemserhat.routes.comment.commentRoutes
 import com.erdemserhat.routes.quote.*
 import com.erdemserhat.routes.quote.get_quotes.getQuotesV1
 import com.erdemserhat.routes.quote.get_quotes.getQuotesV2
@@ -102,6 +103,7 @@ fun Route.versionedApiRoutes() {
         removeLikeQuoteV1()
         getAllLikedQuotesV1()
         //updateQuoteV1()
+        commentRoutes()
 
         //quotes category
 

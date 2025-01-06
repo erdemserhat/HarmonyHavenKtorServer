@@ -3,6 +3,7 @@ package com.erdemserhat
 // Importing necessary modules and configurations
 
 import com.erdemserhat.data.database.comment.CommentDaoImpl
+import com.erdemserhat.data.database.liked_comment.LikedCommentImpl
 import com.erdemserhat.service.di.AuthenticationModule.tokenConfigSecurity
 import com.erdemserhat.service.configurations.*
 import com.erdemserhat.plugins.*
@@ -21,6 +22,7 @@ import io.ktor.client.request.*
 import io.ktor.server.netty.*
 import io.ktor.util.*
 import kotlinx.serialization.Serializable
+import javax.xml.stream.events.Comment
 
 
 fun main(args: Array<String>) {
@@ -28,8 +30,8 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
-    configureRateLimiting()
-    configureRateLimiting2()
+    //configureRateLimiting()
+    //configureRateLimiting2()
     configureSerialization()
     configureTemplating()
     configureSMTP()
@@ -43,14 +45,9 @@ fun Application.module() {
     configureRouting()
 
     CoroutineScope(Dispatchers.IO).launch {
-      //  configureNotificationScheduler()
+        //  configureNotificationScheduler()
 
-        val repo = CommentDaoImpl()
-        repo.addComment(
-            postId = 364,
-            userId = 401,
-            comment = "serhat"
-        )
+
     }
 
 

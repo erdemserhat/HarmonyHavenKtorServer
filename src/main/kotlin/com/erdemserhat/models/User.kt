@@ -23,7 +23,7 @@ data class User(
 
 
 fun User.toDto(): UserInformationDto {
-    return UserInformationDto(name,email)
+    return UserInformationDto(name,email,profilePhotoPath,id)
 }
 
 

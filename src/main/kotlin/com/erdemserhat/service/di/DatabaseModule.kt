@@ -5,6 +5,10 @@ import com.erdemserhat.data.repository.article.ArticleRepository
 import com.erdemserhat.data.repository.article.ArticleRepositoryContract
 import com.erdemserhat.data.repository.article_category.ArticleCategoryRepository
 import com.erdemserhat.data.repository.article_category.ArticleCategoryRepositoryContract
+import com.erdemserhat.data.repository.comments.CommentRepository
+import com.erdemserhat.data.repository.comments.CommentRepositoryContract
+import com.erdemserhat.data.repository.liked_comments.LikedCommentsRepository
+import com.erdemserhat.data.repository.liked_comments.LikedCommentsRepositoryContract
 import com.erdemserhat.data.repository.liked_quote.LikedQuoteRepository
 import com.erdemserhat.data.repository.liked_quote.LikedQuoteRepositoryContract
 import com.erdemserhat.data.repository.notification.NotificationRepository
@@ -15,6 +19,8 @@ import com.erdemserhat.data.repository.quote_category.QuoteCategoryContract
 import com.erdemserhat.data.repository.quote_category.QuoteCategoryRepository
 import com.erdemserhat.data.repository.user.UserRepository
 import com.erdemserhat.data.repository.user.UserRepositoryContract
+import com.erdemserhat.service.commentservice.CommentService
+import com.erdemserhat.service.commentservice.CommentServiceContract
 
 /**
  * Object responsible for managing database-related dependencies.
@@ -57,7 +63,17 @@ object DatabaseModule {
         LikedQuoteRepository()
     }
 
+    val commentRepository: CommentRepositoryContract by lazy {
+        CommentRepository()
+    }
 
+    val likedCommentRepository:LikedCommentsRepositoryContract by lazy {
+        LikedCommentsRepository()
+    }
+
+    val commentService: CommentServiceContract by lazy {
+        CommentService()
+    }
 
 
 
