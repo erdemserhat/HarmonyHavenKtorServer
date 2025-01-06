@@ -41,16 +41,16 @@ class CommentService:CommentServiceContract {
     }
 
     override suspend fun getCommentsByPostId(postId: Int, userId:Int): List<CommentsClientDto> {
-        val commentsClientDto = commentRepo.getCommentByPostId(postId).map {
+        val commentsClientDto = commentRepo.getCommentByPostId(postId,userId).map {
             CommentsClientDto(
                 id = it.id,
-                date = formatTimeAgo(it.date.toString()),
-                author = it.authorName,
+                date = formatTimeAgo(it.date),
+                author = it.author,
                 content = it.content,
-                isLiked = likedCommentRepo.checkIsLiked(it.id,userId),
-                likeCount = likedCommentRepo.getLikeCount(it.id),
-                authorProfilePictureUrl = it.authorProfilePic,
-                hasOwnership = userId ==it.authorId
+                isLiked = it.isLiked,
+                likeCount = it.likeCount,
+                authorProfilePictureUrl = it.authorProfilePictureUrl,
+                hasOwnership =it.hasOwnership
             )
         }
 
@@ -70,8 +70,8 @@ class CommentService:CommentServiceContract {
     }
 
     fun formatTimeAgo(dateString: String): String {
-        // ISO 8601 formatındaki tarihi parse et
-        val formatter = DateTimeFormatter.ISO_DATE_TIME
+        // Doğru tarih formatı
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
         val givenDate = LocalDateTime.parse(dateString, formatter)
 
         // Şu anki tarih

@@ -6,12 +6,16 @@
     </appender>
 
     <!-- Set the root level to DEBUG to capture all logs -->
+
     <root level="DEBUG">
         <appender-ref ref="STDOUT"/>
     </root>
 
+
+
     <!-- Set specific loggers to INFO or DEBUG as needed -->
+
     <logger name="org.eclipse.jetty" level="DEBUG"/>
     <logger name="io.netty" level="DEBUG"/>
-    <logger name="io.ktor" level="DEBUG"/> <!-- Add this line to log Ktor details -->
+    <logger name="io.ktor" level="DEBUG"/>
 </configuration>

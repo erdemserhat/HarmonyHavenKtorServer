@@ -6,6 +6,7 @@ import com.erdemserhat.data.database.comment.DBCommentEntity
 import com.erdemserhat.data.database.quote.DBQuoteEntity
 import com.erdemserhat.data.database.user.DBUserEntity
 import com.erdemserhat.dto.responses.CommentBaseDto
+import com.erdemserhat.dto.responses.CommentsClientDto
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -43,19 +44,8 @@ class CommentRepository:CommentRepositoryContract {
 
     }
 
-    override suspend fun getCommentByPostId(postId: Int): List<CommentBaseDto> {
-        val convertedList = commentDao.getCommentByPostId(postId).map { commentBaseDto ->
-            CommentBaseDto(
-                id = commentBaseDto.id,
-                authorId = commentBaseDto.author.id,
-                authorName = commentBaseDto.author.name,
-                authorProfilePic = commentBaseDto.author.profilePhotoPath,
-                postId = commentBaseDto.post.id,
-                content = commentBaseDto.content,
-                date = commentBaseDto.date,
-            )
-        }
-
+    override suspend fun getCommentByPostId(postId: Int,userId: Int): List<CommentsClientDto> {
+        val convertedList = commentDao.getCommentByPostId(postId, userId)
         return convertedList
 
     }
