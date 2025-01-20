@@ -32,6 +32,7 @@ fun main(args: Array<String>) {
 fun Application.module() {
     //configureRateLimiting()
     //configureRateLimiting2()
+    configureCORS()
     configureSerialization()
     configureTemplating()
     configureSMTP()
@@ -41,7 +42,7 @@ fun Application.module() {
     configureFirebase()
     configureTokenConfig()
     configureSecurity(tokenConfigSecurity)
-    configureApiKeySecurity()
+    //configureApiKeySecurity()
     configureRouting()
 
     CoroutineScope(Dispatchers.IO).launch {

@@ -14,6 +14,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 import org.slf4j.LoggerFactory
+import java.time.Duration
 
 /**
  * Sets up the route for user authentication using the HTTP POST method.
@@ -66,7 +67,21 @@ fun Route.authenticateUserV1() {
             }
 
             // Generate JWT token
-             val jwt = jwtGenerator.generateJWT()
+            val jwt = jwtGenerator.generateJWT()
+            println(jwt)
+
+            // Set the JWT as a cookie
+            call.response.cookies.append(
+                Cookie(
+                    name = "auth_token",
+                    value = jwt,
+                    path = "/",
+                    httpOnly = true,
+                    secure = false, //
+                    extensions = mapOf("SameSite" to "None")
+                )
+            )
+
 
             // Respond with authentication success
             call.respond(

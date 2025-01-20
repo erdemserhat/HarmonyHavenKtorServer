@@ -20,12 +20,8 @@ fun Route.getAllArticlesV1() {
             // Check if user is authenticated
             val principal = call.principal<JWTPrincipal>()
             val articles = DatabaseModule.articleRepository.getAllArticles()
-            if (principal != null) {
-                call.respond(articles)
-            } else {
-                // User not authenticated, deny access
-                call.respond(HttpStatusCode.Unauthorized, "Unauthorized access")
-            }
+            call.respond(articles)
+
         }
     }
 

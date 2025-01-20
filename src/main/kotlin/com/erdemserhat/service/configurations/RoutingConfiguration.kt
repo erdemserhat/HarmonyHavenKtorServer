@@ -40,7 +40,6 @@ fun generateInitialLogs(): String {
  * Configures the routing for the application.
  */
 fun Application.configureRouting() {
-    configureCORS()
     routing {
         // Default root endpoint
         get("/") {

@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.erdemserhat.service.di.AuthenticationModule.tokenConfigSecurity
 import com.erdemserhat.service.security.token.TokenConfig
+import io.ktor.http.auth.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
@@ -23,6 +24,15 @@ fun Application.configureSecurity(config: TokenConfig) {
                     .withIssuer(config.issuer)
                     .build()
             )
+            authHeader { call ->
+                // 1. Authorization header'ı kontrol et
+                call.request.parseAuthorizationHeader()
+                    ?: run {
+                        // 2. Authorization header yoksa cookie'yi kontrol et
+                        val cookieValue = call.request.cookies["auth_token"] ?: return@authHeader null
+                        parseAuthorizationHeader("Bearer $cookieValue")
+                    }
+            }
             validate { credential ->
                 if (credential.payload.audience.contains(config.audience)) {
                     JWTPrincipal(credential.payload)
