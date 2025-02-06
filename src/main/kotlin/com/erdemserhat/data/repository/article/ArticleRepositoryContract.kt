@@ -34,7 +34,7 @@ interface ArticleRepositoryContract {
      * @param articleId The ID of the article to retrieve.
      * @return An instance of [ArticleResponseType] representing the retrieved article, or null if not found.
      */
-    suspend  fun getArticle(articleId: Int): ArticleResponseType?
+    suspend  fun getArticle(articleId: Int): Article?
 
     /**
      * Retrieves all articles from the repository.

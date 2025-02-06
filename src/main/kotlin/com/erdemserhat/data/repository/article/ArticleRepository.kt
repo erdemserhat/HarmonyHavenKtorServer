@@ -55,8 +55,8 @@ class ArticleRepository : ArticleRepositoryContract {
     /**
      * Retrieves an article by its ID.
      */
-    override suspend fun getArticle(articleId: Int): ArticleResponseType? {
-        return articleDao.getArticle(articleId)?.toArticleResponseType()
+    override suspend fun getArticle(articleId: Int): Article? {
+        return articleDao.getArticle(articleId)?.toArticle()
     }
 
     /**

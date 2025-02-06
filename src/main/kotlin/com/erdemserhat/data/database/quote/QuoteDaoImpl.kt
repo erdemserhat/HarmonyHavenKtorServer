@@ -67,6 +67,7 @@ class QuoteDaoImpl : QuoteDao {
         seed: Int,
         userId: Int
     ): List<QuoteResponse> {
+        // Calculate the number of quotes per category
         val quotesPerCategory = pageSize / categoryIds.size
         val startPoint = (page - 1) * quotesPerCategory
         val database = DatabaseConfig.ktormDatabase
@@ -76,7 +77,7 @@ class QuoteDaoImpl : QuoteDao {
 
             for (categoryId in categoryIds) {
                 val sql = if (categoryId == -1) {
-                    // Beğenilen alıntılar için sorgu
+                    // Query for liked quotes
                     """
                 SELECT id, quote, writer, image_url, quote_category_id
                 FROM quotes
@@ -89,31 +90,44 @@ class QuoteDaoImpl : QuoteDao {
                 LIMIT ? OFFSET ?
                 """
                 } else {
-                    // Diğer kategoriler için sorgu
+                    // Query for other categories
                     """
-                SELECT id, quote, writer, image_url, quote_category_id
+                SELECT 
+                    quotes.id, 
+                    quotes.quote, 
+                    quotes.writer, 
+                    quotes.image_url, 
+                    quotes.quote_category_id,
+                    CASE 
+                        WHEN liked_quote.user_id = ? THEN 'TRUE'
+                        ELSE 'FALSE'
+                    END AS isLiked
                 FROM quotes
-                WHERE quote_category_id = ?
+                LEFT JOIN liked_quote ON liked_quote.quote_id = quotes.id
+                WHERE quotes.quote_category_id = ?
                 ORDER BY RAND(?)
-                LIMIT ? OFFSET ?
+                LIMIT ? 
+                OFFSET ?;
                 """
                 }
 
                 conn.prepareStatement(sql).use { statement ->
                     if (categoryId == -1) {
-                        // Beğenilen alıntılar için parametreler
+                        // Set parameters for liked quotes
                         statement.setInt(1, userId)
                         statement.setInt(2, seed)
                         statement.setInt(3, quotesPerCategory)
                         statement.setInt(4, startPoint)
                     } else {
-                        // Diğer kategoriler için parametreler
-                        statement.setInt(1, categoryId)
-                        statement.setInt(2, seed)
-                        statement.setInt(3, quotesPerCategory)
-                        statement.setInt(4, startPoint)
+                        // Set parameters for other categories
+                        statement.setInt(1, userId)
+                        statement.setInt(2, categoryId)
+                        statement.setInt(3, seed)
+                        statement.setInt(4, quotesPerCategory)
+                        statement.setInt(5, startPoint)
                     }
 
+                    // Execute the query and map the result set to QuoteResponse objects
                     statement.executeQuery().use { rs ->
                         generateSequence {
                             if (rs.next()) {
@@ -123,7 +137,7 @@ class QuoteDaoImpl : QuoteDao {
                                     writer = rs.getString("writer"),
                                     imageUrl = rs.getString("image_url"),
                                     quoteCategory = rs.getInt("quote_category_id"),
-                                    isLiked = categoryId == -1 // Beğenilen alıntılar için true
+                                    isLiked = if (categoryId == -1) true else rs.getBoolean("isLiked")
                                 )
                             } else null
                         }.toList().let { results.addAll(it) }
@@ -131,17 +145,17 @@ class QuoteDaoImpl : QuoteDao {
                 }
             }
 
-            return@useConnection results.shuffled(Random(seed))
+            // Shuffle the final result list using the provided seed
+            val result = results.shuffled(Random(seed))
+            println(result.toString())
+
+            return@useConnection result
         }
     }
 
-
-
-
-
-
-
 }
+
+
 
 infix fun Int.customXor(other: Int): Int {
     return this xor other

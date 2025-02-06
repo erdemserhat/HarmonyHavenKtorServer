@@ -12,7 +12,7 @@ import io.ktor.server.routing.*
 
 fun Route.removeLikeQuoteV1() {
     authenticate {
-        post("remove-like-quote/{quoteId}") {
+        post("/remove-like-quote/{quoteId}") {
             val principal = call.principal<JWTPrincipal>()
             val quoteId = call.parameters["quoteId"]?.toIntOrNull() // Path variable'ı al
             val userId = principal!!.payload.claims["id"]!!.asInt()
