@@ -69,8 +69,7 @@ jobs:
           echo "$SSH_KEY" > private_key && chmod 600 private_key
           mkdir -p ~/.ssh
           ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
-          scp -i private_key ktor-app.zip $SSH_USER@$SSH_HOST:/home/$SSH_USER/ktor-app.zip
-
+          scp -i private_key *.jar $SSH_USER@$SSH_HOST:/home/$SSH_USER/ktor-app.jar
       - name: Delete GitHub Artifact
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
