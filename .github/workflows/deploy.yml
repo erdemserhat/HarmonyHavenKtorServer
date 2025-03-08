@@ -3,7 +3,7 @@ name: Deploy Ktor to AWS EC2
 on:
   push:
     branches:
-      - main  # Runs the pipeline when you push to the "main" branch
+      - main
 
 jobs:
   build:
@@ -19,27 +19,21 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      # Decode and place the application.conf in src/main/resources/
       - name: Decode application.conf
         run: echo "${{ secrets.APPLICATIONCONF }}" | base64 --decode > src/main/resources/application.conf
 
-      # Decode and place the firebase_service_key.json in src/main/resources/
       - name: Decode firebase_service_key.json
         run: echo "${{ secrets.FIREBASE_SERVICE_KEY }}" | base64 --decode > src/main/resources/firebase_service_key.json
 
-      # Decode and place keystore.jks in the root directory
       - name: Decode keystore.jks
         run: echo "${{ secrets.KEYSTORE_JKS }}" | base64 --decode > keystore.jks
 
-      # Ensure gradlew is executable before running
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      # Build with Gradle (including shadowJar task)
       - name: Build with Gradle
         run: ./gradlew clean shadowJar
 
-      # Upload the build artifact (optional)
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -61,32 +55,32 @@ jobs:
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key
           chmod 600 private_key
-          # Add EC2 host key to known_hosts to prevent host verification error
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
           ssh -i private_key ec2-user@${{ secrets.SSH_HOST }} 'echo "SSH connection works!"'
+
       - name: Deploy to EC2
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          # Prepare SSH private key
+          echo "SSH_USER is set to: $SSH_USER"
           echo "$SSH_KEY" > private_key && chmod 600 private_key
-          
-          # Add EC2 host key to known_hosts to prevent host verification error
           mkdir -p ~/.ssh
           ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
-          # Copy the artifact (JAR file) to EC2
           scp -i private_key *.jar $SSH_USER@$SSH_HOST:/home/$SSH_USER/ktor-app.jar
+
       - name: Restart Ktor Server
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          # SSH  EC2 and restart the Ktor server
-          ssh -i private_key $SSH_USER@$SSH_HOST << 'EOF'
+          echo "SSH_USER is set to: $SSH_USER"
+          echo "$SSH_KEY" > private_key && chmod 600 private_key
+          ssh -i private_key $SSH_USER@$SSH_HOST << EOF
+          echo "Restarting Ktor server..."
           pkill -f 'java -jar' || true
-          sudo nohup java -jar /home/ec2-user/ktor-app.jar > log.txt 2>&1 &
+          sudo nohup java -jar /home/$SSH_USER/ktor-app.jar > log.txt 2>&1 &
           EOF
