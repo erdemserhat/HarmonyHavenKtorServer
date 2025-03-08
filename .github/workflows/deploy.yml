@@ -85,7 +85,7 @@ jobs:
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          # SSH into EC2 and restart the Ktor server
+          # SSH  EC2 and restart the Ktor server
           ssh -i private_key $SSH_USER@$SSH_HOST << 'EOF'
           pkill -f 'java -jar' || true
           nohup java -jar /home/ec2-user/ktor-app.jar > log.txt 2>&1 &
