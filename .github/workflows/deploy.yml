@@ -31,13 +31,17 @@ jobs:
       - name: Decode keystore.jks
         run: echo "${{ secrets.KEYSTORE_JKS }}" | base64 --decode > keystore.jks
 
-      # Optional: Clean and Build with Gradle
+      # Fix gradlew permissions to make it executable
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      # Build with Gradle
       - name: Clean and Build with Gradle
         run: ./gradlew clean shadowJar
 
       # Upload the build artifact with v4 of the artifact action
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4  # Use v4 for improved upload performance
+        uses: actions/upload-artifact@v4
         with:
           name: ktor-app
           path: build/libs/*.jar
@@ -48,7 +52,7 @@ jobs:
 
     steps:
       - name: Download Artifact
-        uses: actions/download-artifact@v4  # Use v4 for improved download performance
+        uses: actions/download-artifact@v4
         with:
           name: ktor-app
           path: .
