@@ -88,5 +88,5 @@ jobs:
           # SSH  EC2 and restart the Ktor server
           ssh -i private_key $SSH_USER@$SSH_HOST << 'EOF'
           pkill -f 'java -jar' || true
-          nohup java -jar /home/ec2-user/ktor-app.jar > log.txt 2>&1 &
+          sudo nohup java -jar /home/ec2-user/ktor-app.jar > log.txt 2>&1 &
           EOF
