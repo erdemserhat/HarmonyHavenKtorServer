@@ -31,6 +31,10 @@ jobs:
       - name: Decode keystore.jks
         run: echo "${{ secrets.KEYSTORE_JKS }}" | base64 --decode > keystore.jks
 
+      # Ensure gradlew is executable before running
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
       # Build with Gradle (including shadowJar task)
       - name: Build with Gradle
         run: ./gradlew clean shadowJar
