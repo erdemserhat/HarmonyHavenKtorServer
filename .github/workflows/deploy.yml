@@ -71,6 +71,11 @@ jobs:
           ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
           scp -i private_key *.jar $SSH_USER@$SSH_HOST:/home/$SSH_USER/ktor-app.jar
 
+      - name: Delete Artifact Locally
+        run: |
+          echo "Deleting local artifact..."
+          rm -f *.jar
+
       - name: Restart Ktor Server
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
