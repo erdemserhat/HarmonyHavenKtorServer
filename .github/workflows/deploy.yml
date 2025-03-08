@@ -61,6 +61,9 @@ jobs:
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key
           chmod 600 private_key
+          # Add EC2 host key to known_hosts to prevent host verification error
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
           ssh -i private_key ec2-user@${{ secrets.SSH_HOST }} 'echo "SSH connection works!"'
 
       - name: Deploy to EC2
@@ -71,6 +74,10 @@ jobs:
         run: |
           # Prepare SSH private key
           echo "$SSH_KEY" > private_key && chmod 600 private_key
+          
+          # Add EC2 host key to known_hosts to prevent host verification error
+          mkdir -p ~/.ssh
+          ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
 
           # Copy the artifact (JAR file) to EC2
           scp -i private_key *.jar $SSH_USER@$SSH_HOST:/home/$SSH_USER/ktor-app.jar
