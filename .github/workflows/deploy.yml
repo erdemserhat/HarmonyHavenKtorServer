@@ -31,13 +31,13 @@ jobs:
       - name: Decode keystore.jks
         run: echo "${{ secrets.KEYSTORE_JKS }}" | base64 --decode > keystore.jks
 
-      # Build with Gradle (including shadowJar task)
-      - name: Build with Gradle
-        run: ./gradlew shadowJar
+      # Optional: Clean and Build with Gradle
+      - name: Clean and Build with Gradle
+        run: ./gradlew clean shadowJar
 
-      # Upload the build artifact (optional)
+      # Upload the build artifact with v4 of the artifact action
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4  # Use v4 for improved upload performance
         with:
           name: ktor-app
           path: build/libs/*.jar
@@ -48,7 +48,7 @@ jobs:
 
     steps:
       - name: Download Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4  # Use v4 for improved download performance
         with:
           name: ktor-app
           path: .
@@ -76,3 +76,7 @@ jobs:
           pkill -f 'java -jar' || true
           nohup java -jar /home/$SSH_USER/ktor-app.jar > log.txt 2>&1 &
           EOF
+
+      # Optional: Clean up SSH private key for security
+      - name: Clean up SSH private key
+        run: rm -f private_key
