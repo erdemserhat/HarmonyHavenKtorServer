@@ -49,7 +49,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ktor-app
-          path: .  # Download to the current directory
+          path: .
 
       - name: Test SSH Connection
         run: |
@@ -58,7 +58,6 @@ jobs:
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
           ssh -i private_key ec2-user@${{ secrets.SSH_HOST }} 'echo "SSH connection works!"'
-
       - name: Deploy to EC2
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
@@ -70,23 +69,6 @@ jobs:
           mkdir -p ~/.ssh
           ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
           scp -i private_key *.jar $SSH_USER@$SSH_HOST:/home/$SSH_USER/ktor-app.jar
-      - name: Delete GitHub Artifact
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "Deleting GitHub artifact..."
-          ARTIFACT_ID=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
-            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts" \
-            | jq '.artifacts[] | select(.name == "ktor-app") | .id')
-          
-          if [ -n "$ARTIFACT_ID" ]; then
-            curl -X DELETE -H "Authorization: Bearer $GITHUB_TOKEN" \
-              "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT_ID"
-            echo "GitHub artifact deleted."
-          else
-            echo "GitHub artifact not found."
-          fi
-
       - name: Restart Ktor Server
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
