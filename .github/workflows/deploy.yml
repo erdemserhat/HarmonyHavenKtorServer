@@ -49,7 +49,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ktor-app
-          path: .
+          path: .  # Download to the current directory
 
       - name: Test SSH Connection
         run: |
@@ -71,10 +71,22 @@ jobs:
           ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
           scp -i private_key ktor-app.zip $SSH_USER@$SSH_HOST:/home/$SSH_USER/ktor-app.zip
 
-      - name: Delete Local Artifact
+      - name: Delete GitHub Artifact
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "Deleting local artifact..."
-          rm -f ktor-app.zip  # Delete the downloaded ZIP file
+          echo "Deleting GitHub artifact..."
+          ARTIFACT_ID=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts" \
+            | jq '.artifacts[] | select(.name == "ktor-app") | .id')
+          
+          if [ -n "$ARTIFACT_ID" ]; then
+            curl -X DELETE -H "Authorization: Bearer $GITHUB_TOKEN" \
+              "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT_ID"
+            echo "GitHub artifact deleted."
+          else
+            echo "GitHub artifact not found."
+          fi
 
       - name: Restart Ktor Server
         env:
