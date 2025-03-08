@@ -69,12 +69,12 @@ jobs:
           echo "$SSH_KEY" > private_key && chmod 600 private_key
           mkdir -p ~/.ssh
           ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
-          scp -i private_key *.jar $SSH_USER@$SSH_HOST:/home/$SSH_USER/ktor-app.jar
+          scp -i private_key ktor-app.zip $SSH_USER@$SSH_HOST:/home/$SSH_USER/ktor-app.zip
 
-      - name: Delete Artifact Locally
+      - name: Delete Local Artifact
         run: |
           echo "Deleting local artifact..."
-          rm -f *.jar
+          rm -f ktor-app.zip  # Delete the downloaded ZIP file
 
       - name: Restart Ktor Server
         env:
