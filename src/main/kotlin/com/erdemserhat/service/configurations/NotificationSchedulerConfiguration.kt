@@ -1,84 +1,134 @@
 package com.erdemserhat.service.configurations
 
 import com.erdemserhat.service.MessageScheduler
-import com.erdemserhat.service.NotificationAICategories
 import com.erdemserhat.service.sendAIBasedMessage
 import kotlinx.coroutines.*
 
 suspend fun configureNotificationScheduler() {
     coroutineScope {
+        /*
+
+
+        // Günlük Motivasyon Bildirimleri
         launch {
-            println("Special Notifications Activated")
-            val agaMessageScheduler = MessageScheduler(
+            println("Daily Motivation Notifications Activated")
+            val dailyMotivationScheduler = MessageScheduler(
                 onTime = {
                     sendAIBasedMessage(
-                        NotificationAICategories.islamic(),
+                        NotificationAICategories.motivation(),
                         sendSpecificByEmailList = listOf(
                             "editkurama@gmail.com",
                             "suatahmet2323@gmail.com",
                             "serhaterdem961@gmail.com"
                         )
                     )
-
                 },
                 cycleDay = 1,
-                performingHour = 20
+                performingHour = 8,
+                performingMinute = 30
             )
-            agaMessageScheduler.start()
+            dailyMotivationScheduler.start()
         }
 
+        // Kariyer Motivasyon Bildirimleri
         launch {
-            println("Good Morning Notifications Activated")
-            val goodMorningMessageScheduler = MessageScheduler(
+            println("Career Motivation Notifications Activated")
+            val careerMotivationScheduler = MessageScheduler(
                 onTime = {
                     sendAIBasedMessage(
-                        NotificationAICategories.goodMorning()
+                        NotificationAICategories.motivation()
                     )
-
                 },
-                cycleDay = 3,
+                cycleDay = 2,
                 performingHour = 10,
                 performingMinute = 15
             )
-            goodMorningMessageScheduler.start()
+            careerMotivationScheduler.start()
         }
 
-
+        // Kişisel Gelişim Motivasyon Bildirimleri
         launch {
-            println("Good Night Notifications Activated")
-            val goodNightMessageScheduler = MessageScheduler(
+            println("Personal Growth Motivation Notifications Activated")
+            val personalGrowthScheduler = MessageScheduler(
                 onTime = {
                     sendAIBasedMessage(
-                        NotificationAICategories.goodNight()
+                        NotificationAICategories.motivation()
                     )
-
                 },
                 cycleDay = 2,
-                performingHour = 22,
-                performingMinute = 20
+                performingHour = 14,
+                performingMinute = 30
             )
-            goodNightMessageScheduler.start()
+            personalGrowthScheduler.start()
         }
 
-
+        // Sağlık Motivasyon Bildirimleri
         launch {
-            println("Random Notifications Activated")
-            val randomMessageScheduler = MessageScheduler(
+            println("Health Motivation Notifications Activated")
+            val healthMotivationScheduler = MessageScheduler(
+                onTime = {
+                    sendAIBasedMessage(
+                        NotificationAICategories.motivation()
+                    )
+                },
+                cycleDay = 3,
+                performingHour = 16,
+                performingMinute = 20
+            )
+            healthMotivationScheduler.start()
+        }
+
+        // Başarı Motivasyon Bildirimleri
+        launch {
+            println("Success Motivation Notifications Activated")
+            val successMotivationScheduler = MessageScheduler(
+                onTime = {
+                    sendAIBasedMessage(
+                        NotificationAICategories.motivation()
+                    )
+                },
+                cycleDay = 1,
+                performingHour = 20,
+                performingMinute = 45
+            )
+            successMotivationScheduler.start()
+        }
+
+        // Rastgele Motivasyon Bildirimleri
+        launch {
+            println("Random Motivation Notifications Activated")
+            val randomMotivationScheduler = MessageScheduler(
                 onTime = {
                     sendAIBasedMessage(
                         NotificationAICategories.list.random()
                     )
-
                 },
                 cycleDay = 1,
-                performingHour = 16,
+                performingHour = 12,
+                performingMinute = 30
+            )
+            randomMotivationScheduler.start()
+        }
+         */
+
+
+        launch {
+            println("Notifications Activated")
+            val notificationScheduler = MessageScheduler(
+                onTime = {
+                    sendAIBasedMessage(
+                        NotificationAICategories.hope()
+                    )
+                },
+                cycleDay = 1,
+                performingHour = 22,
                 performingMinute = 45
             )
-            randomMessageScheduler.start()
+            notificationScheduler.start()
         }
 
-
-
     }
+
+
 }
 

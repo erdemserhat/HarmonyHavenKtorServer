@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a192f">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#0a192f">
+    <meta name="description" content="Harmony Haven - A comprehensive motivational application combining inspirational quotes, articles, and AI-powered personalized notifications to enhance users' daily lives.">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Harmony Haven Project">
+    <meta property="og:description" content="Discover daily inspiration through quotes, articles, and AI-powered notifications. Enhance your daily life with Harmony Haven.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://harmonyhaven.erdemserhat.com/">
+    <meta property="og:image" content="https://harmonyhaven.erdemserhat.com/preview.jpg">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Harmony Haven Project">
+    <meta name="twitter:description" content="Your daily companion for motivation and personal growth. Features AI-powered notifications, inspirational quotes, and enriching articles.">
+    <meta name="twitter:image" content="https://harmonyhaven.erdemserhat.com/preview.jpg">
+    
+    <title>Harmony Haven Project</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div class="content-wrapper">
+        <nav>
+            <div class="logo">
+                <span class="logo-text">Harmony Haven</span>
+            </div>
+            <div class="language-selector">
+                <button onclick="changeLanguage('en')" class="lang-btn" id="en-btn">EN</button>
+                <button onclick="changeLanguage('tr')" class="lang-btn" id="tr-btn">TR</button>
+            </div>
+        </nav>
+
+        <div class="main-container">
+            <!-- Repositories Section -->
+            <section class="repositories-section">
+                <h2 class="section-title" data-en="Project Repositories" data-tr="Proje Repository Bağlantıları"></h2>
+                <p class="section-subtitle" data-en="Explore the different components that power Harmony Haven" data-tr="Harmony Haven'ı güçlendiren farklı bileşenleri keşfedin"></p>
+                <div class="repositories-grid">
+                    <!-- Main Repositories -->
+                    <a href="https://github.com/erdemserhat/HarmonyHavenAndroidClient" class="repo-card" data-aos="zoom-in" target="_blank">
+                        <div class="repo-icon">
+                            <i class="fab fa-android"></i>
+                        </div>
+                        <div class="repo-content">
+                            <h3 class="repo-title" data-en="Android Client" data-tr="Android İstemcisi"></h3>
+                            <p class="repo-desc" data-en="Main Android application repository" data-tr="Ana Android uygulama deposu"></p>
+                        </div>
+                    </a>
+
+                    <a href="https://github.com/erdemserhat/HarmonyHavenKtorServer" class="repo-card" data-aos="zoom-in" target="_blank">
+                        <div class="repo-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <div class="repo-content">
+                            <h3 class="repo-title" data-en="Backend Server" data-tr="Backend Sunucusu"></h3>
+                            <p class="repo-desc" data-en="Ktor server repository" data-tr="Ktor sunucu deposu"></p>
+                        </div>
+                    </a>
+
+                    <a href="https://github.com/erdemserhat/HarmonyHavenCommentMicroservice" class="repo-card" data-aos="zoom-in" target="_blank">
+                        <div class="repo-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="repo-content">
+                            <h3 class="repo-title" data-en="Comment Microservice" data-tr="Yorum Mikroservisi"></h3>
+                            <p class="repo-desc" data-en="Comment system microservice" data-tr="Yorum sistemi mikroservisi"></p>
+                        </div>
+                    </a>
+
+                    <a href="https://github.com/erdemserhat/djangoCryptoMicroservice" class="repo-card" data-aos="zoom-in" target="_blank">
+                        <div class="repo-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="repo-content">
+                            <h3 class="repo-title" data-en="Security Layer" data-tr="Güvenlik Katmanı"></h3>
+                            <p class="repo-desc" data-en="Security microservice" data-tr="Güvenlik mikroservisi"></p>
+                        </div>
+                    </a>
+
+                    <a href="https://github.com/erdemserhat/HarmonyHavenIosClient" class="repo-card" data-aos="zoom-in" target="_blank">
+                        <div class="repo-icon">
+                            <i class="fab fa-apple"></i>
+                        </div>
+                        <div class="repo-content">
+                            <h3 class="repo-title" data-en="iOS Client" data-tr="iOS İstemcisi"></h3>
+                            <p class="repo-desc" data-en="iOS application repository" data-tr="iOS uygulama deposu"></p>
+                        </div>
+                    </a>
+
+                    <a href="https://github.com/erdemserhat/HarmonyHavenWebClient" class="repo-card" data-aos="zoom-in" target="_blank">
+                        <div class="repo-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="repo-content">
+                            <h3 class="repo-title" data-en="Web Client" data-tr="Web İstemcisi"></h3>
+                            <p class="repo-desc" data-en="Web application repository" data-tr="Web uygulama deposu"></p>
+                        </div>
+                    </a>
+
+                    <a href="https://play.google.com/store/apps/details?id=com.erdemserhat.harmonyhaven" class="repo-card" data-aos="zoom-in" target="_blank">
+                        <div class="repo-icon">
+                            <i class="fab fa-google-play"></i>
+                        </div>
+                        <div class="repo-content">
+                            <h3 class="repo-title" data-en="Play Store" data-tr="Play Store"></h3>
+                            <p class="repo-desc" data-en="Download Android App" data-tr="Android Uygulamasını İndir"></p>
+                        </div>
+                    </a>
+
+                    <a href="https://harmonyhaven.erdemserhat.com/" class="repo-card" data-aos="zoom-in" target="_blank">
+                        <div class="repo-icon">
+                            <i class="fas fa-external-link-alt"></i>
+                        </div>
+                        <div class="repo-content">
+                            <h3 class="repo-title" data-en="Live Website" data-tr="Canlı Website"></h3>
+                            <p class="repo-desc" data-en="Visit the live website" data-tr="Canlı websiteyi ziyaret et"></p>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Project Info Section -->
+            <section class="project-info-section" data-aos="fade-up">
+                <h2 class="section-title" data-en="About The Project" data-tr="Proje Hakkında"></h2>
+                <div class="project-info-content">
+                    <div class="project-description">
+                        <p data-en="Harmony Haven is a comprehensive motivational application that combines inspirational quotes, articles, and AI-powered personalized notifications to enhance users' daily lives." 
+                           data-tr="Harmony Haven, ilham verici alıntıları, makaleleri ve yapay zeka destekli kişiselleştirilmiş bildirimleri birleştiren kapsamlı bir motivasyon uygulamasıdır."></p>
+                    </div>
+                    <div class="feature-cards">
+                        <div class="feature-card" data-aos="flip-left">
+                            <div class="feature-icon">
+                                <i class="fas fa-quote-right"></i>
+                            </div>
+                            <h3 data-en="Daily Quotes" data-tr="Günlük Alıntılar"></h3>
+                            <p data-en="Carefully selected quotes from various authors" data-tr="Özenle seçilmiş yazarlardan alıntılar"></p>
+                        </div>
+                        <div class="feature-card" data-aos="flip-up">
+                            <div class="feature-icon">
+                                <i class="fas fa-newspaper"></i>
+                            </div>
+                            <h3 data-en="Articles" data-tr="Makaleler"></h3>
+                            <p data-en="Various categories of insightful content" data-tr="Çeşitli kategorilerde içerikler"></p>
+                        </div>
+                        <div class="feature-card" data-aos="flip-right">
+                            <div class="feature-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <h3 data-en="AI Integration" data-tr="Yapay Zeka"></h3>
+                            <p data-en="Smart personalized notifications" data-tr="Akıllı kişiselleştirilmiş bildirimler"></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <p data-en="© 2024 Harmony Haven Project. All rights reserved." data-tr="© 2024 Harmony Haven Projesi. Tüm hakları saklıdır."></p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 

@@ -1,5 +1,6 @@
 package com.erdemserhat.service.configurations
 
+import com.erdemserhat.data.PersistentVersionStorage
 import com.erdemserhat.routes.admin.*
 import com.erdemserhat.routes.article.getAllArticlesV1
 import com.erdemserhat.routes.article.getArticleCategoriesV1
@@ -13,8 +14,9 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
+import io.ktor.server.http.content.*
 import io.ktor.server.plugins.*
-import io.ktor.server.plugins.cors.routing.*
+import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -40,13 +42,88 @@ fun generateInitialLogs(): String {
  * Configures the routing for the application.
  */
 fun Application.configureRouting() {
-    routing {
+    install(Routing) {
+        static("/static") { // Serves files under /static path
+            resources("static")
+        }
         // Default root endpoint
         get("/") {
             call.respondText(
                 staticMainRouteHtmlContent.trimIndent(),
                 ContentType.Text.Html
             )
+        }
+
+
+        get("/presentation"){
+            call.respondRedirect("/static/presentation/index.html")
+
+        }
+
+        get("/x"){
+            call.respondRedirect("/static/x/index.html")
+
+        }
+
+        get("/vitalis"){
+            call.respondRedirect("/static/vitalis/index.html")
+
+        }
+
+        get("/asteriatech"){
+            call.respondRedirect("/static/asteriatech/index.html")
+
+        }
+
+        get("/portfolio"){
+            call.respondRedirect("/static/portfolio/index.html")
+
+        }
+
+
+        get("/check-android-version/{version}") {
+
+            val latestVersion = PersistentVersionStorage.getVersionCode()
+            val currentVersion = call.parameters["version"]
+            if (currentVersion != null) {
+                if(latestVersion> currentVersion.toInt()){
+                    call.respond(mapOf("result" to 0))
+
+                }else{
+                    call.respond(mapOf("result" to 1))
+                }
+            }
+
+
+        }
+        authenticate {
+            get("/update-version-code/{version}") {
+                val principal = call.principal<JWTPrincipal>()
+                val role = principal?.payload?.getClaim("role")?.asString()
+                // Receive email data from the request body
+                val updatedVersion = call.parameters["version"]
+                print("------>"+role)
+
+
+                // Check if the authenticated user has admin role
+                if (role != "admin") {
+                    call.respond(
+                        status = HttpStatusCode.Unauthorized,
+                        message = "You are not allowed to use this service"
+                    )
+                    return@get
+                }else if (updatedVersion != null) {
+                    PersistentVersionStorage.setVersionCode(updatedVersion.toInt())
+                    call.respond(HttpStatusCode.OK)
+                }else{
+                    call.respond(status = HttpStatusCode.InternalServerError, message = "version code is not valid")
+                }
+
+
+
+
+            }
+
         }
 
         // Configure versioned API routes

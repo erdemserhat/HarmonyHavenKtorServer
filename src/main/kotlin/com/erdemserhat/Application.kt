@@ -2,13 +2,17 @@ package com.erdemserhat
 
 // Importing necessary modules and configurations
 
+import NotificationAICategories
+import com.erdemserhat.data.PersistentVersionStorage
 import com.erdemserhat.data.database.comment.CommentDaoImpl
 import com.erdemserhat.data.database.liked_comment.LikedCommentImpl
 import com.erdemserhat.service.di.AuthenticationModule.tokenConfigSecurity
 import com.erdemserhat.service.configurations.*
 import com.erdemserhat.plugins.*
+import com.erdemserhat.service.NotificationAI
 import com.erdemserhat.service.configurations.rate_limiting.configureRateLimiting
 import com.erdemserhat.service.configurations.rate_limiting.configureRateLimiting2
+import com.erdemserhat.service.sendAIBasedMessage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.ktor.client.statement.*
@@ -22,6 +26,7 @@ import io.ktor.client.request.*
 import io.ktor.server.netty.*
 import io.ktor.util.*
 import kotlinx.serialization.Serializable
+import org.jetbrains.exposed.sql.not
 import javax.xml.stream.events.Comment
 
 
@@ -46,7 +51,7 @@ fun Application.module() {
     configureRouting()
 
     CoroutineScope(Dispatchers.IO).launch {
-        //  configureNotificationScheduler()
+        configureNotificationScheduler()
 
 
     }
