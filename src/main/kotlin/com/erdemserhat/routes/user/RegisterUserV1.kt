@@ -3,15 +3,13 @@ package com.erdemserhat.routes.user
 
 import com.erdemserhat.data.mail.sendWelcomeMail
 import com.erdemserhat.data.sendWelcomeNotification
-import com.erdemserhat.dto.requests.FcmNotification
-import com.erdemserhat.dto.requests.SendNotificationDto
-import com.erdemserhat.dto.requests.SendNotificationSpecific
-import com.erdemserhat.dto.requests.toFcmMessage
+import com.erdemserhat.dto.requests.*
 import com.erdemserhat.service.di.DatabaseModule.userRepository
 import com.erdemserhat.service.validation.ValidationResult
 import com.erdemserhat.models.UserInformationSchema
 import com.erdemserhat.models.toUser
 import com.erdemserhat.service.di.DatabaseModule
+import com.erdemserhat.service.security.UserAuthenticationJWTService
 import com.erdemserhat.service.security.hashPassword
 import com.erdemserhat.service.validation.UserInformationValidatorService
 import com.google.firebase.messaging.FirebaseMessaging
@@ -28,10 +26,8 @@ import java.util.*
 /**
  * Route handler for user registration.
  */
-@OptIn(DelicateCoroutinesApi::class)
 fun Route.registerUserV1() {
     post("/user/register") {
-
         try {
             // Receive user registration data from the request body
             val newUser = call.receive<UserInformationSchema>()
@@ -42,7 +38,6 @@ fun Route.registerUserV1() {
 
             // Check if all validation conditions are met
             if (!validationResult.isValid) {
-                // Respond with unprocessable entity status code and validation result
                 call.respond(
                     status = HttpStatusCode.UnprocessableEntity,
                     message = RegistrationResponse(
@@ -53,35 +48,64 @@ fun Route.registerUserV1() {
                 return@post
             }
 
-
             val uuid: String = UUID.randomUUID().toString()
             val hashedPassword = hashPassword(newUser.password)
 
-            // Hash the user's password before storing it in the database
+            // Kullanıcıyı eklemek için suspend fonksiyon çağrısı
+            val isUserAdded = withContext(Dispatchers.IO) {
+                try {
+                    userRepository.addUser(newUser.toUser().copy(password = hashedPassword, uuid = uuid))
+                    true
+                } catch (e: Exception) {
+                    println("DB Error: ${e.localizedMessage}")
+                    false
+                }
+            }
 
-            // Add user to the repository
-            userRepository.addUser(newUser.toUser().copy(password = hashedPassword, uuid = uuid))
-            GlobalScope.launch(Dispatchers.IO) {
+            if (!isUserAdded) {
+                call.respond(HttpStatusCode.InternalServerError, "Kullanıcı eklenirken hata oluştu.")
+                return@post
+            }
+
+            // Kullanıcı başarıyla eklendiyse JWT oluştur
+            val jwtGenerator = UserAuthenticationJWTService(
+                userAuth = UserAuthenticationRequest(
+                    email = newUser.email,
+                    password = newUser.password
+                )
+            )
+
+            call.response.cookies.append(
+                Cookie(
+                    maxAge = 36000000,
+                    name = "auth_token",
+                    value = jwtGenerator.generateJWT(),
+                    path = "/",
+                    httpOnly = true,
+                    secure = true,
+                    extensions = mapOf("SameSite" to "None")
+                )
+            )
+
+            // Arka planda mail ve bildirim gönderme işlemlerini başlat
+            launch(Dispatchers.IO) {
                 val ipAddress = call.request.origin.remoteHost
                 sendWelcomeMail(to = newUser.email, name = newUser.name)
                 sendWelcomeNotification(email = newUser.email)
-                val informationMessage =
-                    SendNotificationSpecific(
-                        email = "serhaterdem961@gmail.com",
-                        notification = FcmNotification(
-                            title = "Yeni Bir Üye Katıldı: ${newUser.name} 😊",
-                            body = "Merhaba! ${newUser.name}, ${newUser.email} (${ipAddress}) adresiyle Harmony Haven'a katıldı. Bir göz atmak isteyebilirsiniz! 👀",
-                            screen = "1"
-                        )
+
+                val informationMessage = SendNotificationSpecific(
+                    email = "serhaterdem961@gmail.com",
+                    notification = FcmNotification(
+                        title = "Yeni Bir Üye Katıldı: ${newUser.name} 😊",
+                        body = "Merhaba! ${newUser.name}, ${newUser.email} (${ipAddress}) adresiyle Harmony Haven'a katıldı. Bir göz atmak isteyebilirsiniz! 👀",
+                        screen = "1"
                     )
+                )
 
                 FirebaseMessaging.getInstance().send(informationMessage.toFcmMessage())
-
-
             }
 
-
-            // Respond with a success message
+            // Kullanıcıya başarılı yanıt gönder
             call.respond(
                 status = HttpStatusCode.Created,
                 message = RegistrationResponse(
@@ -90,16 +114,13 @@ fun Route.registerUserV1() {
                 )
             )
 
-
-            // Uncomment the line below to send a welcome email to the user
-            // sendWelcomeMail(newUser.email, newUser.name)
-
         } catch (e: Exception) {
-            // Respond with internal server error status code and error message
-            call.respond(HttpStatusCode.InternalServerError)
+            println("Request Error: ${e.localizedMessage}")
+            call.respond(HttpStatusCode.InternalServerError, message = e.localizedMessage)
         }
     }
 }
+
 
 /**
  * Data class representing the response of user registration.

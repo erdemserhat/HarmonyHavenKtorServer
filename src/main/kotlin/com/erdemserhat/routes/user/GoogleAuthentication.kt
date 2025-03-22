@@ -104,6 +104,18 @@ fun Route.googleLogin() {
 
                 }
 
+                call.response.cookies.append(
+                    Cookie(
+                        maxAge = 36000000,
+                        name = "auth_token",
+                        value = token,
+                        path = "/",
+                        httpOnly = true,
+                        secure = true, //
+                        extensions = mapOf("SameSite" to "None")
+                    )
+                )
+
 
 
                 call.respond(
@@ -127,6 +139,20 @@ fun Route.googleLogin() {
                     .withClaim("id",existingUser.id)
                     .withExpiresAt( Date(System.currentTimeMillis() + 315360000000L))
                     .sign(Algorithm.HMAC256(AuthenticationModule.tokenConfigSecurity.secret))
+
+
+
+                call.response.cookies.append(
+                    Cookie(
+                        maxAge = 36000000,
+                        name = "auth_token",
+                        value = token,
+                        path = "/",
+                        httpOnly = true,
+                        secure = true, //
+                        extensions = mapOf("SameSite" to "None")
+                    )
+                )
 
                 call.respond(
                     status = HttpStatusCode.OK,

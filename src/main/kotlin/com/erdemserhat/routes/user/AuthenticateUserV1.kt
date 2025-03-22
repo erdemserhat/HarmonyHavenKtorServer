@@ -73,11 +73,12 @@ fun Route.authenticateUserV1() {
             // Set the JWT as a cookie
             call.response.cookies.append(
                 Cookie(
+                    maxAge = 36000000,
                     name = "auth_token",
                     value = jwt,
                     path = "/",
                     httpOnly = true,
-                    secure = false, //
+                    secure = true, //
                     extensions = mapOf("SameSite" to "None")
                 )
             )
@@ -100,6 +101,29 @@ fun Route.authenticateUserV1() {
             e.printStackTrace()
         }
     }
+
+    post("/user/logout") {
+        try {
+            // Tarayıcıdaki auth_token çerezini temizleyerek kullanıcıyı çıkış yaptır
+            call.response.cookies.append(
+                Cookie(
+                    name = "auth_token",
+                    value = "", // Boş değer vererek siliyoruz
+                    maxAge = 0, // Çerezin süresini sıfırlayarak hemen sil
+                    path = "/",
+                    httpOnly = true,
+                    secure = true,
+                    extensions = mapOf("SameSite" to "None")
+                )
+            )
+
+            // Kullanıcıya başarılı çıkış yanıtı döndür
+            call.respond(HttpStatusCode.OK, mapOf("message" to "Successfully logged out"))
+        } catch (e: Exception) {
+            call.respond(HttpStatusCode.InternalServerError, "Logout failed: ${e.message}")
+        }
+    }
+
 }
 
 /**

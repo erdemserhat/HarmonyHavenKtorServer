@@ -7,7 +7,7 @@ import io.ktor.server.application.*
 fun Application.configureCORS() {
     install(CORS) {
         // Specify allowed origins
-        anyHost() // Allows all origins (not recommended for production)
+        allowHost("harmonyhaventest.erdemserhat.com", schemes = listOf("https")) // Gerçek domainin
 
         // Or allow specific hosts
         // allowHost("localhost:3000", schemes = listOf("http"))
