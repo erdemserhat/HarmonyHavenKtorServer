@@ -8,6 +8,8 @@ fun Application.configureCORS() {
     install(CORS) {
         // Specify allowed origins
         allowHost("harmonyhaventest.erdemserhat.com", schemes = listOf("https")) // Gerçek domainin
+        allowHost("localhost:3000",schemes = listOf("http"))
+        allowHost("harmonyhaven.erdemserhat.com",schemes = listOf("https"))
 
         // Or allow specific hosts
         // allowHost("localhost:3000", schemes = listOf("http"))
