@@ -147,7 +147,6 @@ class QuoteDaoImpl : QuoteDao {
 
             // Shuffle the final result list using the provided seed
             val result = results.shuffled(Random(seed))
-            println(result.toString())
 
             return@useConnection result
         }

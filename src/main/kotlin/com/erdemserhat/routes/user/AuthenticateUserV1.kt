@@ -68,7 +68,6 @@ fun Route.authenticateUserV1() {
 
             // Generate JWT token
             val jwt = jwtGenerator.generateJWT()
-            println(jwt)
 
             // Set the JWT as a cookie
             call.response.cookies.append(
@@ -84,6 +83,8 @@ fun Route.authenticateUserV1() {
             )
 
 
+            log.info("${userAuth.email} is authenticated")
+
             // Respond with authentication success
             call.respond(
                 status = HttpStatusCode.OK,
@@ -98,7 +99,7 @@ fun Route.authenticateUserV1() {
             // If an exception occurs, respond with the error message
             val message = e.message.toString()
             call.respond(HttpStatusCode.InternalServerError, message)
-            e.printStackTrace()
+
         }
     }
 
@@ -117,7 +118,6 @@ fun Route.authenticateUserV1() {
                 )
             )
 
-            // Kullanıcıya başarılı çıkış yanıtı döndür
             call.respond(HttpStatusCode.OK, mapOf("message" to "Successfully logged out"))
         } catch (e: Exception) {
             call.respond(HttpStatusCode.InternalServerError, "Logout failed: ${e.message}")

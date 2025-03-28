@@ -54,7 +54,6 @@ class UserAuthenticationCredentialsValidatorService(
         )
         */
 
-        println("${GREEN}<-<-<--Encrption is responded by Django CaaS--")
 //////////////////////////////////////////// DELEGATION POINT /////////////////////////////////////////////////////////////////////////////
         val isValidPassword = DatabaseModule.userRepository.controlUserExistenceByAuth(userAuthRequest.copy(password = hashedPassword))
         if (!isValidPassword) {

@@ -12,7 +12,6 @@ import io.ktor.server.routing.*
 fun Route.getNotifications() {
     authenticate {
         get("/user/get-notifications") {
-            println("testNotificationnewNotifications.toString()")
             // Kullanıcı kimlik doğrulamasını alın
             val principal = call.principal<JWTPrincipal>()
             val email = principal?.payload?.getClaim("email")?.asString()

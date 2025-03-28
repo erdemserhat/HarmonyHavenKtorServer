@@ -29,6 +29,5 @@ fun sendPasswordResetMail(
         )
     } catch (e: Exception) {
         // Handle exceptions
-        e.printStackTrace()
     }
 }

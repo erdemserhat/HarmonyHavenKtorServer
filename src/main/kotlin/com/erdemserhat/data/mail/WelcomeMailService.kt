@@ -29,6 +29,5 @@ fun sendWelcomeMail(
         )
     } catch (e: Exception) {
         // Handle exceptions
-        e.printStackTrace()
     }
 }

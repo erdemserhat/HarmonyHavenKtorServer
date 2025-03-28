@@ -19,7 +19,6 @@ fun Route.likeQuote() {
             val userId = principal!!.payload.claims["id"]!!.asInt()
 
             if (quoteId != null) {
-                print("UserId $userId and quoteId = $quoteId")
                 // `likeQuote` fonksiyonuna quoteId'yi gönder
                 DatabaseModule.likedQuoteRepository.likeQuote(userId, quoteId)
                 call.respond(HttpStatusCode.OK)

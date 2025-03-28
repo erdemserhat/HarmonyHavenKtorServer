@@ -10,10 +10,12 @@ import com.erdemserhat.routes.quote.get_quotes.getQuotesV1
 import com.erdemserhat.routes.quote.get_quotes.getQuotesV2
 import com.erdemserhat.routes.quote.get_quotes.getQuotesV3
 import com.erdemserhat.routes.user.*
+import com.erdemserhat.service.di.DatabaseModule
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
+import io.ktor.server.freemarker.*
 import io.ktor.server.http.content.*
 import io.ktor.server.plugins.*
 import io.ktor.server.request.*
@@ -42,6 +44,18 @@ fun generateInitialLogs(): String {
  * Configures the routing for the application.
  */
 fun Application.configureRouting() {
+
+    intercept(ApplicationCallPipeline.Features) {
+        // İstek üzerine işlem yapma (örneğin: logging, validasyon, vs)
+        println("Request coming: ${call.request.uri}")
+
+        if (call.request.uri == "/api/v1/articles") {
+            println("Handling articles request")
+        }
+    }
+
+
+
     install(Routing) {
         static("/static") { // Serves files under /static path
             resources("static")
@@ -102,9 +116,6 @@ fun Application.configureRouting() {
                 val role = principal?.payload?.getClaim("role")?.asString()
                 // Receive email data from the request body
                 val updatedVersion = call.parameters["version"]
-                print("------>"+role)
-
-
                 // Check if the authenticated user has admin role
                 if (role != "admin") {
                     call.respond(
@@ -173,6 +184,8 @@ fun Route.versionedApiRoutes() {
 
         //Quotes routes
         addQuoteV1()
+        chatting()
+
         deleteQuotes()
         getQuotesV1()
         likeQuote()
@@ -226,6 +239,16 @@ fun Route.versionedApiRoutes() {
 
     // Version 3 API routes
     route("/api/v3") {
+        get("/nondb") {
+            call.respond(status = HttpStatusCode.OK,"ok")
+        }
+        get("/db") {
+            val article = DatabaseModule.articleRepository.getAllArticles()
+            call.respond(status = HttpStatusCode.OK,"ok")
+        }
+
+
+
         getQuotesV3()
         /**
          * Use this section when updating an endpoint for a new feature.

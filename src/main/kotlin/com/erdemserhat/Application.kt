@@ -12,6 +12,7 @@ import com.erdemserhat.plugins.*
 import com.erdemserhat.service.NotificationAI
 import com.erdemserhat.service.configurations.rate_limiting.configureRateLimiting
 import com.erdemserhat.service.configurations.rate_limiting.configureRateLimiting2
+import com.erdemserhat.service.openai.ChatRequest
 import com.erdemserhat.service.sendAIBasedMessage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -51,7 +52,7 @@ fun Application.module() {
     configureRouting()
 
     CoroutineScope(Dispatchers.IO).launch {
-        configureNotificationScheduler()
+
 
 
     }

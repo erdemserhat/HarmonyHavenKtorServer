@@ -43,7 +43,5 @@ fun sendEmail(to: String, subject: String, messageText: String) {
         Transport.send(message)
     } catch (e: MessagingException) {
         // Handle any exceptions that occur during sending
-        println(e.message)
-        e.printStackTrace()
     }
 }
