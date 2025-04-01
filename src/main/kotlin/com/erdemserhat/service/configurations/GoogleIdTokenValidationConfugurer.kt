@@ -10,17 +10,16 @@ import java.security.GeneralSecurityException
 import java.util.*
 
 
+val config = ConfigFactory.load()
+val jsonFactory = JacksonFactory.getDefaultInstance()
+val httpTransport = GoogleNetHttpTransport.newTrustedTransport()
+val clientId = config.getString("harmonyhaven.google.googleClientId")
+
+val verifier = GoogleIdTokenVerifier.Builder(httpTransport, jsonFactory)
+    .setAudience(Collections.singletonList(clientId))
+    .build()
 
 fun ApplicationCall.validateGoogleIdToken(idTokenString: String): GoogleIdToken? {
-    val config = ConfigFactory.load()
-    val jsonFactory = JacksonFactory.getDefaultInstance()
-    val httpTransport = GoogleNetHttpTransport.newTrustedTransport()
-    val clientId = config.getString("harmonyhaven.google.googleClientId")
-
-    val verifier = GoogleIdTokenVerifier.Builder(httpTransport, jsonFactory)
-        .setAudience(Collections.singletonList(clientId))
-        .build()
-
     return try {
         val idToken = verifier.verify(idTokenString)
         if (idToken != null) {

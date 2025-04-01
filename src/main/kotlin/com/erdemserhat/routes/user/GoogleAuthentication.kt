@@ -2,6 +2,7 @@ package com.erdemserhat.routes.user
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.erdemserhat.data.database.user.UserDto
 import com.erdemserhat.data.mail.sendWelcomeMail
 import com.erdemserhat.data.sendWelcomeNotification
 import com.erdemserhat.dto.requests.FcmNotification
@@ -9,6 +10,7 @@ import com.erdemserhat.dto.requests.GoogleAuthenticationRequest
 import com.erdemserhat.dto.requests.SendNotificationSpecific
 import com.erdemserhat.dto.requests.toFcmMessage
 import com.erdemserhat.dto.responses.GoogleAuthenticationResponse
+import com.erdemserhat.models.User
 import com.erdemserhat.models.UserInformationSchema
 import com.erdemserhat.models.toUser
 import com.erdemserhat.service.configurations.validateGoogleIdToken
@@ -31,12 +33,16 @@ import java.util.*
 @OptIn(ExperimentalCoroutinesApi::class, DelicateCoroutinesApi::class)
 fun Route.googleLogin() {
     post("/user/authenticate-google") {
+        val startedTime = Date().time
         // Assuming you're receiving the ID token from the request body
         val idTokenString = call.receive<GoogleAuthenticationRequest>()
 
         //validate google id token
+        val x = Date().time
         val validatedToken = call.validateGoogleIdToken(idTokenString.googleIdToken)
+        println("token validated: ${Date().time - x}ms")
 
+        var potentialUser: UserDto? = null
         //if token is valid..
         if (validatedToken != null) {
             val payload: Payload = validatedToken.payload
@@ -53,9 +59,13 @@ fun Route.googleLogin() {
             val givenName: String? = payload["given_name"] as? String
 
             //try to reach user record from database
-            val potentialUser = DatabaseModule.userRepository.getUserByEmailInformation(email)
+            //3000ms
+            potentialUser = DatabaseModule.userRepository.getUserByEmailMinimizedVersion(email)
+            println(potentialUser)
+            //3000ms
 
             //if there is no record, register the user
+
             if(potentialUser==null){
                 //user unregistered register and return a jwt
                 val user =UserInformationSchema(
@@ -128,7 +138,7 @@ fun Route.googleLogin() {
 
               // if there is already a record with that email just give the jwt
             }else{
-                val existingUser = DatabaseModule.userRepository.getUserByEmailInformation(email)
+                val existingUser = potentialUser
 
                 //TODO : OPTIMIZE HERE JWT GENERATION SHOULD NOT BE HERE DIRECTLY
                 val token = JWT.create()
@@ -170,5 +180,6 @@ fun Route.googleLogin() {
         } else {
             call.respond(HttpStatusCode.Unauthorized, "Invalid ID token.")
         }
+        println("processed:: ${Date().time -startedTime}")
     }
 }

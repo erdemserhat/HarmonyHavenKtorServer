@@ -26,7 +26,6 @@ object DBUserTable : Table<DBUserEntity>("users") {
  */
 interface DBUserEntity : Entity<DBUserEntity> {
     companion object : Entity.Factory<DBUserEntity>()
-
     val id: Int
     val name: String
     val surname: String
@@ -38,3 +37,9 @@ interface DBUserEntity : Entity<DBUserEntity> {
     val uuid: String
     val role: String
 }
+
+data class UserDto(
+    val id: Int,
+    val email: String,
+    val role: String,
+)

@@ -44,5 +44,7 @@ interface UserDao {
     // Get a user by email
     suspend fun getUserByEmail(email: String): DBUserEntity?
 
+    suspend fun getUserByEmailMinimizedVersion(email: String): UserDto?
+
     suspend fun enrolFcm(email:String, fcmId:String):Boolean
 }

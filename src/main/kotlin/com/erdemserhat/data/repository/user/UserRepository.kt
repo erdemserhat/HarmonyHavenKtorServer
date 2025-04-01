@@ -3,6 +3,7 @@ package com.erdemserhat.data.repository.user
 import com.erdemserhat.data.database.user.DBUserEntity
 import com.erdemserhat.data.database.user.UserDao
 import com.erdemserhat.data.database.user.UserDaoImpl
+import com.erdemserhat.data.database.user.UserDto
 import com.erdemserhat.models.User
 import com.erdemserhat.dto.requests.UserAuthenticationRequest
 
@@ -65,5 +66,9 @@ class UserRepository : UserRepositoryContract {
 
     private fun DBUserEntity.toUser(): User {
         return User(id, name, surname, email, password, gender, profilePhotoPath, fcmId, uuid, role)
+    }
+
+    override suspend fun getUserByEmailMinimizedVersion(email: String): UserDto? {
+        return  database.getUserByEmailMinimizedVersion(email)
     }
 }

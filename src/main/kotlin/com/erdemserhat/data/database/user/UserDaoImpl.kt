@@ -7,6 +7,7 @@ import org.ktorm.dsl.*
 import org.ktorm.entity.firstOrNull
 import org.ktorm.entity.sequenceOf
 import org.ktorm.entity.toList
+import java.util.*
 
 /**
  * Implementation of the UserDao interface, responsible for performing database operations related to users using KTorm.
@@ -183,6 +184,30 @@ class UserDaoImpl : UserDao {
             .firstOrNull {
                 DBUserTable.email eq email
             }
+    }
+
+    override suspend fun getUserByEmailMinimizedVersion(email: String): UserDto? {
+        val x = Date().time
+        val query = "SELECT * FROM users WHERE email = ? LIMIT 1"
+
+        val result =  ktormDatabase.useConnection { connection ->
+            connection.prepareStatement(query).use { statement ->
+                statement.setString(1, email)
+                statement.executeQuery().use { resultSet ->
+                    if (resultSet.next()) {
+                        UserDto(
+                            email = resultSet.getString("email"),
+                            id = resultSet.getInt("id"),
+                            role = resultSet.getString("role")
+                        )
+                    } else {
+                        null
+                    }
+                }
+            }
+        }
+        println("query lasts ${Date().time-x}ms")
+        return result
     }
 
     override suspend fun enrolFcm(email: String, fcmId: String): Boolean {
