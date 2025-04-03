@@ -2,7 +2,6 @@ package com.erdemserhat
 
 // Importing necessary modules and configurations
 
-import NotificationAICategories
 import com.erdemserhat.data.PersistentVersionStorage
 import com.erdemserhat.data.database.comment.CommentDaoImpl
 import com.erdemserhat.data.database.liked_comment.LikedCommentImpl

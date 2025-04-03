@@ -112,20 +112,6 @@ suspend fun configureNotificationScheduler() {
          */
 
 
-        launch {
-            println("Notifications Activated")
-            val notificationScheduler = MessageScheduler(
-                onTime = {
-                    sendAIBasedMessage(
-                        NotificationAICategories.hope()
-                    )
-                },
-                cycleDay = 1,
-                performingHour = 22,
-                performingMinute = 45
-            )
-            notificationScheduler.start()
-        }
 
     }
 
