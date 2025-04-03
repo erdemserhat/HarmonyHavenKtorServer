@@ -42,4 +42,5 @@ data class UserDto(
     val id: Int,
     val email: String,
     val role: String,
+    val name: String,
 )

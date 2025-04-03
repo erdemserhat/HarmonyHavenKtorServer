@@ -1,5 +1,7 @@
 package com.erdemserhat.service.configurations
 
+
+import com.erdemserhat.OpenAIClient.makeStreamChatRequest
 import com.erdemserhat.data.PersistentVersionStorage
 import com.erdemserhat.routes.admin.*
 import com.erdemserhat.routes.article.getAllArticlesV1
@@ -13,6 +15,7 @@ import com.erdemserhat.routes.user.*
 import com.erdemserhat.service.di.DatabaseModule
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.application.ApplicationCallPipeline.ApplicationPhase.Plugins
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.freemarker.*
@@ -21,13 +24,16 @@ import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import io.ktor.server.sse.*
+import io.ktor.sse.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.onEach
+import okhttp3.internal.wait
+import java.io.OutputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+
 // Helper function to generate initial logs
 fun generateInitialLogs(): String {
     val initialLogs = listOf(
@@ -44,19 +50,7 @@ fun generateInitialLogs(): String {
  * Configures the routing for the application.
  */
 fun Application.configureRouting() {
-
-    intercept(ApplicationCallPipeline.Features) {
-        // İstek üzerine işlem yapma (örneğin: logging, validasyon, vs)
-        println("Request coming: ${call.request.uri}")
-
-        if (call.request.uri == "/api/v1/articles") {
-            println("Handling articles request")
-        }
-    }
-
-
-
-    install(Routing) {
+    routing {
         static("/static") { // Serves files under /static path
             resources("static")
         }
@@ -68,28 +62,34 @@ fun Application.configureRouting() {
             )
         }
 
+        install(SSE)
 
-        get("/presentation"){
+
+        get("/presentation") {
+
             call.respondRedirect("/static/presentation/index.html")
 
         }
 
-        get("/x"){
+        get("/x") {
             call.respondRedirect("/static/x/index.html")
 
         }
 
-        get("/vitalis"){
+
+
+
+        get("/vitalis") {
             call.respondRedirect("/static/vitalis/index.html")
 
         }
 
-        get("/asteriatech"){
+        get("/asteriatech") {
             call.respondRedirect("/static/asteriatech/index.html")
 
         }
 
-        get("/portfolio"){
+        get("/portfolio") {
             call.respondRedirect("/static/portfolio/index.html")
 
         }
@@ -100,10 +100,10 @@ fun Application.configureRouting() {
             val latestVersion = PersistentVersionStorage.getVersionCode()
             val currentVersion = call.parameters["version"]
             if (currentVersion != null) {
-                if(latestVersion> currentVersion.toInt()){
+                if (latestVersion > currentVersion.toInt()) {
                     call.respond(mapOf("result" to 0))
 
-                }else{
+                } else {
                     call.respond(mapOf("result" to 1))
                 }
             }
@@ -123,14 +123,12 @@ fun Application.configureRouting() {
                         message = "You are not allowed to use this service"
                     )
                     return@get
-                }else if (updatedVersion != null) {
+                } else if (updatedVersion != null) {
                     PersistentVersionStorage.setVersionCode(updatedVersion.toInt())
                     call.respond(HttpStatusCode.OK)
-                }else{
+                } else {
                     call.respond(status = HttpStatusCode.InternalServerError, message = "version code is not valid")
                 }
-
-
 
 
             }
@@ -155,6 +153,7 @@ fun Route.versionedApiRoutes() {
     // Version 1 API routes
     route("/api/v1") {
         // User Routes
+        chatting()
         googleLogin()
         registerUserV1()
         authenticateUserV1()
@@ -184,7 +183,6 @@ fun Route.versionedApiRoutes() {
 
         //Quotes routes
         addQuoteV1()
-        chatting()
 
         deleteQuotes()
         getQuotesV1()
@@ -224,7 +222,6 @@ fun Route.versionedApiRoutes() {
         }
 
 
-
     }
 
     // Version 2 API routes
@@ -240,11 +237,11 @@ fun Route.versionedApiRoutes() {
     // Version 3 API routes
     route("/api/v3") {
         get("/nondb") {
-            call.respond(status = HttpStatusCode.OK,"ok")
+            call.respond(status = HttpStatusCode.OK, "ok")
         }
         get("/db") {
             val article = DatabaseModule.articleRepository.getAllArticles()
-            call.respond(status = HttpStatusCode.OK,"ok")
+            call.respond(status = HttpStatusCode.OK, "ok")
         }
 
 

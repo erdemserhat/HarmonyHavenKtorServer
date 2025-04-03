@@ -4,8 +4,6 @@ import com.erdemserhat.dto.requests.FcmNotification
 import com.erdemserhat.dto.requests.SendNotificationSpecific
 import com.erdemserhat.dto.requests.toFcmMessage
 import com.erdemserhat.service.di.DatabaseModule
-import com.erdemserhat.service.openai.OpenAIRequest
-import com.erdemserhat.service.openai.OpenAIValidationRequest
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Semaphore
@@ -23,7 +21,7 @@ suspend fun sendAIBasedMessage(
         var body = ""
 
         do {
-            body = OpenAIRequest(notificationAI.prompt).getResult().replace(Regex("Ali"), "*name")
+            //body = OpenAIRequest(notificationAI.prompt).getResult().replace(Regex("Ali"), "*name")
         } while (!validateAIResponse(body))
 
 
@@ -101,18 +99,20 @@ private suspend fun validateAIResponse(message: String): Boolean {
 
     // Eğer mesaj, yasaklı giriş cümlelerinden birini içeriyorsa false döner
 
-    val openAIValidationRequest = OpenAIValidationRequest(message)
-    val isLogicalResult = openAIValidationRequest.getResult()
+    // val openAIValidationRequest = OpenAIValidationRequest(message)
+
+    // val isLogicalResult = openAIValidationRequest.getResult()
 
 
-        val isLogical = isLogicalResult.contains("true")
-    println("----><<<>"+isLogical)
+    //  val isLogical = isLogicalResult.contains("true")
+    //  println("----><<<>"+isLogical)
 
 
 
 
+    //return disallowedPhrases.none { message.contains(it, ignoreCase = true) } && isLogical
 
-    return disallowedPhrases.none { message.contains(it, ignoreCase = true) } && isLogical
+    return  false
 }
 
 

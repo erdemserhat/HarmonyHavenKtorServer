@@ -198,7 +198,8 @@ class UserDaoImpl : UserDao {
                         UserDto(
                             email = resultSet.getString("email"),
                             id = resultSet.getInt("id"),
-                            role = resultSet.getString("role")
+                            role = resultSet.getString("role"),
+                            name = resultSet.getString("name"),
                         )
                     } else {
                         null

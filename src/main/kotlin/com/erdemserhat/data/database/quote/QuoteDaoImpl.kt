@@ -6,7 +6,6 @@ import com.erdemserhat.data.database.liked_quotes.DBLikedQuoteTable
 import com.erdemserhat.data.database.quote_category.DBQuoteCategoryTable
 import com.erdemserhat.models.QuoteResponse
 import com.erdemserhat.routes.quote.get_quotes.FilteredQuoteRequest
-import org.jetbrains.exposed.sql.functions.math.PiFunction.expr
 import org.ktorm.dsl.*
 import org.ktorm.entity.sequenceOf
 import org.ktorm.entity.toList

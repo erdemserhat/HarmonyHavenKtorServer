@@ -6,7 +6,6 @@ import com.erdemserhat.data.database.article.DBArticleTable
 import com.erdemserhat.data.database.liked_comment.DBLikedCommentTable
 import com.erdemserhat.data.database.user.DBUserTable
 import com.erdemserhat.dto.responses.CommentsClientDto
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.case
 import org.ktorm.dsl.*
 import org.ktorm.entity.*
 import java.time.LocalDateTime

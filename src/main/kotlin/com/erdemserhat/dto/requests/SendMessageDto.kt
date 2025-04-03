@@ -5,7 +5,6 @@ import com.google.firebase.messaging.Message
 import com.google.firebase.messaging.Notification
 import kotlinx.coroutines.*
 import kotlinx.serialization.Serializable
-import org.jetbrains.exposed.sql.not
 
 
 @Serializable

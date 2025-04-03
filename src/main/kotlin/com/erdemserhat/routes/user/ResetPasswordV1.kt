@@ -1,7 +1,5 @@
 package com.erdemserhat.routes.user
 
-import com.erdemserhat.EncryptionDataDto
-import com.erdemserhat.EncryptionToFarawayServerModel
 import com.erdemserhat.service.di.DatabaseModule.userRepository
 import com.erdemserhat.service.pwrservice.PasswordResetRequestsPool
 import com.erdemserhat.service.validation.*

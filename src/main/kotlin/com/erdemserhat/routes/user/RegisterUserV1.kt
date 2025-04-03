@@ -88,7 +88,7 @@ fun Route.registerUserV1() {
             )
 
             // Arka planda mail ve bildirim gönderme işlemlerini başlat
-            launch(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
                 val ipAddress = call.request.origin.remoteHost
                 sendWelcomeMail(to = newUser.email, name = newUser.name)
                 sendWelcomeNotification(email = newUser.email)

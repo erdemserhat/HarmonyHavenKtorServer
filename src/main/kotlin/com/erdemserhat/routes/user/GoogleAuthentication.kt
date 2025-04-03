@@ -76,7 +76,9 @@ fun Route.googleLogin() {
                     password = hashPassword(UUID.randomUUID().toString()),
                 ).toUser()
                 DatabaseModule.userRepository.addUser(user)
-                launch { sendWelcomeNotification(email) }
+                withContext(Dispatchers.IO) {
+                    sendWelcomeNotification(email)
+                }
 
                 val userRegistered = DatabaseModule.userRepository.getUserByEmailInformation(email)
 
@@ -92,7 +94,7 @@ fun Route.googleLogin() {
                     .sign(Algorithm.HMAC256(AuthenticationModule.tokenConfigSecurity.secret))
 
 
-                launch(newSingleThreadContext("SINGLE")) {
+                withContext(newSingleThreadContext("SINGLE")) {
                     launch { sendWelcomeMail(to = userRegistered.email, name = userRegistered.name)  }
                     launch {
                         val ipAddress = call.request.origin.remoteHost

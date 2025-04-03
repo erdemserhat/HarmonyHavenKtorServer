@@ -2,8 +2,6 @@ package com.erdemserhat.service.security
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.erdemserhat.EncryptionDataDto
-import com.erdemserhat.EncryptionToFarawayServerModel
 import com.erdemserhat.service.di.AuthenticationModule
 import com.erdemserhat.service.di.DatabaseModule
 import com.erdemserhat.dto.requests.UserAuthenticationRequest

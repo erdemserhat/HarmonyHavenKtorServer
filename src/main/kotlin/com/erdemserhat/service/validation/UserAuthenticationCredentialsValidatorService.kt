@@ -1,11 +1,8 @@
 package com.erdemserhat.service.authentication
 
-import com.erdemserhat.EncryptionDataDto
-import com.erdemserhat.EncryptionToFarawayServerModel
 import com.erdemserhat.service.di.DatabaseModule
 import com.erdemserhat.service.validation.ValidationResult
 import com.erdemserhat.dto.requests.UserAuthenticationRequest
-import com.erdemserhat.makeEncryptionRequest
 import com.erdemserhat.service.security.hashPassword
 
 /**
