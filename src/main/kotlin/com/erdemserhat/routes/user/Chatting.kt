@@ -2,22 +2,14 @@
 
 package com.erdemserhat.routes.user
 
-import com.erdemserhat.OpenAIClient
-import com.erdemserhat.OpenAiChatService
-import com.erdemserhat.service.di.DatabaseModule
+import com.erdemserhat.service.openai.OpenAiChatService
 import com.erdemserhat.service.di.DatabaseModule.userRepository
 import io.ktor.http.*
-import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
-import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sse.*
-import kotlinx.serialization.Serializable
-import java.time.LocalDateTime
-import java.time.temporal.ChronoUnit
-import java.util.concurrent.ConcurrentHashMap
 
 
 fun Route.chatting() {

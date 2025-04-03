@@ -1,7 +1,6 @@
 package com.erdemserhat.service.configurations
 
 
-import com.erdemserhat.OpenAIClient.makeStreamChatRequest
 import com.erdemserhat.data.PersistentVersionStorage
 import com.erdemserhat.routes.admin.*
 import com.erdemserhat.routes.article.getAllArticlesV1
@@ -15,21 +14,14 @@ import com.erdemserhat.routes.user.*
 import com.erdemserhat.service.di.DatabaseModule
 import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.application.ApplicationCallPipeline.ApplicationPhase.Plugins
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
-import io.ktor.server.freemarker.*
 import io.ktor.server.http.content.*
 import io.ktor.server.plugins.*
-import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sse.*
-import io.ktor.sse.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.onEach
-import okhttp3.internal.wait
-import java.io.OutputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*

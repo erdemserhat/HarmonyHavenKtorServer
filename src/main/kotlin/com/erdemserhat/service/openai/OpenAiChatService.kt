@@ -1,4 +1,4 @@
-package com.erdemserhat
+package com.erdemserhat.service.openai
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

@@ -1,7 +1,5 @@
-package com.erdemserhat
+package com.erdemserhat.service.openai
 
-import com.erdemserhat.data.ftp.FTPConfig
-import com.erdemserhat.data.ftp.FTPModel
 import io.ktor.server.application.*
 
 fun Application.configureOpenAiCredentials() {
