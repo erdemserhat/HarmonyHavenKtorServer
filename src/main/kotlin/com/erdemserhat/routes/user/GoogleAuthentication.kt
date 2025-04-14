@@ -75,12 +75,10 @@ fun Route.googleLogin() {
                     gender = "-",
                     password = hashPassword(UUID.randomUUID().toString()),
                 ).toUser()
-                DatabaseModule.userRepository.addUser(user)
-                withContext(Dispatchers.IO) {
-                    sendWelcomeNotification(email)
-                }
 
-                val userRegistered = DatabaseModule.userRepository.getUserByEmailInformation(email)
+                DatabaseModule.userRepository.addUser(user)
+
+                val userRegistered = DatabaseModule.userRepository.getUserByEmailMinimizedVersion(email)
 
                 //TODO : OPTIMIZE HERE JWT GENERATION SHOULD NOT BE HERE DIRECTLY
 
@@ -93,8 +91,7 @@ fun Route.googleLogin() {
                     .withExpiresAt( Date(System.currentTimeMillis() + 315360000000L))
                     .sign(Algorithm.HMAC256(AuthenticationModule.tokenConfigSecurity.secret))
 
-
-                withContext(newSingleThreadContext("SINGLE")) {
+                call.application.launch(Dispatchers.IO) {
                     launch { sendWelcomeMail(to = userRegistered.email, name = userRegistered.name)  }
                     launch {
                         val ipAddress = call.request.origin.remoteHost
@@ -111,9 +108,6 @@ fun Route.googleLogin() {
                         FirebaseMessaging.getInstance().send(informationMessage.toFcmMessage())
 
                     }
-
-
-
                 }
 
                 call.response.cookies.append(
