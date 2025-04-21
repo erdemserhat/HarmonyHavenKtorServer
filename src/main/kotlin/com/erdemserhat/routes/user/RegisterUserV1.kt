@@ -2,19 +2,17 @@ package com.erdemserhat.routes.user
 
 
 import com.erdemserhat.data.mail.sendWelcomeMail
-import com.erdemserhat.data.sendWelcomeNotification
+import com.erdemserhat.data.cache.sendWelcomeNotification
 import com.erdemserhat.dto.requests.*
 import com.erdemserhat.service.di.DatabaseModule.userRepository
 import com.erdemserhat.service.validation.ValidationResult
 import com.erdemserhat.models.UserInformationSchema
 import com.erdemserhat.models.toUser
-import com.erdemserhat.service.di.DatabaseModule
 import com.erdemserhat.service.security.UserAuthenticationJWTService
 import com.erdemserhat.service.security.hashPassword
 import com.erdemserhat.service.validation.UserInformationValidatorService
 import com.google.firebase.messaging.FirebaseMessaging
 import io.ktor.http.*
-import io.ktor.server.application.*
 import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -103,6 +101,10 @@ fun Route.registerUserV1() {
                 )
 
                 FirebaseMessaging.getInstance().send(informationMessage.toFcmMessage())
+            }
+
+            call.application.launch {
+                sendWelcomeMail(to = newUser.email, name = newUser.name)
             }
 
             // Kullanıcıya başarılı yanıt gönder

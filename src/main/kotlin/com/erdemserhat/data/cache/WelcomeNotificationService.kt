@@ -1,4 +1,4 @@
-package com.erdemserhat.data
+package com.erdemserhat.data.cache
 
 import com.erdemserhat.dto.requests.FcmNotification
 import com.erdemserhat.dto.requests.SendNotificationSpecific

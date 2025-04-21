@@ -1,7 +1,7 @@
 package com.erdemserhat.service.configurations
 
 
-import com.erdemserhat.data.PersistentVersionStorage
+import com.erdemserhat.data.cache.PersistentVersionStorage
 import com.erdemserhat.routes.admin.*
 import com.erdemserhat.routes.article.getAllArticlesV1
 import com.erdemserhat.routes.article.getArticleCategoriesV1
