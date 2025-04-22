@@ -3,35 +3,19 @@ package com.erdemserhat.data.database.enneagram.enneagram_test_results
 import com.erdemserhat.data.database.DatabaseConfig
 import org.ktorm.dsl.eq
 import org.ktorm.dsl.insert
-import org.ktorm.entity.filter
 import org.ktorm.entity.first
-import org.ktorm.entity.map
 import org.ktorm.entity.sequenceOf
 
 class EnneagramTestResultDaoImpl: EnneagramTestResultDao {
-    override suspend fun getTestResultByUserId(userId: Int): EnneagramTestResultsDto {
+    override suspend fun getTestResultByUserId(userId: Int): EnneagramTestResultDto {
         val entity = DatabaseConfig.ktormDatabase.sequenceOf(DBEnneagramTestResultsTable)
             .first { it.userId eq userId }
 
-        return EnneagramTestResultsDto(
-            id = entity.id,
-            userId = entity.userId,
-            typeOneScore = entity.typeOneScore,
-            typeTwoScore = entity.typeTwoScore,
-            typeThreeScore = entity.typeThreeScore,
-            typeFourScore = entity.typeFourScore,
-            typeFiveScore = entity.typeFiveScore,
-            typeSixScore = entity.typeSixScore,
-            typeSevenScore = entity.typeSevenScore,
-            typeEightScore = entity.typeEightScore,
-            typeNineScore = entity.typeNineScore,
-            dominantType = entity.dominantType,
-            createdAt = entity.createdAt
-        )
+        return entity.toDto()
     }
 
 
-    override suspend fun addTestResult(testResult: EnneagramTestResultsDto) {
+    override suspend fun addTestResult(testResult: EnneagramTestResultDto) {
         DatabaseConfig.ktormDatabase.insert(DBEnneagramTestResultsTable) {
             set(it.userId, testResult.userId)
             set(it.typeOneScore, testResult.typeOneScore)

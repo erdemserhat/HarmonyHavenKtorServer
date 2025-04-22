@@ -1,5 +1,13 @@
 package com.erdemserhat.service.di
 
+import com.erdemserhat.data.database.enneagram.enneagram_answers.EnneagramAnswerDao
+import com.erdemserhat.data.database.enneagram.enneagram_answers.EnneagramAnswersDaoImpl
+import com.erdemserhat.data.database.enneagram.enneagram_famous_people.EnneagramFamousPeopleDao
+import com.erdemserhat.data.database.enneagram.enneagram_famous_people.EnneagramFamousPeopleDaoImpl
+import com.erdemserhat.data.database.enneagram.enneagram_questions.EnneagramQuestionDao
+import com.erdemserhat.data.database.enneagram.enneagram_questions.EnneagramQuestionDaoImpl
+import com.erdemserhat.data.database.enneagram.enneagram_test_results.EnneagramTestResultDao
+import com.erdemserhat.data.database.enneagram.enneagram_test_results.EnneagramTestResultDaoImpl
 import com.erdemserhat.service.pwrservice.PasswordResetService
 import com.erdemserhat.data.repository.article.ArticleRepository
 import com.erdemserhat.data.repository.article.ArticleRepositoryContract
@@ -75,11 +83,30 @@ object DatabaseModule {
         CommentService()
     }
 
-
-
-
     /**
      * Singleton instance of PasswordResetService, providing functionality for password reset operations.
      */
     val passwordResetService = PasswordResetService()
+
+
+}
+
+object EnneagramRepositoryModule{
+
+    val enneagramAnswersRepository:EnneagramAnswerDao by lazy {
+        EnneagramAnswersDaoImpl()
+    }
+
+    val enneagramQuestionRepository: EnneagramQuestionDao by lazy {
+        EnneagramQuestionDaoImpl()
+    }
+
+    val enneagramFamousPeopleRepository: EnneagramFamousPeopleDao by lazy {
+        EnneagramFamousPeopleDaoImpl()
+    }
+
+    val enneagramTestResultsRepository: EnneagramTestResultDao by lazy {
+        EnneagramTestResultDaoImpl()
+    }
+
 }

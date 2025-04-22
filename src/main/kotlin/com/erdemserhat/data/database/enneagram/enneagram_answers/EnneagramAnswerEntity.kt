@@ -32,12 +32,17 @@ interface DBEnneagramAnswersEntity : Entity<DBEnneagramAnswersEntity> {
 
 @Serializable
 data class EnneagramAnswersDto(
-    val userId:Int,
     val questionId:Int,
     val score:Int,
-    @Contextual val date: Date
 ){
     init {
         require(score in 0..3) { "Score must be between 0 and 3. Given: $score" }
     }
+}
+
+fun DBEnneagramAnswersEntity.toDto(): EnneagramAnswersDto {
+    return EnneagramAnswersDto(
+        questionId = this.questionId,
+        score = this.score,
+    )
 }

@@ -2,6 +2,7 @@ package com.erdemserhat.data.database.enneagram.enneagram_famous_people
 
 import com.erdemserhat.data.database.enneagram.enneagram_questions.DBEnneagramQuestionTable.bindTo
 import com.erdemserhat.data.database.enneagram.enneagram_questions.DBEnneagramQuestionTable.primaryKey
+import kotlinx.serialization.Serializable
 import org.ktorm.entity.Entity
 import org.ktorm.schema.Table
 import org.ktorm.schema.int
@@ -30,5 +31,25 @@ interface DBEnneagramFamoutPeopleEntity : Entity<DBEnneagramFamoutPeopleEntity> 
     val description: String
     val imageUrl: String
 
+}
 
+@Serializable
+data class EnneagramFamousPeopleDto(
+    val id: Int,
+    val name: String,
+    val enneagramType: Int,
+    val typeDescription: String,
+    val description: String,
+    val imageUrl: String
+)
+
+fun DBEnneagramFamoutPeopleEntity.toDto(): EnneagramFamousPeopleDto {
+    return EnneagramFamousPeopleDto(
+        id = this.id,
+        name = this.name,
+        enneagramType = this.enneagramType,
+        typeDescription = this.typeDescription,
+        description = this.description,
+        imageUrl = this.imageUrl
+    )
 }

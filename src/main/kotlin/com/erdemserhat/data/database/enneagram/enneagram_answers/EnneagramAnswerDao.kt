@@ -7,8 +7,8 @@ import java.time.LocalDateTime
 import java.util.*
 
 interface EnneagramAnswerDao {
-    suspend fun addAnswers(answers:List<EnneagramAnswersDto>)
-    suspend fun getAnswersByUserId(userId:Int):List<DBEnneagramAnswersEntity>
+    suspend fun addAnswers(answers:List<EnneagramAnswersDto>,userId: Int)
+    suspend fun getAnswersByUserId(userId:Int):List<EnneagramAnswersDto>
     suspend fun deleteAnswersByUserId(userId:Int)
 }
 
