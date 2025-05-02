@@ -1,9 +1,9 @@
 package com.erdemserhat.data.repository.quote
 
 import com.erdemserhat.models.Quote
-import com.erdemserhat.data.database.quote.DBQuoteEntity
-import com.erdemserhat.data.database.quote.QuoteDao
-import com.erdemserhat.data.database.quote.QuoteDaoImpl
+import com.erdemserhat.data.database.sql.quote.DBQuoteEntity
+import com.erdemserhat.data.database.sql.quote.QuoteDao
+import com.erdemserhat.data.database.sql.quote.QuoteDaoImpl
 import com.erdemserhat.models.QuoteResponse
 
 class QuoteRepository : QuoteRepositoryContract {

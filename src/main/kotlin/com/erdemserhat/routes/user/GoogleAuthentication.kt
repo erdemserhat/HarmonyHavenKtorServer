@@ -2,7 +2,7 @@ package com.erdemserhat.routes.user
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.erdemserhat.data.database.user.UserDto
+import com.erdemserhat.data.database.sql.user.UserDto
 import com.erdemserhat.data.mail.sendWelcomeMail
 import com.erdemserhat.dto.requests.FcmNotification
 import com.erdemserhat.dto.requests.GoogleAuthenticationRequest

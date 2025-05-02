@@ -86,5 +86,9 @@ dependencies {
     implementation("io.ktor:ktor-server-sse:$ktor_version")
 
 
+    //MongoDB
+    implementation("org.mongodb:mongodb-driver-kotlin-coroutine:4.10.1")
+
+
 }
 

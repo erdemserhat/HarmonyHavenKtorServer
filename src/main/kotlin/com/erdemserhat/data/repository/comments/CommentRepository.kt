@@ -1,14 +1,9 @@
 package com.erdemserhat.data.repository.comments
 
-import com.erdemserhat.data.database.comment.CommentDao
-import com.erdemserhat.data.database.comment.CommentDaoImpl
-import com.erdemserhat.data.database.comment.DBCommentEntity
-import com.erdemserhat.data.database.quote.DBQuoteEntity
-import com.erdemserhat.data.database.user.DBUserEntity
+import com.erdemserhat.data.database.sql.comment.CommentDao
+import com.erdemserhat.data.database.sql.comment.CommentDaoImpl
 import com.erdemserhat.dto.responses.CommentBaseDto
 import com.erdemserhat.dto.responses.CommentsClientDto
-import java.time.LocalDate
-import java.time.LocalDateTime
 
 class CommentRepository:CommentRepositoryContract {
     private val commentDao:CommentDao = CommentDaoImpl()

@@ -1,7 +1,7 @@
 package com.erdemserhat.data.repository.user
 
-import com.erdemserhat.data.database.user.DBUserEntity
-import com.erdemserhat.data.database.user.UserDto
+import com.erdemserhat.data.database.sql.user.DBUserEntity
+import com.erdemserhat.data.database.sql.user.UserDto
 import com.erdemserhat.models.User
 import com.erdemserhat.dto.requests.UserAuthenticationRequest
 

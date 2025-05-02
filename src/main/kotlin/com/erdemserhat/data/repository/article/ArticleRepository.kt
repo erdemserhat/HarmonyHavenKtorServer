@@ -1,10 +1,10 @@
 package com.erdemserhat.data.repository.article
 
-import com.erdemserhat.data.database.article.ArticleDao
-import com.erdemserhat.data.database.article.ArticleDaoImpl
-import com.erdemserhat.data.database.article.DBArticleEntity
-import com.erdemserhat.data.database.article_category.ArticleCategoryDao
-import com.erdemserhat.data.database.article_category.ArticleCategoryDaoImpl
+import com.erdemserhat.data.database.sql.article.ArticleDao
+import com.erdemserhat.data.database.sql.article.ArticleDaoImpl
+import com.erdemserhat.data.database.sql.article.DBArticleEntity
+import com.erdemserhat.data.database.sql.article_category.ArticleCategoryDao
+import com.erdemserhat.data.database.sql.article_category.ArticleCategoryDaoImpl
 import com.erdemserhat.service.di.DatabaseModule.articleCategoryRepository
 import com.erdemserhat.models.Article
 import com.erdemserhat.dto.requests.ArticleResponseType

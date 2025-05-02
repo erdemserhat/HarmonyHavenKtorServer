@@ -1,8 +1,8 @@
 package com.erdemserhat.data.repository.article_category
 
-import com.erdemserhat.data.database.article_category.ArticleCategoryDao
-import com.erdemserhat.data.database.article_category.ArticleCategoryDaoImpl
-import com.erdemserhat.data.database.article_category.DBArticleCategoryEntity
+import com.erdemserhat.data.database.sql.article_category.ArticleCategoryDao
+import com.erdemserhat.data.database.sql.article_category.ArticleCategoryDaoImpl
+import com.erdemserhat.data.database.sql.article_category.DBArticleCategoryEntity
 import com.erdemserhat.models.ArticleCategory
 
 /**

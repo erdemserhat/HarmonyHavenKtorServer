@@ -1,7 +1,7 @@
 package com.erdemserhat.data.repository.liked_quote
 
-import com.erdemserhat.data.database.liked_quotes.LikedQuotesDao
-import com.erdemserhat.data.database.liked_quotes.LikedQuotesDaoImpl
+import com.erdemserhat.data.database.sql.liked_quotes.LikedQuotesDao
+import com.erdemserhat.data.database.sql.liked_quotes.LikedQuotesDaoImpl
 
 class LikedQuoteRepository : LikedQuoteRepositoryContract {
     private val likedQuotesDao: LikedQuotesDao = LikedQuotesDaoImpl()

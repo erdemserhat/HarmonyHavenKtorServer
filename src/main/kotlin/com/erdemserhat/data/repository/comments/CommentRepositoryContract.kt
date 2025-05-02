@@ -1,9 +1,7 @@
 package com.erdemserhat.data.repository.comments
 
-import com.erdemserhat.data.database.comment.DBCommentEntity
 import com.erdemserhat.dto.responses.CommentBaseDto
 import com.erdemserhat.dto.responses.CommentsClientDto
-import java.time.LocalDateTime
 
 interface CommentRepositoryContract {
     suspend fun addComment(userId:Int,postId: Int, comment: String)

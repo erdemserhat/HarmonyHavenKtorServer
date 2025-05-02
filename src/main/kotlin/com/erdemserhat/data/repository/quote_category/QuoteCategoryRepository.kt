@@ -1,9 +1,9 @@
 package com.erdemserhat.data.repository.quote_category
 
 import com.erdemserhat.models.QuoteCategory
-import com.erdemserhat.data.database.quote_category.DBQuoteCategoryEntity
-import com.erdemserhat.data.database.quote_category.QuoteCategoryDao
-import com.erdemserhat.data.database.quote_category.QuoteCategoryDaoImpl
+import com.erdemserhat.data.database.sql.quote_category.DBQuoteCategoryEntity
+import com.erdemserhat.data.database.sql.quote_category.QuoteCategoryDao
+import com.erdemserhat.data.database.sql.quote_category.QuoteCategoryDaoImpl
 
 class QuoteCategoryRepository :QuoteCategoryContract{
     private val quoteCategoryDao:QuoteCategoryDao = QuoteCategoryDaoImpl()

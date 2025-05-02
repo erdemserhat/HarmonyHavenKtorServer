@@ -1,13 +1,22 @@
 package com.erdemserhat.service.di
 
-import com.erdemserhat.data.database.enneagram.enneagram_answers.EnneagramAnswerDao
-import com.erdemserhat.data.database.enneagram.enneagram_answers.EnneagramAnswersDaoImpl
-import com.erdemserhat.data.database.enneagram.enneagram_famous_people.EnneagramFamousPeopleDao
-import com.erdemserhat.data.database.enneagram.enneagram_famous_people.EnneagramFamousPeopleDaoImpl
-import com.erdemserhat.data.database.enneagram.enneagram_questions.EnneagramQuestionDao
-import com.erdemserhat.data.database.enneagram.enneagram_questions.EnneagramQuestionDaoImpl
-import com.erdemserhat.data.database.enneagram.enneagram_test_results.EnneagramTestResultDao
-import com.erdemserhat.data.database.enneagram.enneagram_test_results.EnneagramTestResultDaoImpl
+import com.erdemserhat.data.database.nosql.enneagram_chart.EnneagramChartRepository
+import com.erdemserhat.data.database.nosql.enneagram_chart.EnneagramChartRepositoryImpl
+import com.erdemserhat.data.database.nosql.enneagram_extra_type_description.EnneagramExtraTypeDescriptionRepository
+import com.erdemserhat.data.database.nosql.enneagram_extra_type_description.EnneagramExtraTypeDescriptionRepositoryImpl
+import com.erdemserhat.data.database.nosql.enneagram_famous_people.EnneagramFamousPeopleRepository
+import com.erdemserhat.data.database.nosql.enneagram_famous_people.EnneagramFamousPeopleRepositoryImpl
+import com.erdemserhat.data.database.nosql.enneagram_question.EnneagramQuestionRepository
+import com.erdemserhat.data.database.nosql.enneagram_question.EnneagramQuestionRepositoryImpl
+import com.erdemserhat.data.database.nosql.enneagram_test_result.EnneagramTestResultRepository
+import com.erdemserhat.data.database.nosql.enneagram_test_result.EnneagramTestResultRepositoryImpl
+import com.erdemserhat.data.database.nosql.enneagram_type_descriptions.EnneagramTypeDescriptionRepository
+import com.erdemserhat.data.database.nosql.enneagram_type_descriptions.EnneagramTypeDescriptionRepositoryImpl
+import com.erdemserhat.data.database.sql.enneagram.enneagram_answers.EnneagramAnswerDao
+import com.erdemserhat.data.database.sql.enneagram.enneagram_questions.EnneagramQuestionDao
+import com.erdemserhat.data.database.sql.enneagram.enneagram_questions.EnneagramQuestionDaoImpl
+import com.erdemserhat.data.database.sql.enneagram.enneagram_test_results.EnneagramTestResultDao
+import com.erdemserhat.data.database.sql.enneagram.enneagram_test_results.EnneagramTestResultDaoImpl
 import com.erdemserhat.service.pwrservice.PasswordResetService
 import com.erdemserhat.data.repository.article.ArticleRepository
 import com.erdemserhat.data.repository.article.ArticleRepositoryContract
@@ -72,7 +81,7 @@ object DatabaseModule {
     }
 
     val commentRepository: CommentRepositoryContract by lazy {
-        CommentRepository()
+         CommentRepository()
     }
 
     val likedCommentRepository:LikedCommentsRepositoryContract by lazy {
@@ -93,20 +102,31 @@ object DatabaseModule {
 
 object EnneagramRepositoryModule{
 
-    val enneagramAnswersRepository:EnneagramAnswerDao by lazy {
-        EnneagramAnswersDaoImpl()
+
+
+    val enneagramQuestionRepository: EnneagramQuestionRepositoryImpl by lazy {
+        EnneagramQuestionRepositoryImpl()
     }
 
-    val enneagramQuestionRepository: EnneagramQuestionDao by lazy {
-        EnneagramQuestionDaoImpl()
+    val enneagramFamousPeopleRepository: EnneagramFamousPeopleRepository by lazy {
+        EnneagramFamousPeopleRepositoryImpl()
     }
 
-    val enneagramFamousPeopleRepository: EnneagramFamousPeopleDao by lazy {
-        EnneagramFamousPeopleDaoImpl()
+
+    val enneagramChartRepository: EnneagramChartRepository by lazy {
+        EnneagramChartRepositoryImpl()
     }
 
-    val enneagramTestResultsRepository: EnneagramTestResultDao by lazy {
-        EnneagramTestResultDaoImpl()
+    val enneagramTypeDescriptionRepository: EnneagramTypeDescriptionRepository by lazy{
+        EnneagramTypeDescriptionRepositoryImpl()
+    }
+
+    val enneagramExtraTypeDescriptionRepository: EnneagramExtraTypeDescriptionRepository by lazy{
+        EnneagramExtraTypeDescriptionRepositoryImpl()
+    }
+
+    val enneagramTestResultRepository: EnneagramTestResultRepository by lazy {
+        EnneagramTestResultRepositoryImpl()
     }
 
 }

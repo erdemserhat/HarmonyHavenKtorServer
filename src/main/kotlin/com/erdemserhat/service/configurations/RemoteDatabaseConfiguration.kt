@@ -1,7 +1,7 @@
 package com.erdemserhat.service.configurations
 
-import com.erdemserhat.data.database.DatabaseConfig
-import com.erdemserhat.data.database.DatabaseModel
+import com.erdemserhat.data.database.sql.MySqlDatabaseConfig
+import com.erdemserhat.data.database.sql.MySqlCredentialsModel
 import io.ktor.server.application.*
 
 /**
@@ -18,8 +18,8 @@ fun Application.configureRemoteDatabase() {
     val useSSL = environment.config.property("harmonyhaven.database1.useSSL").getString()
 
     // Create a DatabaseModel with the read configuration
-    val databaseModel = DatabaseModel(host, databaseName, username, password, port, useSSL)
+    val mySqlCredentialsModel = MySqlCredentialsModel(host, databaseName, username, password, port, useSSL)
 
     // Initialize the DatabaseConfig with the DatabaseModel
-    DatabaseConfig.init(databaseModel)
+    MySqlDatabaseConfig.init(mySqlCredentialsModel)
 }

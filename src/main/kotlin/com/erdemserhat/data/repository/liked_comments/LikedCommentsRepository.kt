@@ -1,7 +1,7 @@
 package com.erdemserhat.data.repository.liked_comments
 
-import com.erdemserhat.data.database.liked_comment.LikedCommentDao
-import com.erdemserhat.data.database.liked_comment.LikedCommentImpl
+import com.erdemserhat.data.database.sql.liked_comment.LikedCommentDao
+import com.erdemserhat.data.database.sql.liked_comment.LikedCommentImpl
 
 class LikedCommentsRepository:LikedCommentsRepositoryContract {
     private val likedCommentDao:LikedCommentDao = LikedCommentImpl()

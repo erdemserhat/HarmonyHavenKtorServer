@@ -1,9 +1,9 @@
 package com.erdemserhat.data.repository.notification
 
 import com.erdemserhat.models.Notification
-import com.erdemserhat.data.database.notification.DBNotificationEntity
-import com.erdemserhat.data.database.notification.NotificationDao
-import com.erdemserhat.data.database.notification.NotificationDaoImpl
+import com.erdemserhat.data.database.sql.notification.DBNotificationEntity
+import com.erdemserhat.data.database.sql.notification.NotificationDao
+import com.erdemserhat.data.database.sql.notification.NotificationDaoImpl
 
 class NotificationRepository :NotificationRepositoryContract {
     private val notificationDao:NotificationDao = NotificationDaoImpl()
