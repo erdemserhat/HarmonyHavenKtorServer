@@ -1,7 +1,7 @@
 package com.erdemserhat.data.database.sql.article
 
 import com.erdemserhat.data.database.sql.MySqlDatabaseConfig
-import com.erdemserhat.models.Article
+import com.erdemserhat.models.ArticleDto
 import org.ktorm.dsl.*
 import org.ktorm.entity.*
 
@@ -13,27 +13,27 @@ class ArticleDaoImpl : ArticleDao {
     /**
      * Adds a new article to the database.
      */
-    override suspend fun addArticle(article: Article): Int {
+    override suspend fun addArticle(articleDto: ArticleDto): Int {
         return MySqlDatabaseConfig.ktormDatabase.insert(DBArticleTable) {
-            set(DBArticleTable.title, article.title)
-            set(DBArticleTable.content, article.content)
-            set(DBArticleTable.publishDate, article.publishDate)
-            set(DBArticleTable.categoryId, article.categoryId)
-            set(DBArticleTable.imagePath, article.imagePath)
+            set(DBArticleTable.title, articleDto.title)
+            set(DBArticleTable.content, articleDto.content)
+            set(DBArticleTable.publishDate, articleDto.publishDate)
+            set(DBArticleTable.categoryId, articleDto.categoryId)
+            set(DBArticleTable.imagePath, articleDto.imagePath)
         }
     }
 
     /**
      * Updates an existing article in the database.
      */
-    override suspend fun updateArticle(articleId: Int, updatedArticle: Article): Boolean {
+    override suspend fun updateArticle(articleId: Int, updatedArticleDto: ArticleDto): Boolean {
         return try {
             MySqlDatabaseConfig.ktormDatabase.update(DBArticleTable) {
-                set(DBArticleTable.title, updatedArticle.title)
-                set(DBArticleTable.content, updatedArticle.content)
-                set(DBArticleTable.publishDate, updatedArticle.publishDate)
-                set(DBArticleTable.categoryId, updatedArticle.categoryId)
-                set(DBArticleTable.imagePath, updatedArticle.imagePath)
+                set(DBArticleTable.title, updatedArticleDto.title)
+                set(DBArticleTable.content, updatedArticleDto.content)
+                set(DBArticleTable.publishDate, updatedArticleDto.publishDate)
+                set(DBArticleTable.categoryId, updatedArticleDto.categoryId)
+                set(DBArticleTable.imagePath, updatedArticleDto.imagePath)
                 where {
                     DBArticleTable.id eq articleId
                 }

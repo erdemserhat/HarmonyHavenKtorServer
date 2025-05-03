@@ -1,5 +1,6 @@
 package com.erdemserhat.routes.article
 
+import com.erdemserhat.models.ArticleDto
 import com.erdemserhat.service.di.DatabaseModule
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -7,7 +8,6 @@ import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import javax.xml.crypto.Data
 
 /**
  * Defines the routes related to article retrieval.
@@ -20,6 +20,8 @@ fun Route.getAllArticlesV1() {
         // Check if user is authenticated
         val principal = call.principal<JWTPrincipal>()
         val articles = DatabaseModule.articleRepository.getAllArticles()
+        println("called")
+
         call.respond(articles)
 
 
@@ -53,10 +55,10 @@ fun Route.getAllArticlesV1() {
                     <meta property="og:title" content="${article.title}">
                     <meta property="og:description" content="${article.content.take(200) + "..."}">
                     <meta property="og:image" content="${article.imagePath}">
-                    <meta property="og:url" content="https://harmonyhaven.erdemserhat.com/articles/$id">
+                    <meta property="og:url" content="https://harmonyhavenapp.com/articles/$id">
                     <meta property="og:type" content="article">
                     <meta property="og:site_name" content="Harmony Haven">
-                    
+                    x
                     <!-- Twitter Card meta etiketleri -->
                     <meta name="twitter:card" content="summary_large_image">
                     <meta name="twitter:title" content="${article.title}">
@@ -66,11 +68,11 @@ fun Route.getAllArticlesV1() {
                     <!-- Diğer meta etiketleri -->
                     <meta name="description" content="${article.content.take(200) + "..."}">
                     <meta property="og:locale" content="tr_TR">
-                    <link rel="icon" type="image/png" href="https://harmonyhaven.erdemserhat.com/ico.png">
+                    <link rel="icon" type="image/png" href="https://harmonyhavenapp.com/ico.png">
                 </head>
                 <body>
                     <script>
-                        window.location.href = "https://harmonyhaven.erdemserhat.com/articles/$id";
+                        window.location.href = "https://harmonyhavenapp.com/articles/$id";
                     </script>
                 </body>
                 </html>
@@ -169,7 +171,7 @@ fun Route.getAllArticlesV1() {
                 <meta property="og:title" content="${article.title}">
                 <meta property="og:description" content="${article.contentPreview}">
                 <meta property="og:image" content="${article.imagePath}">
-                <meta property="og:url" content="https://harmonyhaven.erdemserhat.com/articles/${id}/${slug}">
+                <meta property="og:url" content="https://harmonyhavenapp.com/articles/${id}/${slug}">
                 <meta property="og:type" content="article">
                 <meta property="og:site_name" content="Harmony Haven">
                 
@@ -181,7 +183,7 @@ fun Route.getAllArticlesV1() {
             </head>
             <body>
                 <script>
-                    window.location.href = "https://harmonyhaven.erdemserhat.com/articles/${id}/${slug}";
+                    window.location.href = "https://harmonyhavenapp.com/articles/${id}/${slug}";
                 </script>
             </body>
             </html>
@@ -200,8 +202,8 @@ fun Route.getAllArticlesV1() {
                 <!-- Open Graph meta tags -->
                 <meta property="og:title" content="Makale bulunamadı">
                 <meta property="og:description" content="Aradığınız makale bulunamadı veya URL hatalı. Harmony Haven'da daha fazla içerik keşfedin.">
-                <meta property="og:image" content="https://harmonyhaven.erdemserhat.com/static/default-preview-image.png">
-                <meta property="og:url" content="https://harmonyhaven.erdemserhat.com/articles/${id}/${slug}">
+                <meta property="og:image" content="https://harmonyhavenapp.com/static/default-preview-image.png">
+                <meta property="og:url" content="https://harmonyhavenapp.com/articles/${id}/${slug}">
                 <meta property="og:type" content="website">
                 <meta property="og:site_name" content="Harmony Haven">
                 
@@ -209,11 +211,11 @@ fun Route.getAllArticlesV1() {
                 <meta name="twitter:card" content="summary_large_image">
                 <meta name="twitter:title" content="Makale bulunamadı">
                 <meta name="twitter:description" content="Aradığınız makale bulunamadı veya URL hatalı. Harmony Haven'da daha fazla içerik keşfedin.">
-                <meta name="twitter:image" content="https://harmonyhaven.erdemserhat.com/static/default-preview-image.png">
+                <meta name="twitter:image" content="https://harmonyhavenapp.com/static/default-preview-image.png">
             </head>
             <body>
                 <script>
-                    window.location.href = "https://harmonyhaven.erdemserhat.com/";
+                    window.location.href = "https://harmonyhavenapp.com/";
                 </script>
             </body>
             </html>

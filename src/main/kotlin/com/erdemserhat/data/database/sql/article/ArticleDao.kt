@@ -1,10 +1,10 @@
 package com.erdemserhat.data.database.sql.article
 
-import com.erdemserhat.models.Article
+import com.erdemserhat.models.ArticleDto
 
 interface ArticleDao {
-    suspend fun addArticle(article: Article): Int
-    suspend fun updateArticle(articleId: Int, updatedArticle: Article): Boolean
+    suspend fun addArticle(articleDto: ArticleDto): Int
+    suspend fun updateArticle(articleId: Int, updatedArticleDto: ArticleDto): Boolean
     suspend fun deleteArticle(articleId: Int): Boolean
     suspend fun getArticle(articleId: Int): DBArticleEntity?
     suspend fun getAllArticles(): List<DBArticleEntity>

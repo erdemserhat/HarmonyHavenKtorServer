@@ -6,8 +6,9 @@ import com.erdemserhat.data.database.sql.article.DBArticleEntity
 import com.erdemserhat.data.database.sql.article_category.ArticleCategoryDao
 import com.erdemserhat.data.database.sql.article_category.ArticleCategoryDaoImpl
 import com.erdemserhat.service.di.DatabaseModule.articleCategoryRepository
-import com.erdemserhat.models.Article
+import com.erdemserhat.models.ArticleDto
 import com.erdemserhat.dto.requests.ArticleResponseType
+import com.erdemserhat.models.toSlug
 
 /**
  * Repository class for handling article-related operations.
@@ -19,10 +20,11 @@ class ArticleRepository : ArticleRepositoryContract {
     /**
      * Converts a DBArticleEntity to an Article model.
      */
-    private fun DBArticleEntity.toArticle(): Article {
-        return Article(
+    private fun DBArticleEntity.toArticle(): ArticleDto {
+        return ArticleDto(
             id = id,
             title = title,
+            slug = title.toSlug(),
             content = content,
             contentPreview = contentPreview,
             publishDate = publishDate,
@@ -34,15 +36,15 @@ class ArticleRepository : ArticleRepositoryContract {
     /**
      * Adds an article to the database.
      */
-    override suspend fun addArticle(article: Article): Boolean {
-        return articleDao.addArticle(article) > 0
+    override suspend fun addArticle(articleDto: ArticleDto): Boolean {
+        return articleDao.addArticle(articleDto) > 0
     }
 
     /**
      * Updates an existing article in the database.
      */
-    override suspend fun updateArticle(articleId: Int, updatedArticle: Article): Boolean {
-        return articleDao.updateArticle(articleId, updatedArticle)
+    override suspend fun updateArticle(articleId: Int, updatedArticleDto: ArticleDto): Boolean {
+        return articleDao.updateArticle(articleId, updatedArticleDto)
     }
 
     /**
@@ -55,15 +57,18 @@ class ArticleRepository : ArticleRepositoryContract {
     /**
      * Retrieves an article by its ID.
      */
-    override suspend fun getArticle(articleId: Int): Article? {
+    override suspend fun getArticle(articleId: Int): ArticleDto? {
         return articleDao.getArticle(articleId)?.toArticle()
     }
 
     /**
      * Retrieves all articles from the database.
      */
-    override suspend fun getAllArticles(): List<Article> {
-        return articleDao.getAllArticles().map { it.toArticle() }
+    override suspend fun getAllArticles(): List<ArticleDto> {
+        return articleDao.getAllArticles().map {
+            it.toArticle()
+
+        }
     }
 
     /**

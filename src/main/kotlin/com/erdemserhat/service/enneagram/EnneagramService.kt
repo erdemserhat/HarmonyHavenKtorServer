@@ -1,5 +1,6 @@
 package com.erdemserhat.service.enneagram
 
+import com.erdemserhat.data.database.nosql.enneagram_chart.toEnneagramUrl
 import com.erdemserhat.data.database.nosql.enneagram_famous_people.EnneagramFamousPeopleCollection
 import com.erdemserhat.data.database.nosql.enneagram_famous_people.EnneagramType
 import com.erdemserhat.data.database.nosql.enneagram_famous_people.toDto
@@ -230,7 +231,7 @@ class EnneagramService(
             result = result,
             description = description,
             famousPeople = famousPeople,
-            chartUrl = chart?.url ?: "-",
+            chartUrl = chart?.toEnneagramUrl() ?: null,
         )
 
         val resultCollection = EnneagramTestResultCollection(
@@ -283,7 +284,7 @@ class EnneagramService(
             descriptionCategory = EnneagramTypeDescriptionCategory.BASIC
         )
 
-        val chartUrl = enneagramRepository.enneagramChartRepository.getChartByType(
+        val chart = enneagramRepository.enneagramChartRepository.getChartByType(
             enneagramType = enneagramType,
         )
 
@@ -295,7 +296,7 @@ class EnneagramService(
             result = testResult.toEnneagramTestResult(),
             description = typeDescription,
             famousPeople = famousPeople,
-            chartUrl = chartUrl?.url ?: "-",
+            chartUrl = chart?.toEnneagramUrl(),
         )
 
         return detailedResult
@@ -317,7 +318,14 @@ data class EnneagramTestResultDetailedDto(
     val result: EnneagramTestResult,
     val description: String,
     val famousPeople: List<EnneagramFamousPeopleDto>,
-    val chartUrl: String
+    val chartUrl: EnneagramUrl?
+)
+
+@Serializable
+data class EnneagramUrl(
+    val chartUrl:String,
+    val personalityImageUrl:String,
+
 )
 
 

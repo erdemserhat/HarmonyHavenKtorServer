@@ -1,6 +1,6 @@
 package com.erdemserhat.data.repository.article
 
-import com.erdemserhat.models.Article
+import com.erdemserhat.models.ArticleDto
 import com.erdemserhat.dto.requests.ArticleResponseType
 
 /**
@@ -9,18 +9,18 @@ import com.erdemserhat.dto.requests.ArticleResponseType
 interface ArticleRepositoryContract {
     /**
      * Adds an article to the repository.
-     * @param article The article to add.
+     * @param articleDto The article to add.
      * @return True if the article was added successfully, false otherwise.
      */
-    suspend fun addArticle(article: Article): Boolean
+    suspend fun addArticle(articleDto: ArticleDto): Boolean
 
     /**
      * Updates an existing article in the repository.
      * @param articleId The ID of the article to update.
-     * @param updatedArticle The updated article data.
+     * @param updatedArticleDto The updated article data.
      * @return True if the article was updated successfully, false otherwise.
      */
-    suspend fun updateArticle(articleId: Int, updatedArticle: Article): Boolean
+    suspend fun updateArticle(articleId: Int, updatedArticleDto: ArticleDto): Boolean
 
     /**
      * Deletes an article from the repository.
@@ -34,13 +34,13 @@ interface ArticleRepositoryContract {
      * @param articleId The ID of the article to retrieve.
      * @return An instance of [ArticleResponseType] representing the retrieved article, or null if not found.
      */
-    suspend  fun getArticle(articleId: Int): Article?
+    suspend  fun getArticle(articleId: Int): ArticleDto?
 
     /**
      * Retrieves all articles from the repository.
-     * @return A list of [Article] objects representing all articles in the repository.
+     * @return A list of [ArticleDto] objects representing all articles in the repository.
      */
-    suspend fun getAllArticles(): List<Article>
+    suspend fun getAllArticles(): List<ArticleDto>
 
     /**
      * Retrieves articles belonging to a specific category from the repository.

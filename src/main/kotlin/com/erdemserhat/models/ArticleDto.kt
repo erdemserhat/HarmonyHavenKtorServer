@@ -1,19 +1,20 @@
 package com.erdemserhat.models
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Article(
-    val id:Int,
-    val title:String,
-    val slug:String = title.toSlug(),
-    val content:String,
-    val contentPreview:String,
-    val publishDate:String,
-    val categoryId:Int,
-    val imagePath:String
-
-)
+data class ArticleDto(
+    val id: Int,
+    val title: String,
+    var slug:String = "dasfdsfds",
+    val content: String,
+    val contentPreview: String,
+    val publishDate: String,
+    val categoryId: Int,
+    val imagePath: String
+) {
+}
 
 fun String.toSlug(): String {
     return this

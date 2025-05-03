@@ -1,6 +1,6 @@
 package com.erdemserhat.data.database.sql.article
 
-import com.erdemserhat.models.Article
+import com.erdemserhat.models.ArticleDto
 import org.ktorm.entity.Entity
 import org.ktorm.schema.Table
 import org.ktorm.schema.int
@@ -38,8 +38,8 @@ interface DBArticleEntity : Entity<DBArticleEntity> {
 /**
  * Converts a DBArticleEntity object to an Article object.
  */
-fun DBArticleEntity.toArticle(): Article {
-    return Article(
+fun DBArticleEntity.toArticle(): ArticleDto {
+    return ArticleDto(
         id = id,
         title = title,
         content = content,
