@@ -11,6 +11,7 @@ import com.erdemserhat.data.database.nosql.enneagram_test_result.EnneagramTestRe
 import com.erdemserhat.data.database.nosql.enneagram_test_result.EnneagramWingTypes
 import com.erdemserhat.data.database.nosql.enneagram_test_result.toEnneagramTestResult
 import com.erdemserhat.data.database.nosql.enneagram_type_descriptions.EnneagramTypeDescriptionCategory
+import com.erdemserhat.data.database.nosql.enneagram_type_descriptions.EnneagramTypeDescriptionCollection
 import com.erdemserhat.data.database.nosql.enneagram_type_descriptions.toEnneagramExtraTypeDescriptionCategory
 import com.erdemserhat.data.database.sql.enneagram.enneagram_answers.EnneagramAnswerDto
 import com.erdemserhat.data.database.sql.enneagram.enneagram_questions.EnneagramQuestionDto
@@ -52,7 +53,8 @@ class EnneagramService(
         }
     }
 
-    private suspend fun getEnneagramTypeDescription(enneagramType: EnneagramType, pointBasedWingType:Int, descriptionCategory: EnneagramTypeDescriptionCategory):String{
+    private suspend fun getEnneagramTypeDescription(enneagramType: EnneagramType, pointBasedWingType:Int, descriptionCategory: EnneagramTypeDescriptionCategory):
+            EnneagramTypeDescriptionCollection?{
         val description = enneagramRepository.enneagramTypeDescriptionRepository.getDescriptionByTypeAndCategory(
             category = descriptionCategory,
             type = enneagramType
@@ -65,10 +67,10 @@ class EnneagramService(
                 category = descriptionCategory.toEnneagramExtraTypeDescriptionCategory()
             )
 
-            return extraDescription?.description ?: "no description found"
+            return  description
 
         }else{
-            return description?.description ?: "no description found"
+            return description
         }
 
     }
@@ -186,7 +188,7 @@ class EnneagramService(
                     enneagramType = enneagramType,
                     pointBasedWingType = pointBasedDominantWingType,
                     descriptionCategory = mode.toEnneagramTypeDescriptionCategory()
-                )
+                )?.description ?:""
 
 
             } else {
@@ -196,7 +198,7 @@ class EnneagramService(
                     enneagramType = enneagramType,
                     pointBasedWingType = pointBasedDominantWingType,
                     descriptionCategory = mode.toEnneagramTypeDescriptionCategory()
-                )
+                )?.description ?:""
 
             }
         } else if (mode == EvaluationMode.STANDARD) {
@@ -231,6 +233,11 @@ class EnneagramService(
             result = result,
             description = description,
             famousPeople = famousPeople,
+            fullDescriptionCode = getEnneagramTypeDescription(
+                enneagramType = enneagramType,
+                pointBasedWingType = pointBasedDominantWingType,
+                descriptionCategory = mode.toEnneagramTypeDescriptionCategory()
+            )?.fullDescriptionCode ?: 0,
             chartUrl = chart?.toEnneagramUrl() ?: null,
         )
 
@@ -284,6 +291,7 @@ class EnneagramService(
             descriptionCategory = EnneagramTypeDescriptionCategory.BASIC
         )
 
+
         val chart = enneagramRepository.enneagramChartRepository.getChartByType(
             enneagramType = enneagramType,
         )
@@ -293,8 +301,9 @@ class EnneagramService(
         )?.map { it.toDto() } ?: emptyList()
 
         val detailedResult = EnneagramTestResultDetailedDto(
-            result = testResult.toEnneagramTestResult(),
-            description = typeDescription,
+            result = testResult.toEnneagramTestResult().copy(),
+            description = typeDescription?.description ?:"",
+            fullDescriptionCode = typeDescription?.fullDescriptionCode ?: 0,
             famousPeople = famousPeople,
             chartUrl = chart?.toEnneagramUrl(),
         )
@@ -317,6 +326,7 @@ class EnneagramService(
 data class EnneagramTestResultDetailedDto(
     val result: EnneagramTestResult,
     val description: String,
+    val fullDescriptionCode: Int,
     val famousPeople: List<EnneagramFamousPeopleDto>,
     val chartUrl: EnneagramUrl?
 )

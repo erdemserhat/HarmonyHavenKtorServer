@@ -6,7 +6,8 @@ import org.bson.types.ObjectId
 
 data class EnneagramTypeDescriptionCollection(
     @BsonId val id: ObjectId = ObjectId(),
+    val fullDescriptionCode: Int,
     val enneagramType: EnneagramType,
     val enneagramTypeDescriptionCategory: EnneagramTypeDescriptionCategory,
-    val description: String
+    val description: String,
 )
