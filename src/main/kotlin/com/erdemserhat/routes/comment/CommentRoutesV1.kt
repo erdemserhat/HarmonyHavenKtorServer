@@ -9,6 +9,7 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.serialization.Serializable
 
 fun Route.commentRoutes() {
     val commentService: CommentServiceContract = DatabaseModule.commentService
@@ -20,11 +21,11 @@ fun Route.commentRoutes() {
                 val email = principal?.payload?.getClaim("email")?.asString()!!
                 val userId = DatabaseModule.userRepository.getUserByEmailInformation(email)!!.id
 
-                val parameters = call.receive<Map<String, String>>()
-                val postId = parameters["postId"]?.toIntOrNull()
-                val comment = parameters["comment"]
+                val request = call.receive<CommentRequest>()
+                val postId = request.postId
+                val comment = request.comment
 
-                if (postId == null || comment.isNullOrBlank()) {
+                if (comment.isBlank()) {
                     call.respond(HttpStatusCode.BadRequest, "Invalid request parameters")
                     return@post
                 }
@@ -43,7 +44,7 @@ fun Route.commentRoutes() {
 
 
 
-                if (commentId == null || userId == null) {
+                if (commentId == null) {
                     call.respond(HttpStatusCode.BadRequest, "Invalid request parameters")
                     return@delete
                 }
@@ -103,3 +104,10 @@ fun Route.commentRoutes() {
         }
     }
 }
+
+
+@Serializable
+data class CommentRequest(
+    val postId: Int,
+    val comment: String
+)

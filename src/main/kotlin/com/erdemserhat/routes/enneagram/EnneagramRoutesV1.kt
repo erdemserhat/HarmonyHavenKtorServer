@@ -19,7 +19,7 @@ fun Route.enneagramRoutesV1() {
         get("/enneagram/questions") {
             call.respond(status = HttpStatusCode.OK, message = enneagramService.getQuestions(
                 questionCategory = EnneagramQuestionCategory.BASIC
-            ))
+            ).shuffled())
         }
         /*
         get("/enneagram/questions/{mode}") {
