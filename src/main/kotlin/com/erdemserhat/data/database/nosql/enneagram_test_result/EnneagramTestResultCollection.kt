@@ -12,6 +12,7 @@ data class EnneagramTestResultCollection(
     @BsonId val id: ObjectId = ObjectId(),
     val userId:Int,
     val typeScores: List<EnneagramScore>,
+
     val answers:List<EnneagramAnswerDto>,
     val dominantType: EnneagramScore,
     val wingTypes: EnneagramWingTypes,

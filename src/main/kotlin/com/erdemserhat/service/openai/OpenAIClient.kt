@@ -4,6 +4,8 @@ import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.sse.*
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.client.utils.EmptyContent.contentType
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.flow.Flow
@@ -28,9 +30,7 @@ object OpenAIClient {
     }
 
     suspend fun makeStreamChatRequest(
-         prompt:String,
-         username: String,
-         request: Any
+        request: Any
     ): Flow<String> = flow {
         try {
 
@@ -51,7 +51,7 @@ object OpenAIClient {
 
                 incoming.collect { event ->
                     val data = event.data!!
-                  //  println(data)
+                    //  println(data)
 
                     if (data == "[DONE]") {
                         //emit("END")
@@ -70,9 +70,6 @@ object OpenAIClient {
                 }
 
 
-
-
-
             }
 
 
@@ -80,6 +77,24 @@ object OpenAIClient {
             println("---->${e.message}")
         }
 
+
+    }
+
+    suspend fun makeApiCall(request: Any):String {
+        val fullUrl = OpenAICredentials.SCHEME + "://" + OpenAICredentials.HOST + OpenAICredentials.PATH
+        val response = client.post(fullUrl) {
+            contentType(ContentType.Application.Json)
+            setBody(request)
+            header("Authorization", "Bearer ${OpenAICredentials.API_KEY}")
+        }
+        val responseText = response.bodyAsText()
+
+        val parsed = Json {
+            ignoreUnknownKeys = true
+        }.decodeFromString<OpenAIResponse>(responseText)
+
+
+        return parsed.choices.firstOrNull()?.message?.content ?: throw Exception("An Error Occurred")
 
     }
 
@@ -109,6 +124,27 @@ data class OpenAIStreamingResponse(
     val service_tier: String,
     val system_fingerprint: String? = null,
     val choices: List<Choice>
+)
+
+@Serializable
+data class OpenAIResponse(
+    val id: String,
+    val `object`: String,
+    val created: Long,
+    val model: String,
+    val service_tier: String,
+    val system_fingerprint: String? = null,
+    val choices: List<ChoiceNormal>
+)
+
+@Serializable
+data class ChoiceNormal(
+    val message: ChatMessage
+)
+
+@Serializable
+data class ChatMessage(
+    val content: String
 )
 
 @Serializable

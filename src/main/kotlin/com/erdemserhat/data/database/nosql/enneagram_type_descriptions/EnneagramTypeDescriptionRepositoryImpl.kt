@@ -5,7 +5,6 @@ import com.erdemserhat.data.database.nosql.enneagram_famous_people.EnneagramType
 import com.mongodb.client.model.Filters
 import com.mongodb.kotlin.client.coroutine.MongoDatabase
 import kotlinx.coroutines.flow.firstOrNull
-import org.bson.BsonDocument
 import org.bson.BsonValue
 
 class EnneagramTypeDescriptionRepositoryImpl(

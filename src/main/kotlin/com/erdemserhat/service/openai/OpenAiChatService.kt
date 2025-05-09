@@ -49,7 +49,7 @@ object OpenAiChatService {
         )
 
         var response = ""
-        OpenAIClient.makeStreamChatRequest(prompt, username, request).collect{
+        OpenAIClient.makeStreamChatRequest(request).collect{
             response+=it
             emit(it)
         }
@@ -101,6 +101,8 @@ object OpenAiChatService {
         return systemPrompt
 
     }
+
+
 
 
 }

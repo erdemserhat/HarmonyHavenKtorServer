@@ -12,6 +12,8 @@ import com.erdemserhat.data.database.nosql.enneagram_test_result.EnneagramTestRe
 import com.erdemserhat.data.database.nosql.enneagram_test_result.EnneagramTestResultRepositoryImpl
 import com.erdemserhat.data.database.nosql.enneagram_type_descriptions.EnneagramTypeDescriptionRepository
 import com.erdemserhat.data.database.nosql.enneagram_type_descriptions.EnneagramTypeDescriptionRepositoryImpl
+import com.erdemserhat.data.database.nosql.notification_preferences.NotificationPreferencesRepository
+import com.erdemserhat.data.database.nosql.notification_preferences.NotificationPreferencesRepositoryImpl
 import com.erdemserhat.data.database.sql.enneagram.enneagram_answers.EnneagramAnswerDao
 import com.erdemserhat.data.database.sql.enneagram.enneagram_questions.EnneagramQuestionDao
 import com.erdemserhat.data.database.sql.enneagram.enneagram_questions.EnneagramQuestionDaoImpl
@@ -96,6 +98,11 @@ object DatabaseModule {
      * Singleton instance of PasswordResetService, providing functionality for password reset operations.
      */
     val passwordResetService = PasswordResetService()
+
+
+    val notificationPreferencesRepository: NotificationPreferencesRepository by lazy {
+        NotificationPreferencesRepositoryImpl()
+    }
 
 
 }
