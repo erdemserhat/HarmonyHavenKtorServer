@@ -14,12 +14,14 @@ import org.bson.types.ObjectId
 fun Route.notificationScheduler() {
     val notificationSchedulerRepository = DatabaseModule.notificationPreferencesRepository
     authenticate {
-        post("/schedule-notification") {
+            post("/schedule-notification") {
             try {
                 val principal = call.principal<JWTPrincipal>()
                 val email = principal?.payload?.getClaim("email")?.asString()!!
                 val userId = DatabaseModule.userRepository.getUserByEmailInformation(email)!!.id
+
                 val request = call.receive<NotificationSchedulerDto>()
+
                 notificationSchedulerRepository.addNotificationPreferences(
                     request.toCollection(userId)
                 )
@@ -49,9 +51,13 @@ fun Route.notificationScheduler() {
                 if (isDeleted) {
                     call.respond(HttpStatusCode.NoContent)
                 } else {
-                    call.respond(HttpStatusCode.NotFound, "Notification preference not found or already deleted")
+                    println("no content")
+
+                    call.respond(HttpStatusCode.NoContent)
                 }
             } catch (ex: Exception) {
+                println(ex)
+
                 call.respond(status = HttpStatusCode.InternalServerError, message = "an error occurred")
 
             }
@@ -79,7 +85,7 @@ fun Route.notificationScheduler() {
 
         }
 
-        get("notification/predefined-remainders") {
+        get("notification/predefined-reminders") {
             try {
                 call.respond(status = HttpStatusCode.OK, message = PredefinedReminderSubject.entries.toTypedArray())
             } catch (ex: Exception) {

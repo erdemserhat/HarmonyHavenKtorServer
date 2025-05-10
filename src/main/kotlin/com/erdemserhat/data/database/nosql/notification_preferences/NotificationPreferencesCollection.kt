@@ -60,7 +60,7 @@ enum class NotificationType{
 @Serializable
 data class NotificationSchedulerDto(
     @Contextual
-    val id: ObjectId?,
+    val id: ObjectId? = null,
     val definedType: NotificationDefinedType,
     val type: NotificationType,
     val customSubject:String? = null,

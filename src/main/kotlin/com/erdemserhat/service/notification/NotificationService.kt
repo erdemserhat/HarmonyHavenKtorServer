@@ -59,15 +59,15 @@ fun triggerNotification(preference: NotificationPreferencesCollection) {
                         val defaultRemainderSubject = preference.predefinedReminderSubject
                         val defaultRemainderPrompt = when (defaultRemainderSubject) {
                             PredefinedReminderSubject.EXERCISE -> {
-                                ""
+                                "spor yapmayı hatırlat"
                             }
 
                             PredefinedReminderSubject.WATER_DRINK -> {
-                                ""
+                                "su içmemi hatırlat"
                             }
 
                             PredefinedReminderSubject.SLEEP_TIME -> {
-                                ""
+                                "uyku vaktinin geldiğini hatırlat"
                             }
 
                             else -> {
@@ -98,15 +98,15 @@ fun triggerNotification(preference: NotificationPreferencesCollection) {
 
                         val defaultMessagePrompt = when (defaultMessageSubject) {
                             PredefinedMessageSubject.MOTIVATION -> {
-                                ""
+                                "beni motive et "
                             }
 
                             PredefinedMessageSubject.GOOD_MORNING -> {
-                                ""
+                                "günaydın mesajı"
                             }
 
                             PredefinedMessageSubject.GOOD_EVENING -> {
-                                ""
+                                "iyi geceler mesajı yaz"
                             }
 
                             else -> {
