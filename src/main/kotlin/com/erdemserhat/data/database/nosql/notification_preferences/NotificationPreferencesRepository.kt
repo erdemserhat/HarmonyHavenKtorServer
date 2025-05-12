@@ -10,5 +10,6 @@ interface NotificationPreferencesRepository{
     suspend fun getNotificationPreferencesByUserId(userId: Int):List<NotificationPreferencesCollection>
     suspend fun updateLastSentAt(objectId: ObjectId, time: LocalDateTime):BsonValue?
     suspend fun deleteAllNotificationPreferences(objectId: ObjectId,userId: Int): Long
+    suspend fun updateNotificationPreferences(notificationPreferences:NotificationPreferencesCollection):Boolean
 
 }

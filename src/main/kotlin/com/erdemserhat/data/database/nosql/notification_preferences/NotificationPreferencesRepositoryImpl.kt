@@ -10,8 +10,12 @@ import com.mongodb.client.model.Updates
 import com.mongodb.kotlin.client.coroutine.MongoDatabase
 import kotlinx.coroutines.flow.toList
 import org.bson.BsonValue
+import org.bson.codecs.pojo.annotations.BsonId
+import org.bson.conversions.Bson
 import org.bson.types.ObjectId
+import java.time.DayOfWeek
 import java.time.LocalDateTime
+import java.time.LocalTime
 
 class NotificationPreferencesRepositoryImpl(
     private val mongoDatabase: MongoDatabase = MongoDatabaseConfig.mongoDatabase,
@@ -83,5 +87,40 @@ class NotificationPreferencesRepositoryImpl(
         }
         return 0
     }
+
+    override suspend fun updateNotificationPreferences(
+        prefs: NotificationPreferencesCollection
+    ): Boolean {
+
+        val collection = mongoDatabase
+            .getCollection<NotificationPreferencesCollection>(NOTIFICATION_PREFERENCES)
+
+        val filter = Filters.and(
+            Filters.eq("_id", prefs.id),
+            Filters.eq("userId", prefs.userId)
+        )
+
+        val updates = mutableListOf<Bson>()
+
+        updates += Updates.set(NotificationPreferencesCollection::definedType.name, prefs.definedType)
+        updates += Updates.set(NotificationPreferencesCollection::type.name,        prefs.type)
+        updates += Updates.set(NotificationPreferencesCollection::preferredTime.name, prefs.preferredTime)
+        updates += Updates.set(NotificationPreferencesCollection::daysOfWeek.name,   prefs.daysOfWeek)
+
+        // Opsiyonel alanlar – SET veya UNSET
+        fun <T> handleNullable(name: String, value: T?) {
+            if (value != null) updates += Updates.set(name, value)
+            else               updates += Updates.unset(name)
+        }
+
+        handleNullable(NotificationPreferencesCollection::customSubject.name,            prefs.customSubject)
+        handleNullable(NotificationPreferencesCollection::predefinedMessageSubject.name,  prefs.predefinedMessageSubject)
+        handleNullable(NotificationPreferencesCollection::predefinedReminderSubject.name, prefs.predefinedReminderSubject)
+        handleNullable(NotificationPreferencesCollection::lastSentAt.name,                prefs.lastSentAt)
+
+        val result = collection.updateOne(filter, Updates.combine(updates))
+        return result.modifiedCount > 0
+    }
+
 
 }

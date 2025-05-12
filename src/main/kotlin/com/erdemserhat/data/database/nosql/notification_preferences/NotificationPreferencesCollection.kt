@@ -73,6 +73,7 @@ data class NotificationSchedulerDto(
 
 fun NotificationSchedulerDto.toCollection(userId:Int): NotificationPreferencesCollection{
     return NotificationPreferencesCollection(
+        id = this.id ?: ObjectId(),
         definedType = this.definedType,
         type = this.type,
         customSubject = this.customSubject,

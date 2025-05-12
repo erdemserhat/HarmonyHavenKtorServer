@@ -65,6 +65,34 @@ fun Route.notificationScheduler() {
 
         }
 
+        patch("/schedule-notification") {
+            try {
+                val principal = call.principal<JWTPrincipal>()
+                val email = principal?.payload?.getClaim("email")?.asString()!!
+                val userId = DatabaseModule.userRepository.getUserByEmailInformation(email)!!.id
+                val request = call.receive<NotificationSchedulerDto>()
+                val collection = request.toCollection(userId)
+
+                val isUpdated = notificationSchedulerRepository.updateNotificationPreferences(
+                    collection
+                )
+
+                if (isUpdated) {
+                    call.respond(HttpStatusCode.OK)
+                } else {
+                    println("no content")
+                    call.respond(HttpStatusCode.NoContent)
+                }
+            } catch (ex: Exception) {
+                println(ex)
+
+                call.respond(status = HttpStatusCode.InternalServerError, message = "an error occurred")
+
+            }
+
+
+        }
+
         get("notification/schedulers") {
             try {
                 val principal = call.principal<JWTPrincipal>()

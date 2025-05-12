@@ -31,7 +31,7 @@ data class FcmNotification(
     val title: String,
     val body: String,
     val image: String="",
-    val screen: String=""
+    val screen: String="2"
 )
 
 fun SendNotificationGeneralDto.toMessage(): Message {
