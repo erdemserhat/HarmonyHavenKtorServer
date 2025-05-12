@@ -10,7 +10,7 @@ Harmony Haven Server, Harmony Haven uygulamasının arka planında çalışan, g
 
 ![1232](https://github.com/user-attachments/assets/cc10eb17-3ccf-4365-a066-c21a341975db)
 
-API ile etkileşimde bulunmak için şu adresi ziyaret edebilirsiniz: [http://51.20.136.184:5000/](http://51.20.136.184:5000/)
+API ile etkileşimde bulunmak için şu adresi ziyaret edebilirsiniz: [https://api.harmonyhavenapp.com](https://api.harmonyhavenapp.com/)
 
 Endpoint'ler ile ilgili detaylı bilgi aşağıda verilmiştir.
 
