@@ -7,11 +7,12 @@ import io.ktor.server.application.*
 fun Application.configureCORS() {
     install(CORS) {
         // Specify allowed origins
-
-        anyHost()
-
         // Or allow specific hosts
-        // allowHost("localhost:3000", schemes = listOf("http"))
+
+        allowHost("www.harmonyhavenapp.com", schemes = listOf("http", "https"))
+        allowHost("harmonyhavenapp.com", schemes = listOf("http", "https"))
+        allowHost("localhost:3000", schemes = listOf("http", "https"))
+
 
         // Specify allowed HTTP methods
         allowMethod(HttpMethod.Options)
@@ -19,6 +20,8 @@ fun Application.configureCORS() {
         allowMethod(HttpMethod.Post)
         allowMethod(HttpMethod.Put)
         allowMethod(HttpMethod.Delete)
+        allowMethod(HttpMethod.Patch)
+
 
         // Specify allowed headers
         allowHeader("harmonyhavenapikey") // Belirli headerları izinli hale getir

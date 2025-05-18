@@ -53,23 +53,28 @@ class EnneagramService(
         }
     }
 
-    private suspend fun getEnneagramTypeDescription(enneagramType: EnneagramType, pointBasedWingType:Int, descriptionCategory: EnneagramTypeDescriptionCategory):
-            EnneagramTypeDescriptionCollection?{
+    private suspend fun getEnneagramTypeDescription(
+        enneagramType: EnneagramType,
+        pointBasedWingType: Int,
+        descriptionCategory: EnneagramTypeDescriptionCategory
+    ):
+            EnneagramTypeDescriptionCollection? {
         val description = enneagramRepository.enneagramTypeDescriptionRepository.getDescriptionByTypeAndCategory(
             category = descriptionCategory,
             type = enneagramType
         )
         val ifExistExtraDescription = enneagramType.wingType != pointBasedWingType
 
-        if(ifExistExtraDescription){
-            val extraDescription = enneagramRepository.enneagramExtraTypeDescriptionRepository.getExtraTypeDescriptionByTypeAndCategory(
-                type = pointBasedWingType,
-                category = descriptionCategory.toEnneagramExtraTypeDescriptionCategory()
-            )
+        if (ifExistExtraDescription) {
+            val extraDescription =
+                enneagramRepository.enneagramExtraTypeDescriptionRepository.getExtraTypeDescriptionByTypeAndCategory(
+                    type = pointBasedWingType,
+                    category = descriptionCategory.toEnneagramExtraTypeDescriptionCategory()
+                )
 
-            return  description
+            return description!!.copy(description = description.description + extraDescription!!.description)
 
-        }else{
+        } else {
             return description
         }
 
@@ -79,9 +84,8 @@ class EnneagramService(
     suspend fun evaluateTestResult(
         mode: EvaluationMode,
         answers: List<EnneagramAnswerDto>,
-        userId:Int
+        userId: Int
     ): EnneagramTestResultDetailedDto {
-
 
 
         val typeScores: MutableList<EnneagramScore> = mutableListOf(
@@ -176,7 +180,7 @@ class EnneagramService(
 
         val pointBasedDominantWingType = wingType.type
 
-        val enneagramType = EnneagramType(dominantData.type,enneagramBasedDominantWingType.type)
+        val enneagramType = EnneagramType(dominantData.type, enneagramBasedDominantWingType.type)
         val generalType = "${dominantData.type}" + "w" + "${enneagramBasedDominantWingType.type}"
 
 
@@ -188,7 +192,7 @@ class EnneagramService(
                     enneagramType = enneagramType,
                     pointBasedWingType = pointBasedDominantWingType,
                     descriptionCategory = mode.toEnneagramTypeDescriptionCategory()
-                )?.description ?:""
+                )?.description ?: ""
 
 
             } else {
@@ -198,7 +202,7 @@ class EnneagramService(
                     enneagramType = enneagramType,
                     pointBasedWingType = pointBasedDominantWingType,
                     descriptionCategory = mode.toEnneagramTypeDescriptionCategory()
-                )?.description ?:""
+                )?.description ?: ""
 
             }
         } else if (mode == EvaluationMode.STANDARD) {
@@ -245,7 +249,7 @@ class EnneagramService(
             userId = userId,
             typeScores = typeScores,
             answers = answers,
-            dominantType = EnneagramScore(dominantData.type,dominantData.score),
+            dominantType = EnneagramScore(dominantData.type, dominantData.score),
             wingTypes = EnneagramWingTypes(
                 pointBasedWingType = pointBasedDominantWingType,
                 enneagramBasedWingType = enneagramBasedDominantWingType.type
@@ -254,7 +258,7 @@ class EnneagramService(
             testCategory = EnneagramTestResultCategory.BASIC,
             createdAt = LocalDateTime.now(),
 
-        )
+            )
 
         enneagramRepository.enneagramTestResultRepository.addTestResult(
             resultCollection
@@ -273,7 +277,7 @@ class EnneagramService(
 
     }
 
-    suspend fun checkResults(userId:Int):EnneagramTestResultDetailedDto?{
+    suspend fun checkResults(userId: Int): EnneagramTestResultDetailedDto? {
         val testResult = enneagramRepository.enneagramTestResultRepository.getTestResultByUserId(
             userId = userId,
             testCategory = EnneagramTestResultCategory.BASIC
@@ -302,18 +306,13 @@ class EnneagramService(
 
         val detailedResult = EnneagramTestResultDetailedDto(
             result = testResult.toEnneagramTestResult().copy(),
-            description = typeDescription?.description ?:"",
+            description = typeDescription?.description ?: "",
             fullDescriptionCode = typeDescription?.fullDescriptionCode ?: 0,
             famousPeople = famousPeople,
             chartUrl = chart?.toEnneagramUrl(),
         )
 
         return detailedResult
-
-
-
-
-
 
 
     }
@@ -333,10 +332,10 @@ data class EnneagramTestResultDetailedDto(
 
 @Serializable
 data class EnneagramUrl(
-    val chartUrl:String,
-    val personalityImageUrl:String,
+    val chartUrl: String,
+    val personalityImageUrl: String,
 
-)
+    )
 
 
 @Serializable
@@ -348,7 +347,7 @@ data class EnneagramFamousPeopleDto(
 
 fun EnneagramFamousPeopleDto.toCollection(
     enneagramType: EnneagramType
-):EnneagramFamousPeopleCollection{
+): EnneagramFamousPeopleCollection {
     return EnneagramFamousPeopleCollection(
         name = this.name,
         imageUrl = imageUrl,
@@ -360,8 +359,8 @@ fun EnneagramFamousPeopleDto.toCollection(
 
 @Serializable
 data class EnneagramScore(
-    val type: Int = 0,
-    var score: Int = 1
+    val type: Int = -1,
+    var score: Int = -1
 )
 
 
@@ -375,8 +374,6 @@ data class EnneagramTestResult(
     val dominantType: EnneagramScore,
     val wingType: EnneagramWingTypes,
 )
-
-
 
 
 @Serializable
