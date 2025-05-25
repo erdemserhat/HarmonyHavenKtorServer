@@ -1,5 +1,8 @@
 package com.erdemserhat.service.openai
 
+import com.erdemserhat.data.database.nosql.moods.moods.MoodsCache
+import com.erdemserhat.service.di.DatabaseModule.userMoodsRepository
+import com.erdemserhat.service.enneagram.EnneagramService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -12,29 +15,44 @@ object OpenAiChatService {
             history[userId] = mutableListOf()
         }
 
-        val isChatHistoryMaximum= history[userId]!!.size>30
+        val isChatHistoryMaximum = history[userId]!!.size > 30
 
         if (isChatHistoryMaximum) {
             do {
                 history[userId]!!.removeFirst()
 
-            }while (history[userId]!!.size>20)
+            } while (history[userId]!!.size > 20)
 
         }
 
 
         history[userId]?.add(
-            Message(role = "user",prompt)
+            Message(role = "user", prompt)
         )
 
 
-
         val previousHistory = history[userId]
+        val userMood = userMoodsRepository.getUserMood(userId)
+        val currentMood = MoodsCache.MoodsCollection.find { it.id == userMood!!.moodId }?.name?.toTurkishMoodName()
 
+
+        val result = EnneagramService().checkResults(userId)
+        val enneagramDesc = result!!.description
+        val famousPeopleNames = result.famousPeople.map { it.name }
+
+
+
+        println(result)
+
+
+        //  println(currentMood)
 
 
         val finalMessageList = mutableListOf(
-            Message(role = "system", content = generateDynamicSystemPrompt(username))
+            Message(
+                role = "system",
+                content = generateDynamicSystemPrompt(username, currentMood!!, enneagramDesc, famousPeopleNames)
+            )
         )
 
         finalMessageList.addAll(
@@ -42,67 +60,66 @@ object OpenAiChatService {
         )
 
         val request = OpenAIRequest(
-            model = "gpt-3.5-turbo",
+            model = "gpt-4o",
             messages = finalMessageList,
-            temperature = 0.5,
+            temperature = 0.8,
             stream = true
         )
 
         var response = ""
-        OpenAIClient.makeStreamChatRequest(request).collect{
-            response+=it
+        OpenAIClient.makeStreamChatRequest(request).collect {
+            response += it
             emit(it)
         }
         history[userId]?.add(
-            Message(role = "system",response)
+            Message(role = "system", response)
         )
 
-        if(history[userId]!!.size>20) {
+        if (history[userId]!!.size > 20) {
             history[userId]
         }
 
 
     }
 
-    private fun generateDynamicSystemPrompt(username: String): String {
+    private fun generateDynamicSystemPrompt(
+        username: String,
+        currentMood: String,
+        enneagramDescription: String,  // Bu yeni eklenecek parametre
+        famousPeople: List<String>      // Örnek: ["Steve Jobs", "Elon Musk"]
+    ): String {
+        val famousPeopleStr = famousPeople.joinToString(", ")
+        return """
+Sen Harmony Haven AI'sın, kullanıcıların duygusal destekçisi. Kullanıcılarla konuşurken şu şekilde davran:
 
-        val systemPrompt = """
-                    Sen Harmony Haven AI'sın, kullanıcıların duygusal destekçisi. Kullanıcılarla konuşurken şu şekilde davran:
-                    
-                    Kendini "Harmony Haven AI" olarak tanıt ve kullanıcıya "siz" diye hitap et. Her zaman doğal, samimi ve destekleyici bir dil kullan. 
-                    Yanıtlarını paragraf halinde, gerçek bir insan gibi akıcı bir şekilde yaz. Madde madde yazmaktan kaçın. 
-                    
-                    Kullanıcının duygularını anlayışla karşıla ve empati kur. Her zaman yanında olduğunu hissettir ve güçlü yönlerini vurgula. 
-                    Zor zamanlarda umut ve motivasyon aşıla. Kullanıcının kendi gücünü keşfetmesine yardımcı ol.
-                    
-                    Abartılı vaatler verme ve gerçekçi olmayan beklentiler oluşturma. Her zaman açık ve net bir dil kullan, aktif dinleme yap ve 
-                    kullanıcının duygularını yansıt. Kullanıcıya her zaman destek olacağını ve yanında olacağını hissettir.
-                   
-                    
-                    *kullanıcının verdiği cevapları kestirip atma ondan detay iste önerilerde bulun
-                    * mesaj sonunda iligli olayla ilgili detay isteyebilirsin.
-                    aşağıda örnek cevaplar var;
-                    
-                    
-                    
-                    Kullanıcının paylaştığı deneyimleri ve duyguları yargılamadan kabul et. Her insanın kendi hikayesi ve mücadelesi olduğunu unutma.
-                    Kullanıcının başarılarını ve küçük adımlarını takdir et ve kutla. Zorluklarla başa çıkma çabalarını destekle.
-                    
-                    Kullanıcıya her zaman saygılı ve anlayışlı ol. Onun duygularını ve düşüncelerini değerli gör. Kullanıcının kendini ifade etmesine 
-                    fırsat ver ve sabırla dinle. Kullanıcının kendi çözümlerini bulmasına yardımcı ol.
-                    
-                    İletişim tarzın samimi ve doğal olsun. Resmi bir dil kullanma. Emojileri sadece duygusal ifadelerde ve uygun yerlerde kullan:
-                    - kullanıcıya daime "$username" diye hitap et.
-                    - kullanıcıya arkadas gibi cevap ver ve cok samimi ol.
-                    - 
-                    
-                    Her zaman Türkçe olarak cevap ver.
-                """.trimIndent()
-        return systemPrompt
+Kullanıcının adı $username. Şu an ruh hali: $currentMood.
 
+Kullanıcının Enneagram kişilik tipi ve özellikleri:
+$enneagramDescription
+
+Örnek olarak aşağıdaki ünlülerle benzer özellikler taşıyor: $famousPeopleStr.
+
+Yanıtlarını samimi, doğal ve destekleyici bir şekilde ver. Kullanıcıya "$username" diye hitap et.  
+Kullanıcının duygularını anlamaya çalış, empati yap ve onu motive et. Her zaman yanında olduğunu hissettir.  
+Zor zamanlarda destek ver, kullanıcıya kendi gücünü hatırlat. Abartılı sözlerden kaçın, gerçekçi ve nazik ol.  
+Mesaj sonunda kullanıcıdan daha fazla detay isteyebilirsin.
+
+Her zaman Türkçe olarak cevap ver.
+""".trimIndent()
     }
 
 
+}
 
-
+fun String.toTurkishMoodName(): String {
+    return when (this.lowercase()) {
+        "happy" -> "Mutlu"
+        "calm" -> "Sakin"
+        "angry" -> "Öfkeli"
+        "burned out" -> "Tükenmiş"
+        "sad" -> "Üzgün"
+        "tired" -> "Yorgun"
+        "excited" -> "Heyecanlı"
+        else -> this // Fallback
+    }
 }

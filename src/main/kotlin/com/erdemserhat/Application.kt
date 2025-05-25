@@ -12,6 +12,7 @@ import com.erdemserhat.data.database.nosql.enneagram_question.EnneagramQuestionC
 import com.erdemserhat.data.database.nosql.enneagram_question.EnneagramQuestionRepositoryImpl
 import com.erdemserhat.data.database.nosql.enneagram_type_descriptions.EnneagramTypeDescriptionCategory
 import com.erdemserhat.data.database.nosql.enneagram_type_descriptions.EnneagramTypeDescriptionCollection
+import com.erdemserhat.data.database.nosql.moods.moods.MoodsCache
 import com.erdemserhat.data.database.nosql.moods.moods.MoodsCollection
 import com.erdemserhat.data.database.nosql.notification_preferences.*
 import com.erdemserhat.data.database.sql.enneagram.enneagram_famous_people.DBEnneagramFamousPeopleTable.enneagramType
@@ -77,6 +78,10 @@ fun Application.module() {
     configureSecurity(tokenConfigSecurity)
     configureRouting()
     startNotificationScheduler(scope = CoroutineScope(Dispatchers.Default))
+    CoroutineScope(Dispatchers.IO).launch {
+        MoodsCache.MoodsCollection = moodsRepository.getMoods().toMutableList()
+    }
+
 
 
 }
