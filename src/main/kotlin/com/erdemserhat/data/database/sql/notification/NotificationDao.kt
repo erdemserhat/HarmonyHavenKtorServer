@@ -4,6 +4,8 @@ import com.erdemserhat.models.Notification
 
 interface NotificationDao {
 
+    suspend fun getDaysSinceOldestNotification(userId: Int): Long?
+    suspend fun getNotificationSize(userId: Int): Int
     suspend fun addNotification(notification: Notification): Int
     suspend fun deleteNotification(notificationId: Int): Boolean
     suspend fun updateNotification(notification: Notification): Boolean

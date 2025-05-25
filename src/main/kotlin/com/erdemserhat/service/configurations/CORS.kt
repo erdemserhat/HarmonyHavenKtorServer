@@ -23,6 +23,7 @@ fun Application.configureCORS() {
         allowMethod(HttpMethod.Patch)
 
 
+
         // Specify allowed headers
         allowHeader("harmonyhavenapikey") // Belirli headerları izinli hale getir
         allowHeader(HttpHeaders.Authorization)

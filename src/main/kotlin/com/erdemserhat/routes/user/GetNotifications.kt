@@ -42,5 +42,20 @@ fun Route.getNotifications() {
                 message = userNotifications
             )
         }
+
+        get("/get-notifications-count") {
+            val principal = call.principal<JWTPrincipal>()
+            val email = principal?.payload?.getClaim("email")?.asString()!!
+            val userId = DatabaseModule.userRepository.getUserByEmailInformation(email)!!.id
+
+            val size = DatabaseModule.notificationRepository.getNotificationSize(userId)
+            println(size)
+
+            call.respond(
+                message = mapOf("size" to size),
+                status = HttpStatusCode.OK
+            )
+
+        }
     }
 }

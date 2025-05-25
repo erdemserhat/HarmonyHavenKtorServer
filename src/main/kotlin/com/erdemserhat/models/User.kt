@@ -22,8 +22,8 @@ data class User(
 
 
 
-fun User.toDto(): UserInformationDto {
-    return UserInformationDto(name,email,profilePhotoPath,id)
+fun User.toDto(activeDays:Int =0): UserInformationDto {
+    return UserInformationDto(name,email,profilePhotoPath,id,activeDays)
 }
 
 

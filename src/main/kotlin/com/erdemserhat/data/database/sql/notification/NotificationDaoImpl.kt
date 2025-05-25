@@ -3,6 +3,11 @@ package com.erdemserhat.data.database.sql.notification
 import com.erdemserhat.models.Notification
 import com.erdemserhat.data.database.sql.MySqlDatabaseConfig
 import org.ktorm.dsl.*
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.temporal.ChronoUnit
+import java.util.logging.Logger
 
 class NotificationDaoImpl : NotificationDao {
     override suspend fun addNotification(notification: Notification): Int {
@@ -16,12 +21,55 @@ class NotificationDaoImpl : NotificationDao {
         }
     }
 
+    override suspend fun getNotificationSize(userId: Int): Int {
+        return MySqlDatabaseConfig.ktormDatabase
+            .from(DBNotificationTable)
+            .select()
+            .where { DBNotificationTable.user_id eq userId }
+            .totalRecords
+    }
+
     override suspend fun deleteNotification(notificationId: Int): Boolean {
         val affectedRows = MySqlDatabaseConfig.ktormDatabase.delete(DBNotificationTable) {
             DBNotificationTable.id eq notificationId
         }
         return affectedRows > 0
     }
+
+
+    override suspend fun getDaysSinceOldestNotification(userId: Int): Long? {
+        val oldestTimestamp = MySqlDatabaseConfig.ktormDatabase
+            .from(DBNotificationTable)
+            .select(DBNotificationTable.timeStamp)
+            .where { DBNotificationTable.user_id eq userId }
+            .orderBy(DBNotificationTable.timeStamp.asc())
+            .limit(0, 1)
+            .map { row -> row[DBNotificationTable.timeStamp] }
+            .firstOrNull()
+
+        if (oldestTimestamp == null) {
+            return null
+        }
+
+
+        // Milisaniye-saniye ayrımı kontrolü
+        val adjustedTimestamp = if (oldestTimestamp < 1000000000000L) {
+            oldestTimestamp * 1000
+        } else {
+            oldestTimestamp
+        }
+
+        val notificationDate = Instant.ofEpochMilli(adjustedTimestamp)
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate()
+
+        val today = LocalDate.now()
+        val days = ChronoUnit.DAYS.between(notificationDate, today)
+
+
+        return days
+    }
+
 
     override suspend fun updateNotification(notification: Notification): Boolean {
         try {

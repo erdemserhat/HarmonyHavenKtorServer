@@ -27,6 +27,14 @@ class NotificationRepository :NotificationRepositoryContract {
         return notificationDao.markAsRead(notificationId)
     }
 
+    override suspend fun getNotificationSize(userId: Int): Int {
+        return notificationDao.getNotificationSize(userId)
+    }
+
+    override suspend fun getDaysSinceOldestNotification(userId: Int): Long? {
+        return notificationDao.getDaysSinceOldestNotification(userId)
+    }
+
 }
 
 fun DBNotificationEntity.toNotification():Notification{

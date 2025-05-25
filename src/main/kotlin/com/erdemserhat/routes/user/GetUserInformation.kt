@@ -15,10 +15,15 @@ fun Route.getUserInformation() {
             val principal = call.principal<JWTPrincipal>()
             val email = principal?.payload?.getClaim("email")?.asString()
             val user = DatabaseModule.userRepository.getUserByEmailInformation(email!!)
+            val activeDays = DatabaseModule.notificationRepository.getDaysSinceOldestNotification(user!!.id)
+
+            print("-<>>,"+activeDays)
 
             call.respond(
                 status = HttpStatusCode.OK,
-                message = user!!.toDto()
+                message = user!!.toDto(
+                    activeDays?.toInt() ?: 0
+                )
             )
 
 
