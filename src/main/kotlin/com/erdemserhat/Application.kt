@@ -12,6 +12,7 @@ import com.erdemserhat.data.database.nosql.enneagram_question.EnneagramQuestionC
 import com.erdemserhat.data.database.nosql.enneagram_question.EnneagramQuestionRepositoryImpl
 import com.erdemserhat.data.database.nosql.enneagram_type_descriptions.EnneagramTypeDescriptionCategory
 import com.erdemserhat.data.database.nosql.enneagram_type_descriptions.EnneagramTypeDescriptionCollection
+import com.erdemserhat.data.database.nosql.moods.moods.MoodsCollection
 import com.erdemserhat.data.database.nosql.notification_preferences.*
 import com.erdemserhat.data.database.sql.enneagram.enneagram_famous_people.DBEnneagramFamousPeopleTable.enneagramType
 import com.erdemserhat.data.database.sql.enneagram.enneagram_questions.DBEnneagramQuestionTable.personalityNumber
@@ -24,7 +25,9 @@ import com.erdemserhat.service.NotificationAI
 import com.erdemserhat.service.configurations.*
 import com.erdemserhat.service.di.AuthenticationModule.tokenConfigSecurity
 import com.erdemserhat.service.di.DatabaseModule
+import com.erdemserhat.service.di.DatabaseModule.moodsRepository
 import com.erdemserhat.service.di.DatabaseModule.notificationPreferencesRepository
+import com.erdemserhat.service.di.DatabaseModule.userMoodsRepository
 import com.erdemserhat.service.di.DatabaseModule.userRepository
 import com.erdemserhat.service.di.EnneagramRepositoryModule
 import com.erdemserhat.service.di.EnneagramRepositoryModule.enneagramChartRepository
@@ -52,6 +55,7 @@ import java.time.LocalTime
 import java.time.temporal.ChronoUnit
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
+
 fun main(args: Array<String>) {
     EngineMain.main(args)
 }

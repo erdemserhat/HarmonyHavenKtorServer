@@ -12,6 +12,10 @@ import com.erdemserhat.data.database.nosql.enneagram_test_result.EnneagramTestRe
 import com.erdemserhat.data.database.nosql.enneagram_test_result.EnneagramTestResultRepositoryImpl
 import com.erdemserhat.data.database.nosql.enneagram_type_descriptions.EnneagramTypeDescriptionRepository
 import com.erdemserhat.data.database.nosql.enneagram_type_descriptions.EnneagramTypeDescriptionRepositoryImpl
+import com.erdemserhat.data.database.nosql.moods.moods.MoodsRepository
+import com.erdemserhat.data.database.nosql.moods.moods.MoodsRepositoryImpl
+import com.erdemserhat.data.database.nosql.moods.user_moods.UserMoodsRepository
+import com.erdemserhat.data.database.nosql.moods.user_moods.UserMoodsRepositoryImpl
 import com.erdemserhat.data.database.nosql.notification_preferences.NotificationPreferencesRepository
 import com.erdemserhat.data.database.nosql.notification_preferences.NotificationPreferencesRepositoryImpl
 import com.erdemserhat.data.database.sql.enneagram.enneagram_answers.EnneagramAnswerDao
@@ -102,6 +106,14 @@ object DatabaseModule {
 
     val notificationPreferencesRepository: NotificationPreferencesRepository by lazy {
         NotificationPreferencesRepositoryImpl()
+    }
+
+    val moodsRepository : MoodsRepository by lazy {
+        MoodsRepositoryImpl()
+    }
+
+    val userMoodsRepository:UserMoodsRepository by lazy {
+        UserMoodsRepositoryImpl()
     }
 
 
