@@ -24,10 +24,7 @@ object OpenAiNotificationService {
         }
         
         val enneagramResult = EnneagramService().checkResults(userId)
-        val dominantType = enneagramResult?.result?.dominantType?.type
-        val wingType = enneagramResult?.result?.wingType?.enneagramBasedWingType
-        val enneagramDesc = enneagramResult?.description
-        val famousPeople = enneagramResult?.famousPeople?.map { it.name }
+        val hasEnneagramInfo = enneagramResult != null && enneagramResult.result != null
         
         val finalMessageList = mutableListOf(
             Message(
@@ -38,10 +35,11 @@ object OpenAiNotificationService {
                                 username = userName,
                                 reminder = content,
                                 mood = currentMood ?: "normal",
-                                enneagramType = dominantType ?: 1,
-                                wingType = wingType ?: 1,
-                                enneagramDesc = enneagramDesc ?: "",
-                                famousPeople = famousPeople ?: emptyList()
+                                hasEnneagramInfo = hasEnneagramInfo,
+                                enneagramType = enneagramResult?.result?.dominantType?.type,
+                                wingType = enneagramResult?.result?.wingType?.enneagramBasedWingType,
+                                enneagramDesc = enneagramResult?.description,
+                                famousPeople = enneagramResult?.famousPeople?.map { it.name } ?: emptyList()
                             )
                         }
 
@@ -50,10 +48,11 @@ object OpenAiNotificationService {
                                 username = userName,
                                 content = content,
                                 mood = currentMood ?: "normal",
-                                enneagramType = dominantType ?: 1,
-                                wingType = wingType ?: 1,
-                                enneagramDesc = enneagramDesc ?: "",
-                                famousPeople = famousPeople ?: emptyList()
+                                hasEnneagramInfo = hasEnneagramInfo,
+                                enneagramType = enneagramResult?.result?.dominantType?.type,
+                                wingType = enneagramResult?.result?.wingType?.enneagramBasedWingType,
+                                enneagramDesc = enneagramResult?.description,
+                                famousPeople = enneagramResult?.famousPeople?.map { it.name } ?: emptyList()
                             )
                         }
                     }
@@ -74,21 +73,35 @@ object OpenAiNotificationService {
         username: String, 
         reminder: String,
         mood: String,
-        enneagramType: Int,
-        wingType: Int,
-        enneagramDesc: String,
+        hasEnneagramInfo: Boolean,
+        enneagramType: Int?,
+        wingType: Int?,
+        enneagramDesc: String?,
         famousPeople: List<String>
     ): String {
-        val typeSpecificApproach = getNotificationTypeApproach(enneagramType)
+        val typeSpecificApproach = if (hasEnneagramInfo) {
+            getNotificationTypeApproach(enneagramType)
+        } else {
+            "Genel yaklaşım: Samimi ve destekleyici ol. Kişiye özel ilgi göster."
+        }
+        
         val moodSpecificTone = getNotificationMoodTone(mood)
         val timeBasedGreeting = getTimeBasedGreeting(username)
         val creativeMoodResponses = getCreativeNotificationResponses(mood, username)
-        val motivationalQuotes = getPersonalizedMotivation(enneagramType)
+        val motivationalQuotes = if (hasEnneagramInfo) {
+            getPersonalizedMotivation(enneagramType)
+        } else {
+            "Sen değerli bir insansın! Her gün biraz daha güçleniyorsun! 💫"
+        }
         val absurdSentences = getNotificationAbsurdSentences()
         val culturalReferences = getNotificationCulturalReferences(mood)
         val turkishProverbs = getNotificationTurkishProverbs()
         val currentTimeInfo = getCurrentTimeInfo()
-        val humorStyle = getNotificationHumorStyle(enneagramType, mood)
+        val humorStyle = if (hasEnneagramInfo) {
+            getNotificationHumorStyle(enneagramType, mood)
+        } else {
+            "Her hali güzel! 😊"
+        }
         val mysteriousElements = getNotificationMysteriousElements()
         val creativeMoodMetaphors = getCreativeNotificationMetaphors(mood, username)
         
@@ -100,9 +113,11 @@ Sen Harmonia'sın! $username'in en samimi arkadaşı ve kişisel psikologu 💙
 
 $username HAKKINDA BİLDİKLERİM:
 Şu anki ruh hali: $mood
+${if (hasEnneagramInfo) """
 Kişilik tipi: ${enneagramType}w${wingType}
 Kişilik özellikleri: $enneagramDesc
 Benzer ünlü kişiler: ${famousPeople.joinToString(", ")}
+""" else "Kişilik bilgisi henüz yok, genel yaklaşım kullanılacak."}
 
 ZAMAN BİLGİSİ:
 $currentTimeInfo
@@ -159,27 +174,41 @@ BİLDİRİM KURALLARI:
 - Hiç abartma
 - Doğal ve samimi
 - Ne çok kısa ne çok uzun
-""".trimIndent()
+        """.trimIndent()
     }
 
     private fun generateAdvancedMessagePrompt(
         username: String,
         content: String,
         mood: String,
-        enneagramType: Int,
-        wingType: Int,
-        enneagramDesc: String,
+        hasEnneagramInfo: Boolean,
+        enneagramType: Int?,
+        wingType: Int?,
+        enneagramDesc: String?,
         famousPeople: List<String>
     ): String {
-        val typeSpecificMotivation = getTypeSpecificMotivation(enneagramType)
+        val typeSpecificMotivation = if (hasEnneagramInfo) {
+            getTypeSpecificMotivation(enneagramType)
+        } else {
+            "Sen değerli bir insansın! Her gün biraz daha güçleniyorsun! 💫"
+        }
+        
         val moodSpecificSupport = getMoodSpecificSupport(mood)
-        val personalizedEncouragement = getPersonalizedEncouragement(enneagramType)
+        val personalizedEncouragement = if (hasEnneagramInfo) {
+            getPersonalizedEncouragement(enneagramType)
+        } else {
+            "Sen güçlü bir insansın! Her zorluğun üstesinden gelebilirsin! 🌟"
+        }
         val creativeMetaphors = getCreativeMetaphors(mood)
         val absurdSentences = getNotificationAbsurdSentences()
         val culturalReferences = getNotificationCulturalReferences(mood)
         val turkishProverbs = getNotificationTurkishProverbs()
         val currentTimeInfo = getCurrentTimeInfo()
-        val humorStyle = getNotificationHumorStyle(enneagramType, mood)
+        val humorStyle = if (hasEnneagramInfo) {
+            getNotificationHumorStyle(enneagramType, mood)
+        } else {
+            "Her hali güzel! 😊"
+        }
         val mysteriousElements = getNotificationMysteriousElements()
         val philosophicalDepth = getNotificationPhilosophicalDepth()
         val creativeMoodMetaphors = getCreativeNotificationMetaphors(mood, username)
@@ -192,9 +221,11 @@ Sen Harmonia'sın! $username'in en yakın arkadaşı ve kişisel psikologu 💙
 
 $username HAKKINDA BİLDİKLERİM:
 Şu anki ruh hali: $mood
+${if (hasEnneagramInfo) """
 Kişilik tipi: ${enneagramType}w${wingType}
 Kişilik özellikleri: $enneagramDesc
 Benzer ünlü kişiler: ${famousPeople.joinToString(", ")}
+""" else "Kişilik bilgisi henüz yok, genel yaklaşım kullanılacak."}
 
 ZAMAN BİLGİSİ:
 $currentTimeInfo
@@ -254,11 +285,11 @@ BİLDİRİM KURALLARI:
 - Gerçekçi ol
 
 Şimdi "$content" için samimi, kısa, doğal motivasyon mesajı yaz! Madde madde kesinlikle yapma, akışkan konuş!
-""".trimIndent()
+    """.trimIndent()
     }
 
     // Yardımcı fonksiyonlar
-    private fun getNotificationTypeApproach(enneagramType: Int): String {
+    private fun getNotificationTypeApproach(enneagramType: Int?): String {
         return when (enneagramType) {
             1 -> "Mükemmeliyetçi yanını anlıyorum, organize ve düzenli yaklaş. 'Doğru zamanda doğru iş' tarzında hatırlat."
             2 -> "Yardımsever kalbini anlıyorum, kendine de bakması gerektiğini nazikçe hatırlat."
@@ -321,7 +352,7 @@ BİLDİRİM KURALLARI:
         }.random()
     }
 
-    private fun getPersonalizedMotivation(enneagramType: Int): String {
+    private fun getPersonalizedMotivation(enneagramType: Int?): String {
         return when (enneagramType) {
             1 -> "Mükemmellik arayışında olan sen bunu başarabilirsin! Detaycı yanın süper gücün!"
             2 -> "Yardımsever kalbin en büyük gücün! Kendine de aynı şefkati göster!"
@@ -337,7 +368,7 @@ BİLDİRİM KURALLARI:
     }
 
     // Diğer yardımcı fonksiyonlar...
-    private fun getTypeSpecificMotivation(enneagramType: Int): String {
+    private fun getTypeSpecificMotivation(enneagramType: Int?): String {
         return when (enneagramType) {
             1 -> "Mükemmeliyetçi yanın seni başarıya götürür, ama kendine de merhamet göster 💙"
             2 -> "Yardımsever kalbin en büyük gücün, ama önce kendine yardım et 🤗"
@@ -365,7 +396,7 @@ BİLDİRİM KURALLARI:
         }
     }
 
-    private fun getPersonalizedEncouragement(enneagramType: Int): String {
+    private fun getPersonalizedEncouragement(enneagramType: Int?): String {
         return when (enneagramType) {
             1 -> "Mükemmeliyetçi ruhun zorlukları fırsata çevirir. Sen de aşacaksın! 🌟"
             2 -> "Yardımsever kalbin seni güçlü yapar. Bu zorluk da geçecek! 🌟"
@@ -507,7 +538,7 @@ BİLDİRİM KURALLARI:
         return "Bugün: ${turkishDayNames[dayOfWeek]} - $dayOfMonth ${turkishMonthNames[month]} $year ($timeOfDay saatleri, $season mevsimi)"
     }
 
-    private fun getNotificationHumorStyle(enneagramType: Int, mood: String): String {
+    private fun getNotificationHumorStyle(enneagramType: Int?, mood: String): String {
         val moodHumor = when (mood.lowercase()) {
             "mutlu" -> "Bu mutluluk güzel! 😊"
             "üzgün" -> "Üzüntü de güzel bazen 💙"

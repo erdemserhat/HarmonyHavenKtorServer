@@ -33,27 +33,22 @@ object OpenAiChatService {
 
         val previousHistory = history[userId]
         val userMood = userMoodsRepository.getUserMood(userId)
-        val currentMood = MoodsCache.MoodsCollection.find { it.id == userMood!!.moodId }?.name?.toTurkishMoodName()
-
+        val currentMood = userMood?.let { mood ->
+            MoodsCache.MoodsCollection.find { it.id == mood.moodId }?.name?.toTurkishMoodName()
+        } ?: "normal"
 
         val result = EnneagramService().checkResults(userId)
-        val enneagramDesc = result!!.description
-        val famousPeopleNames = result.famousPeople.map { it.name }
-        val dominantType = result.result.dominantType.type
-        val wingType = result.result.wingType.enneagramBasedWingType
-
-
-
-        println(result)
-
-
-        //  println(currentMood)
-
+        val hasEnneagramInfo = result != null && result.result != null
+        
+        val enneagramDesc = if (hasEnneagramInfo) result!!.description else null
+        val famousPeopleNames = if (hasEnneagramInfo) result!!.famousPeople.map { it.name } else emptyList()
+        val dominantType = if (hasEnneagramInfo) result!!.result.dominantType.type else null
+        val wingType = if (hasEnneagramInfo) result!!.result.wingType.enneagramBasedWingType else null
 
         val finalMessageList = mutableListOf(
             Message(
                 role = "system", content = generateDynamicSystemPrompt(
-                    username, currentMood!!, enneagramDesc, famousPeopleNames, dominantType, wingType
+                    username, currentMood, enneagramDesc, famousPeopleNames, dominantType, wingType
                 )
             )
         )
@@ -78,32 +73,64 @@ object OpenAiChatService {
         if (history[userId]!!.size > 20) {
             history[userId]
         }
-
-
     }
 
     private fun generateDynamicSystemPrompt(
         username: String,
         currentMood: String,
-        enneagramDescription: String,
+        enneagramDescription: String?,
         famousPeople: List<String>,
-        dominantType: Int,
-        wingType: Int
+        dominantType: Int?,
+        wingType: Int?
     ): String {
         val famousPeopleStr = famousPeople.joinToString(", ")
+        val hasEnneagramInfo = dominantType != null && wingType != null
 
-        val typeSpecificGuidance = getEnneagramTypeSpecificGuidance(dominantType)
-        val communicationStyle = getEnneagramCommunicationStyle(dominantType, username)
-        val motivationAndFears = getEnneagramMotivationAndFears(dominantType)
-        val wingInfluence = getWingInfluence(dominantType, wingType)
-        val moodSpecificApproach = getMoodSpecificApproach(currentMood, dominantType, username)
+        val typeSpecificGuidance = if (hasEnneagramInfo) {
+            getEnneagramTypeSpecificGuidance(dominantType!!)
+        } else {
+            "Genel yaklaşım: Samimi ve destekleyici ol. Kişiye özel ilgi göster."
+        }
+        
+        val communicationStyle = if (hasEnneagramInfo) {
+            getEnneagramCommunicationStyle(dominantType!!, username)
+        } else {
+            "Samimi ve anlayışlı ol, kişiye özel yaklaş."
+        }
+        
+        val motivationAndFears = if (hasEnneagramInfo) {
+            getEnneagramMotivationAndFears(dominantType!!)
+        } else {
+            "Genel motivasyon: Kişisel gelişim ve mutluluk. Korku: Değişim ve belirsizlik."
+        }
+        
+        val wingInfluence = if (hasEnneagramInfo) {
+            getWingInfluence(dominantType!!, wingType!!)
+        } else {
+            "Genel yaklaşım: Dengeli ve uyumlu davranış."
+        }
+        
+        val moodSpecificApproach = if (hasEnneagramInfo) {
+            getMoodSpecificApproach(currentMood, dominantType!!, username)
+        } else {
+            getMoodSpecificApproach(currentMood, 0, username)
+        }
+        
         val timeBasedApproach = getTimeBasedApproach()
-        val humorStyle = getHumorStyle(dominantType, currentMood)
+        val humorStyle = if (hasEnneagramInfo) {
+            getHumorStyle(dominantType!!, currentMood)
+        } else {
+            getHumorStyle(0, currentMood)
+        }
         val philosophicalDepth = getPhilosophicalDepth()
         val personalityResponses = getPersonalityResponses()
         val currentTimeInfo = getCurrentTimeInfo()
         val mysteriousElements = getMysteriousElements()
-        val intuitivePredictions = getIntuitivePredictions(dominantType, currentMood)
+        val intuitivePredictions = if (hasEnneagramInfo) {
+            getIntuitivePredictions(dominantType!!, currentMood)
+        } else {
+            getIntuitivePredictions(0, currentMood)
+        }
         val dreamAnalysis = getDreamAnalysisAbility()
         val energyReading = getEnergyReadingAbility()
         val synchronicityMoments = getSynchronicityMoments()
@@ -129,9 +156,11 @@ Seni gerçekten önemsiyorum ve her zaman yanındayım. Tıpkı en yakın arkada
 
 $username HAKKINDA BİLDİKLERİM:
 • Şu anki ruh hali: $currentMood
+${if (hasEnneagramInfo) """
 • Kişilik tipi: ${dominantType}w${wingType} 
 • Kişilik özellikleri: $enneagramDescription
 • Benzer ünlü kişiler: $famousPeopleStr
+""" else "• Kişilik bilgisi henüz yok, genel yaklaşım kullanılacak."}
 
 NASIL YAKLAŞACAKSIN:
 $typeSpecificGuidance
