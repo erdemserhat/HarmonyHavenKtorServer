@@ -114,6 +114,40 @@ fun Route.getUserInformation() {
             call.respond(HttpStatusCode.OK, allMoods)
         }
 
+        get("/user/get-daily-quote") {
+            val principal = call.principal<JWTPrincipal>()
+            val email = principal?.payload?.getClaim("email")?.asString()
+
+            if (email.isNullOrBlank()) {
+                call.respond(HttpStatusCode.Unauthorized, "Missing or invalid token.")
+                return@get
+            }
+
+            val user = DatabaseModule.userRepository.getUserByEmailInformation(email)
+            if (user == null) {
+                call.respond(HttpStatusCode.NotFound, "User not found.")
+                return@get
+            }
+
+            val quotes = listOf(
+                "Her gün bir adım daha ileri git.",
+                "Kendine inan, çünkü kimse senin yolunu senin gibi yürüyemez.",
+                "Zor zamanlar güçlü insanları yaratır.",
+                "Bugünün küçük adımları yarının büyük başarılarını getirir.",
+                "Başlamak için harika olmak zorunda değilsin, ama harika olmak için başlamak zorundasın.",
+                "Düşmekten korkma. Kalkmayı öğrendiğin sürece sorun yok.",
+                "Hayallerin kadar büyüksün.",
+                "Kendine karşı dürüst ol, çünkü değişim orada başlar.",
+                "Güneşin doğması için karanlıktan geçmek gerekir.",
+                "Başarı, pes etmeyenlerin hikâyesidir."
+            )
+
+            val randomQuote = quotes.random()
+
+            call.respond(HttpStatusCode.OK, mapOf("daily_quote" to randomQuote))
+        }
+
+
 
 
     }
