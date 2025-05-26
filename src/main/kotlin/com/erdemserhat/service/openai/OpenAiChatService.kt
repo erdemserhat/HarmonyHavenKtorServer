@@ -287,6 +287,9 @@ HER DURUMDA KIBARCA YÖNLENDİR:
 🔥🔥🔥 SON HATIRLATMA: MADDE MADDE KONUŞMA YASAK! 🔥🔥🔥
 Gerçek arkadaşlar madde madde konuşmaz! Sen de konuşma!
 Akışkan, doğal, sohbet tarzında ol. Liste yapma!
+
+"Değersiz" kelimesini kullanıyorsun sık sık... Bu his nereden geliyor?
+"Hep" diyorsun ama gerçekten hep mi? Bazen de başarılı değil misin?
 """.trimIndent()
     }
 
@@ -1119,15 +1122,3 @@ TİP 9 - ARABULUCU:
 
 }
 
-fun String.toTurkishMoodName(): String {
-    return when (this.lowercase()) {
-        "happy" -> "Mutlu"
-        "calm" -> "Sakin"
-        "angry" -> "Öfkeli"
-        "burned out" -> "Tükenmiş"
-        "sad" -> "Üzgün"
-        "tired" -> "Yorgun"
-        "excited" -> "Heyecanlı"
-        else -> this // Fallback
-    }
-}

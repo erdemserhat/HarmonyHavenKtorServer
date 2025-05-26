@@ -136,6 +136,7 @@ fun triggerNotification(preference: NotificationPreferencesCollection) {
         }
 
         val message = OpenAiNotificationService.generateNotification(
+            userId = user.id,
             userName = userName,
             content = prompt,
             notificationType = preference.type,
@@ -159,7 +160,7 @@ fun startNotificationScheduler(scope: CoroutineScope) {
     scope.launch {
         while (isActive) {
             checkAndTriggerNotifications()
-            delay(60_000)
+            delay(30_000)
         }
     }
 }
